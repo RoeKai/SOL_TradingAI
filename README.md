@@ -9,7 +9,7 @@
 Python 3.12。在独立服务器只复制本目录的源码与配置模板，排除 `.env`、`.venv`、`node_modules`、`dist`、`logs`、`reports`、`trades` 中的运行数据；不得复制原仓库的 `server/` 或任何旧数据库。
 
 ```sh
-git clone --branch phase-02-tradesetup --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
+git clone --branch phase-03-dynamic-rr --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
 cd sol-ai-trading-system
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.lock.txt
@@ -102,10 +102,18 @@ npm run build
 
 ## 第二阶段：TradeSetup 结构（尚未接入交易）
 
-新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。这只是描述与序列化层：**没有实现动态 RR、八维评分、等级准入、移动止损或新 Paper 接入**。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及所有配置不变。
+第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算见下节。八维评分、等级准入、移动止损和新 Paper 接入仍未实现。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及所有配置不变。
 
 旧信号可旁路映射为描述，但旧分数只保存到 `score.legacy_score`；结构依据、RR、等级、置信度、有效期及缺失数据不会被猜测补齐。所有新对象固定 `admission_status=not_evaluated`、`execution_authority=none`，没有 `TradeSetup → Signal` 执行转换。
 
-完整字段、单位、兼容限制与验收命令见 [第二阶段数据契约](docs/STAGE2_TRADE_SETUP.md)。本次公开仓库发布范围与复验结果见 [STAGE_02_REPORT.md](STAGE_02_REPORT.md)。本阶段完成后等待确认，不自动进入第三阶段。
+完整字段、单位、兼容限制与验收命令见 [第二阶段数据契约](docs/STAGE2_TRADE_SETUP.md)；该阶段历史发布与验收见 [STAGE_02_REPORT.md](STAGE_02_REPORT.md)。
+
+## 第三阶段：独立动态 RR 计算（尚未接入交易）
+
+显式调用 `from app.setups.rr import calculate_rr`，传入 `TradeSetup`，返回不可变 `RRCalculation`。按既有入场、初始止损、目标与比例计算每档和整单毛/净 RR，并分别输出参考入场价和区间两端场景；不生成或调整止盈止损，不把评分换成 RR。
+
+净 RR = 扣除成本后的目标收益 / 含成本的初始止损损失。滑点按不利方向作用于成交价，手续费按模拟成交名义金额计算，资金费明确区分支出与收入。缺失成本不按零处理：仍可算毛 RR，净 RR 标记未知。非零整单 USDT 资金费需要显式 `quantity=`（计算用标的数量，不是下单数量）；绝不使用仓位建议上限反推实际仓位。
+
+结果为独立旁路描述，Decimal 数值在 JSON 中为字符串。`complete` 只表示算术输入完整，**不是风控通过**；新结果仍为 `admission_status=not_evaluated`、`execution_authority=none`。不回写 TradeSetup，不接入 Paper、账本、执行锁、风控或实盘。完整公式、比例约束、边界与实际测试见 [STAGE_03_REPORT.md](STAGE_03_REPORT.md)。第三阶段交付后暂停，等待验收，不自动进入评分或准入阶段。
 
 详细边界见 [架构隔离](docs/ARCHITECTURE_ISOLATION.md)、[历史隔离验收](docs/ISOLATION_ACCEPTANCE.md)、[Paper 闭环验收与文件清单](docs/PAPER_ACCEPTANCE.md)。未连接或部署任何新/旧服务器，未改原前端或重启旧服务。
