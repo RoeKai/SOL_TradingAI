@@ -1,0 +1,24 @@
+# DISABLED DESIGN EXAMPLE - no listening backend exists in isolation-smoke mode.
+# Do not include/reload this into a real gateway during source isolation work.
+# Future approved HTTPS gateway mapping (ALL LINES INTENTIONALLY COMMENTED):
+#
+# location = /sol-ai { return 308 /sol-ai/; }
+# location ^~ /sol-ai/ {
+#     # Dedicated tunnel to NEW server, never old execution API or database.
+#     proxy_pass http://127.0.0.1:18765/;
+#     proxy_http_version 1.1;
+#     proxy_set_header Host $host;
+#     proxy_set_header X-Forwarded-Proto $scheme;
+#     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#     proxy_set_header X-Real-IP $remote_addr;
+#     proxy_connect_timeout 5s;
+#     proxy_read_timeout 30s;
+#     client_max_body_size 8k;
+#     proxy_no_cache 1;
+#     proxy_cache_bypass 1;
+# }
+#
+# Preserve existing location / and its auth/backend unchanged.
+# New dashboard.root_path=/sol-ai, separate token/session, HTTPS, only trusted
+# loopback proxy headers; do not expose bridge port 8766 through this gateway.
+# No actual tunnel, gateway routing or cross-server permission was validated.

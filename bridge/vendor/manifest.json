@@ -1,0 +1,71 @@
+{
+  "format": 2,
+  "policy": "Pure source snapshots plus audited isolation-only explicit-injection patches; no original DB/server imports; refresh is explicit.",
+  "patch_manifest_sha256": "cdd86c9a4e242c86f8a4667c52856e93864af2d031106ac83d3d9bd9c24e1608",
+  "files": [
+    {
+      "source": "server/exchange/safe-request.ts",
+      "output": "safe-request.ts",
+      "source_sha256": "77148c5d6c6b2668dcd01829794a9d566c581ed6b052c61cce6836e9a3e90897",
+      "output_sha256": "e21f8c375a3da9c76fbf957d26a95da6e8591b4667ae96dd0adfbcaa3df75b8a",
+      "declarations": null,
+      "patches": 1
+    },
+    {
+      "source": "server/full-margin-stop.ts",
+      "output": "full-margin-stop.ts",
+      "source_sha256": "d14e3b13c055e7bb4305b2cd0c3bdebfa58a4b9f3eed64bd8d69f3f16496f8dd",
+      "output_sha256": "d14e3b13c055e7bb4305b2cd0c3bdebfa58a4b9f3eed64bd8d69f3f16496f8dd",
+      "declarations": null,
+      "patches": 0
+    },
+    {
+      "source": "server/symbol-loss-policy.ts",
+      "output": "symbol-loss-policy.ts",
+      "source_sha256": "dd15f76efde4b934333a500580f5bdc3dd06979f2edc5e92ffaa32daf2a9f675",
+      "output_sha256": "dd15f76efde4b934333a500580f5bdc3dd06979f2edc5e92ffaa32daf2a9f675",
+      "declarations": null,
+      "patches": 0
+    },
+    {
+      "source": "server/logger.ts",
+      "output": "logger.ts",
+      "source_sha256": "f1388134a969a0d025e04b001eb101b3c065bbef22202c51e461a93166b6bf50",
+      "output_sha256": "b23fba8967a77990c469d258dcfcdb332e8252368f28cafcf5f5c608c82ebe04",
+      "declarations": null,
+      "patches": 3
+    },
+    {
+      "source": "server/credential-redaction.ts",
+      "output": "credential-redaction.ts",
+      "source_sha256": "f604e37710de71d079b0e5e681c596fbce47be0ab3d106871a2be506d0f2e608",
+      "output_sha256": "f604e37710de71d079b0e5e681c596fbce47be0ab3d106871a2be506d0f2e608",
+      "declarations": null,
+      "patches": 0
+    },
+    {
+      "source": "server/exchange/binance-adapter.ts",
+      "output": "binance-transport.ts",
+      "source_sha256": "c61cf3ad5fc2ef1a759aa7149941db7f7ee2d55d9cbaeadb6b01c7a6cf27bed4",
+      "output_sha256": "ee6ca0324d1c92254fa7f525ac2e9e63098c51a100f88d98e43086725662772a",
+      "declarations": [
+        "BINANCE_FUTURES_URL",
+        "binanceIpBanUntilMs",
+        "binanceServerTimeOffsetMs",
+        "binanceServerTimeOffsetValidUntilMs",
+        "binanceTimeSyncPromise",
+        "resetBinanceTimeOffsetForTests",
+        "parseBinanceBanUntil",
+        "sign",
+        "buildSignedUrl",
+        "syncBinanceServerTime",
+        "getHeaders",
+        "request",
+        "decimalsFromIncrement",
+        "floorBinanceQuantityToStep",
+        "roundBinanceStopPriceToTick"
+      ],
+      "patches": 0
+    }
+  ]
+}

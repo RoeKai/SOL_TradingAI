@@ -1,0 +1,90 @@
+{
+  "stage": 2,
+  "date": "2026-09-09",
+  "scope": "TradeSetup descriptive schema and one-way compatibility adapter only",
+  "branch": "codex/sol-ai-trading-system",
+  "schema_version": "trade-setup/v1",
+  "behavior": {
+    "signal_changed": false,
+    "strategies_changed": false,
+    "risk_changed": false,
+    "execution_changed": false,
+    "paper_changed": false,
+    "ledger_changed": false,
+    "config_changed": false,
+    "runtime_imports_setups": false
+  },
+  "tests": {
+    "python": {
+      "passed": 257,
+      "failed": 0,
+      "skipped": 0,
+      "new_stage2_tests": 70,
+      "kernel_network_and_old_repo_denied": true,
+      "warnings": [
+        "Starlette httpx deprecation",
+        "AnyIO BlockingPortal alias deprecation"
+      ]
+    },
+    "bridge_mock": {
+      "passed": 27,
+      "failed": 0,
+      "typecheck": "PASS",
+      "build": "PASS",
+      "isolated_vendor_files": 6,
+      "bundle_inputs": 82
+    },
+    "source_gate": {
+      "result": "PASS",
+      "python_files": 35
+    },
+    "dashboard_js_syntax": "PASS",
+    "config_check": {
+      "dry_run": true,
+      "live_capability": false,
+      "network": "none"
+    }
+  },
+  "integrity": {
+    "baseline_files_checked": 1084,
+    "unchanged": 1083,
+    "changed_existing": [
+      "sol-ai-trading-system/README.md"
+    ],
+    "original_tracked_files_unchanged": 995,
+    "original_copy_system_changed": false
+  },
+  "safety": {
+    "production_live_sealed": true,
+    "private_accounts_accessed": false,
+    "real_orders_created": false,
+    "validation_orders_created": false,
+    "deployed": false,
+    "old_services_restarted": false,
+    "authority_of_all_trade_setup_records": "none",
+    "admission_status_of_all_trade_setup_records": "not_evaluated"
+  },
+  "not_implemented": [
+    "dynamic RR computation",
+    "eight-dimension score computation",
+    "grade/admission policy",
+    "new partial exits or trailing stop execution",
+    "TradeSetup to executable Signal conversion",
+    "PaperRuntime integration",
+    "live enablement"
+  ],
+  "source_sha256": {
+    "app/setups/__init__.py": "9503c8acc26bf57bf164b63b6e784f531842bddaeb759c0034488e434ad7dd02",
+    "app/setups/models.py": "7d0ab5dcda5442e13770d2ec9535190bacb22fe323cc1e557029700b4532a90c",
+    "app/setups/adapters.py": "9610273839984ed1e471c72f553587ff4b2e52afc75d79b5a67446abc4dd6216",
+    "tests/test_trade_setups.py": "f1b73dae058b9c7a7ae8444c292dbbf2aec8a7535ab643bac92771bbf86294ab",
+    "docs/STAGE2_TRADE_SETUP.md": "2d7fe5c552ec8755268d96a5d2a94106a2351770e80ffaa6885ac46dbaf55c83",
+    "README.md": "620d0d58ad04fad7932dda398ac7f265c97bccff835232fb6a4cfd8ddfa10bc2"
+  },
+  "notes": [
+    "Supplied numerical RR and score estimates are stored, not calculated or verified by Stage 2.",
+    "Available input metadata is not a claim of current freshness or trading safety.",
+    "All test trade values and order responses are synthetic/mocked.",
+    "Completed Stage 2; paused pending explicit approval for Stage 3."
+  ]
+}

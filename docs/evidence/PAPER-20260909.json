@@ -1,0 +1,285 @@
+{
+  "acceptance": "PAPER-CLOSED-LOOP-20260909",
+  "scope": "Independent sol-ai-trading-system paper-only; no old runtime or production account access",
+  "branch": "codex/sol-ai-trading-system",
+  "base_head": "728d16b0caa02501660c0b7d357764eb70d6cbfa",
+  "production_live_sealed": true,
+  "deployed": false,
+  "created_validation_orders": false,
+  "tests": {
+    "python": {
+      "passed": 187,
+      "failed": 0,
+      "skipped": 0,
+      "by_file": {
+        "test_dashboard_review.py": 18,
+        "test_dependency_isolation.py": 35,
+        "test_execution_isolation.py": 30,
+        "test_python_isolation.py": 38,
+        "test_paper_loop.py": 39,
+        "test_market_strategies.py": 27
+      },
+      "warnings": "Two Starlette/AnyIO deprecation warnings"
+    },
+    "bridge": {
+      "passed": 27,
+      "failed": 0,
+      "typecheck": "PASS",
+      "build": "PASS",
+      "vendor_files": 6,
+      "bundle_inputs": 82,
+      "transport": "FAKE ONLY"
+    },
+    "source_gate": {
+      "result": "PASS",
+      "python_files": 32
+    },
+    "dashboard_javascript_syntax": "PASS"
+  },
+  "os_isolation": {
+    "kernel": "macOS sandbox-exec",
+    "network": "deny network*",
+    "old_roots": [
+      "/srv/legacy-copy-worktree",
+      "/srv/legacy-copy-repository"
+    ],
+    "ipv4": "PERMISSION_DENIED",
+    "ipv6": "PERMISSION_DENIED",
+    "old_source_read": "PERMISSION_DENIED",
+    "full_python_suite": {
+      "passed": 187,
+      "failed": 0
+    },
+    "standalone_bridge_build": "PASS",
+    "offline_smoke": {
+      "synthetic_trades": 1,
+      "network_clients_created": 0,
+      "private_requests": 0,
+      "live_orders": 0
+    }
+  },
+  "original_tree": {
+    "tracked_files_checked": 995,
+    "changed": []
+  },
+  "public_market_check": {
+    "configured_duration_seconds": 70,
+    "counts": {
+      "paper_runtime_started": 1,
+      "public_request": 6,
+      "paper_rules_ready": 1,
+      "market_data": 4341,
+      "market_bootstrap": 3,
+      "websocket_connected": 2,
+      "paper_readiness_changed": 2,
+      "review_generated": 2,
+      "strategy_scores": 94,
+      "paper_runtime_stopped": 1
+    },
+    "market_types": {
+      "kline": 659,
+      "depthUpdate": 411,
+      "24hrTicker": 103,
+      "aggTrade": 3168
+    },
+    "private_client_constructed": false,
+    "private_requests": 0,
+    "real_orders": 0,
+    "no_forced_signal": true
+  },
+  "verification_boundary": "Public-market check had no natural strategy entry. All four trade/exit paths verified with synthetic raw events under OS network denial. Final logging-only refinement is covered by the full 187-test regression. No live exchange account/order query was made.",
+  "remaining_live_blockers": [
+    "Dedicated deployment user/network ACL/account UID acceptance",
+    "Native stop child-order provenance and restart reconciliation",
+    "Asynchronous partial fill/cancel race acceptance",
+    "Funding/liquidation/balance reconciliation",
+    "Abnormal non-empty WAL offline recovery",
+    "Long-run stress/failure and forward paper performance validation"
+  ],
+  "changed_files": [
+    {
+      "file": ".env.example",
+      "kind": "modified"
+    },
+    {
+      "file": "README.md",
+      "kind": "modified"
+    },
+    {
+      "file": "app/alerts/telegram.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/config.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/dashboard/assets/dashboard.js",
+      "kind": "modified"
+    },
+    {
+      "file": "app/dashboard/assets/index.html",
+      "kind": "modified"
+    },
+    {
+      "file": "app/data/service.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/execution/engine.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/indicators/engine.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/models.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/paper/broker.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/portfolio/manager.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/review/daily.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/runtime.py",
+      "kind": "new"
+    },
+    {
+      "file": "app/strategies/engine.py",
+      "kind": "modified"
+    },
+    {
+      "file": "app/utils/paths.py",
+      "kind": "modified"
+    },
+    {
+      "file": "config.yaml",
+      "kind": "modified"
+    },
+    {
+      "file": "deploy/README.md",
+      "kind": "modified"
+    },
+    {
+      "file": "docs/ARCHITECTURE_ISOLATION.md",
+      "kind": "modified"
+    },
+    {
+      "file": "main.py",
+      "kind": "modified"
+    },
+    {
+      "file": "tests/test_market_strategies.py",
+      "kind": "modified"
+    },
+    {
+      "file": "tests/test_paper_loop.py",
+      "kind": "new"
+    },
+    {
+      "file": "tests/test_python_isolation.py",
+      "kind": "modified"
+    },
+    {
+      "file": "docs/PAPER_ACCEPTANCE.md",
+      "kind": "new"
+    },
+    {
+      "file": "docs/evidence/PAPER-20260909.json",
+      "kind": "new"
+    }
+  ],
+  "source_sha256": {
+    ".env.example": "fd1f2c895eda1b2263ad2f373385eef4d217890b33f554b04cc03d71d57f4e44",
+    ".gitignore": "35877bc7e60cf3da603fdbbc6ed13f3fc6aa62a6b74bd611a88955034e3a6bd6",
+    "app/__init__.py": "42fe2f621b5e70dd5e2d4989d46ba54dc7eb545bff35fd9188f04c99476807f1",
+    "app/alerts/__init__.py": "ae0d7f9e1a935237a8658cd3bbf0fb47b7a051d0382687ecc1b28ed1e9cb5860",
+    "app/alerts/redaction.py": "a579386a1dd48ee30c54ecf2e67bd8d50757f9e5c59bded1807385fb89d6df2e",
+    "app/alerts/telegram.py": "94df1d55e11604a3abab54561e7995b1598e50eecd124d67245cddbf336c3cb4",
+    "app/bootstrap.py": "293780d3a7721352113b159750a09dd34f6fdfda8800c641dd056ec0743eef30",
+    "app/config.py": "6e77c526aff19a6167de27876e06ed49e11e2db8843d01ea50970466b09ee165",
+    "app/dashboard/__init__.py": "395d13ad9dfac14d04fabfe1dc7b56676bd9234051b08e4ce1b48fac8884b0fb",
+    "app/dashboard/assets/dashboard.js": "f35aef92d5f6465a355a39e3f787b0ad7cbf60cde26467161d4576b4628a6ed4",
+    "app/dashboard/assets/index.html": "9d247e3910db40bca3ce381635f347f87b088904f0918efa0ca48e4921fec8b7",
+    "app/dashboard/assets/login.html": "363d24553acd079050e4de155ec2f436f0aebdc496d3cd807716095d467c691b",
+    "app/dashboard/assets/login.js": "46cdd1ddb251635cc78cdbba4e4a0617320ec294c3063a99d8b5d5a21edd54ab",
+    "app/dashboard/assets/style.css": "bc47857388dab7dc99655e64bf4a6d0bcae3829c9844dc68aaf9eeaeb2b8b2fe",
+    "app/dashboard/server.py": "10b7b2dad0f521609c33c7ace34c3a79d2c9634670340e50e92cc0568ac1039b",
+    "app/data/__init__.py": "e8dc12f3efd7bcb9f48a130e1497481e0917c34044d51b93eed78dc9bc82f400",
+    "app/data/service.py": "261482661abfc2f12489a27de737cd7888ccfdb7243896dbfd7cbb7e4ea07c4e",
+    "app/execution/__init__.py": "906984e200080d4e963e69aebe72187a52542bd5d916c71fb082405cf93664f6",
+    "app/execution/bridge_client.py": "9265b49dd1873191b84189f6f75ef44230cea427820e66a33d779cb692dc03bf",
+    "app/execution/engine.py": "ba0cfb010e7919ba6944ab80bb02b578530c19ed403491cb79f4afc54e8fe6cb",
+    "app/indicators/__init__.py": "63d83fe8113d064a003b712209c1ab10b6a283fe98aee89818a4a96c1073cd3d",
+    "app/indicators/engine.py": "741895a012a13d71d42bdeb176d4a4fc3a341cb315c615a10d2aeb4dea8835f6",
+    "app/models.py": "1e3945cfa68d3ade78b7eb276e87a670b815d1d702356301c323d5d863eb603a",
+    "app/paper/__init__.py": "22fa1fcb703b09191b741c976a9ef2c0c7c67b11c6b5a21d75b76fa4cc0b1207",
+    "app/paper/broker.py": "75d654c6ea2f39490781b112e4980e5d48fd437ca63e45b25ca0853967e1b2ed",
+    "app/portfolio/__init__.py": "61a291e53c0886c004b4cb0368b1edfd1dfed884fad6ac209014bac6ebc5f4ed",
+    "app/portfolio/manager.py": "8c99314ebe63cfeb738b0a504e617bbe0aad72a21c43efad24fcf57278925635",
+    "app/review/__init__.py": "bc8fc37bdf2d6b495f09b34ed322224fa9f52b388f91a06a159551de62efe963",
+    "app/review/daily.py": "d017dc36654944651fc8f1647eaa1f5b330c70e58b49fc52a0ea90a9e1cebc7b",
+    "app/risk/__init__.py": "c1654c8183fe7a7c028ca3cd5303ffa56edf7fae7269bd0e28be5df07a03044e",
+    "app/risk/engine.py": "95ec2a01494b065c12ea0c895d28a01196d3e8954348cba590e35b1118279935",
+    "app/runtime.py": "c86f7e87fdaa539e186fbe53472d51be2a8e7b64861f6a770af4805f83d0193f",
+    "app/strategies/__init__.py": "681fc6d2651e863743eaf19d3a533cb6a9a9a0a30e3f547139d5cd43354dd38d",
+    "app/strategies/engine.py": "db66d7adb5b56159fd1a76dab196b1cddf800f02fb4f5d7c42986facfbb14758",
+    "app/utils/__init__.py": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "app/utils/audit.py": "11db3a0d359401dbee69943d79d29ec930f5fc71f205b9148d9964a9b918863d",
+    "app/utils/locking.py": "c7da94c44005137dbabd62e12cfb4122fb2d93a87605fced008a689c798dc29e",
+    "app/utils/paths.py": "ec29bd7358913c581575e7cfeb9dc947521eedd472d076a4ca5ce63bd61c1ead",
+    "bridge/package-lock.json": "faa1073fcf71d73ced9f15591ddfd30ee343370b994e67013ed652dd7288cf80",
+    "bridge/package.json": "1c58903bf98bad213205648b89d6569580a79544ff191d972928b74bd6f6547f",
+    "bridge/scripts/build.mjs": "0700c04dd30cbe2ea2fcb30308adb1792cd895c7e74cc09567fea3a8d58fd550",
+    "bridge/scripts/check-imports.mjs": "516c777230645f518fe03e8ce8b8c94c2fcb30a651916679fc3aae4617e64eb3",
+    "bridge/scripts/vendor.mjs": "ca0b80bc7ef52bbd8846b4942348d6de9a8c3dcee421505573e2cf1730e977b3",
+    "bridge/src/config.ts": "e518f9176620d6b27f169aabe210b1f6ef9ca13afa27a3380811a4f5a6ee1dee",
+    "bridge/src/core.ts": "a12eb45bbcd5f38c0475b588ea32c5fd9ba77dd125362961230e35fe63a4bc5f",
+    "bridge/src/isolation.ts": "a60af010f7aa3c53cead228b063b05bdbeda786654610989e5384b6bdc411054",
+    "bridge/src/server.ts": "5824695c7b5c8204e8b94c962f85033597162e7eb78dd32eebfde17abbafe4d5",
+    "bridge/src/yaml-browser.d.ts": "27fea3898969ade8c106d1cfea048ed33251d612111dc3e1b0da1ff91a7f507e",
+    "bridge/tests/bridge.test.ts": "b20d58ffa26b35db3667659ab89db6a49b2c9d847985d9baf9deab82c6f56449",
+    "bridge/tests/imports.test.ts": "eae4509f01799dcd9b162199bf75bfe9a3cb12c7b0b20be12aa8e202521a9a02",
+    "bridge/tests/isolation.test.ts": "89c8ca53633e02c60080003e2eacb1ddba97bab9533cbff4927f7e0623097148",
+    "bridge/tsconfig.json": "78cbdda54ae41b10ef20b86737553c8c80956448509081012d97dec7420a1091",
+    "bridge/vendor/binance-transport.ts": "ee6ca0324d1c92254fa7f525ac2e9e63098c51a100f88d98e43086725662772a",
+    "bridge/vendor/credential-redaction.ts": "f604e37710de71d079b0e5e681c596fbce47be0ab3d106871a2be506d0f2e608",
+    "bridge/vendor/full-margin-stop.ts": "d14e3b13c055e7bb4305b2cd0c3bdebfa58a4b9f3eed64bd8d69f3f16496f8dd",
+    "bridge/vendor/logger.ts": "b23fba8967a77990c469d258dcfcdb332e8252368f28cafcf5f5c608c82ebe04",
+    "bridge/vendor/manifest.json": "6fa3462b13f5a0475e9b6876afea7c38d66ade94fac02c719609240557331e0b",
+    "bridge/vendor/patches.json": "cdd86c9a4e242c86f8a4667c52856e93864af2d031106ac83d3d9bd9c24e1608",
+    "bridge/vendor/safe-request.ts": "e21f8c375a3da9c76fbf957d26a95da6e8591b4667ae96dd0adfbcaa3df75b8a",
+    "bridge/vendor/symbol-loss-policy.ts": "dd15f76efde4b934333a500580f5bdc3dd06979f2edc5e92ffaa32daf2a9f675",
+    "config.yaml": "47069bb30d5b770e60b904b59cdbc63f132875745d866540dbce2bdadf6431f4",
+    "deploy/nginx-sol-ai.conf.example": "96c21649d5a472d503b80c62cf12c18b87759803485a2673b390738c4584d1e5",
+    "deploy/sol-ai-bridge.service": "e032d4f675b37a95364993631aedb952532b95c973c8aa70efbd9f9be13581cb",
+    "deploy/sol-ai.service": "1874e93ec48472c7e69e6ffe48091997ed89b616a9a96bb14d9dc8e17b01a928",
+    "deploy/unified-console.html": "e8caba0d5630204792bcd5b0683e26860867cf186d9e5c656ee556ca1e4e5740",
+    "isolation-policy.json": "824ee43b1a648676e30f78d5be6bbcc483fe67dca82a5d1735e92c1896c24b7c",
+    "logs/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "main.py": "334259c849e4422ae7708e636e2a3ca7b0f88fc18e3d23a021ecc4622c45106b",
+    "pytest.ini": "7c386c483f1289096022f782670819afcac83fe77955c1e083ae6d0e3d66d786",
+    "reports/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "requirements.lock.txt": "07ee1561096ac746f3c39b77e548348e808447c1d7faa97d4de47c14f7ac61a9",
+    "requirements.txt": "0b284681ea242fb4d90b9bcf6be6285f936485dda91a5da7a4d7ebd8e00c8405",
+    "scripts/verify_isolation.py": "c84dc557f2669313273be03b910a8378545ea718645cc9510c685a732b13fab3",
+    "tests/os_isolation_probe.py": "ba66fca00490f767980c07b7f0d36836d87346d923151ea3986adac2d8020cd0",
+    "tests/test_dashboard_review.py": "55b4aeb543047b1d9357683854b79806c3b66d5cd6a50975882d39952724e4f8",
+    "tests/test_dependency_isolation.py": "cdfe6c80626bce4aaabaa846ad62390fb3af522373c1588e419139813612d274",
+    "tests/test_execution_isolation.py": "adb036f771f0ce23f6556a70945fc376ccb4bec15d4a546607e18531df4e45b3",
+    "tests/test_market_strategies.py": "099bbc86f583f407412708607d277547f00402635cbbd5ced6885ca4e4d4146d",
+    "tests/test_paper_loop.py": "e99089718402935329efd6956418a09ae7fca9c76f21103b4c872d2e8251d442",
+    "tests/test_python_isolation.py": "87024aec3654fa2e6a5d763c29a364d7571991e03ae941692e3a9ce62fe13640",
+    "trades/.gitkeep": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  "publication_redaction": "Aggregate historical acceptance summary only; raw paper events, instance/account labels, network request records and machine paths omitted for public publication. No trading account data or runtime logs are included."
+}

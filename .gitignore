@@ -216,3 +216,63 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# SOL TradingAI: public source only. Runtime data is NEVER publishable.
+.env.*
+!.env.example
+.envrc.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa*
+id_ed25519*
+/secrets/
+/credentials/
+/accounts/
+/backups/
+/runtime/
+/state/
+config.local.*
+config.live.*
+config.production.*
+*.local.yaml
+*.local.yml
+
+# Independent database / operational state / outputs
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.sql
+*.dump
+*.jsonl
+*.log.*
+*.lock.pid
+/logs/*
+/reports/*
+/trades/*
+!/logs/.gitkeep
+!/reports/.gitkeep
+!/trades/.gitkeep
+
+# Dependencies, generated packages and machine-specific metadata
+node_modules/
+*.tsbuildinfo
+/artifacts/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+.DS_Store
+._*
+.idea/
+.vscode/
+.codex/
+.agents/
+.npmrc
+.netrc
+.git-credentials

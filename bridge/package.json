@@ -1,0 +1,17 @@
+{
+  "name": "sol-ai-execution-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "vendor:refresh": "node scripts/vendor.mjs",
+    "vendor:verify": "node scripts/vendor.mjs --verify",
+    "build": "node scripts/build.mjs",
+    "test": "tsx --test tests/*.test.ts",
+    "check": "tsc --noEmit",
+    "start": "node dist/server.mjs"
+  },
+  "dependencies": {"dotenv": "17.2.2", "yaml": "2.8.3"},
+  "devDependencies": {"@types/node": "24.7.0", "esbuild": "0.25.12", "tsx": "4.20.6", "typescript": "5.9.3"}
+}

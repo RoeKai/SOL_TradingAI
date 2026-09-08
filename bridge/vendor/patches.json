@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "reason": "Isolation-only patch: remove inherited environment configuration; require explicit logger/request options.",
+  "patches": [
+    {"file":"logger.ts","before":"const MIN_LEVEL: LogLevel = (process.env.LOG_LEVEL as LogLevel) || \"info\";","after":""},
+    {"file":"logger.ts","before":"export function createLogger(module: string): Logger {","after":"export function createLogger(module: string, options: { minLevel: LogLevel }): Logger {"},
+    {"file":"logger.ts","before":"    if (LEVEL_ORDER[level] < LEVEL_ORDER[MIN_LEVEL]) return;","after":"    if (LEVEL_ORDER[level] < LEVEL_ORDER[options.minLevel]) return;"},
+    {"file":"safe-request.ts","before":"export const BINANCE_WEIGHT_LIMIT_1M = Number(\n  process.env.BINANCE_WEIGHT_LIMIT_1M || 2400,\n);","after":"export let BINANCE_WEIGHT_LIMIT_1M = 2400;\nexport function configureRequestRuntime(options: { weightLimit1m: number }): void {\n  if (!Number.isInteger(options.weightLimit1m) || options.weightLimit1m < 1 || options.weightLimit1m > 2400) throw new Error(\"Invalid explicit weight limit\");\n  BINANCE_WEIGHT_LIMIT_1M = options.weightLimit1m;\n}"}
+  ]
+}

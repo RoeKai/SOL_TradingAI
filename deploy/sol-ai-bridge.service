@@ -1,0 +1,27 @@
+[Unit]
+Description=DISABLED - SOL AI live bridge has no deployment acceptance
+RefuseManualStart=true
+
+[Service]
+Type=oneshot
+User=sol-ai
+Group=sol-ai
+WorkingDirectory=/opt/sol-ai-trading-system/bridge
+ExecStart=/usr/bin/false
+Restart=no
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateNetwork=true
+IPAddressDeny=any
+RestrictAddressFamilies=AF_UNIX
+MemoryMax=384M
+TasksMax=32
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sol-ai-bridge-disabled
+# No [Install]. Deliberately does not execute Node, import keys or call Binance.
+# A future live-acceptance change must replace this blocker explicitly.

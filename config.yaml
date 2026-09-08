@@ -1,0 +1,72 @@
+instance_id: sol-ai-local
+dry_run: true
+timezone: Asia/Kuala_Lumpur
+symbols: [SOLUSDT, BTCUSDT, ETHUSDT]
+trade_symbol: SOLUSDT
+paper:
+  initial_balance: 500
+live:
+  enabled: false
+  confirmation: ''
+  dedicated_account_confirmed: false
+  max_account_equity_usdt: 500
+  bridge_url: http://127.0.0.1:8766
+  reconcile_interval_seconds: 10
+  order_timeout_seconds: 8
+risk:
+  max_loss_per_trade: 5
+  daily_loss_limit: 20
+  max_trades_per_day: 3
+  max_consecutive_losses: 2
+  max_positions: 1
+  max_margin_ratio: 0.20
+  max_leverage: 5
+  btc_crash_pct: -0.8
+  taker_fee_rate: 0.0005
+  slippage_bps: 10
+execution:
+  leverage: 5
+  entry_order_type: MARKET
+  limit_expiry_seconds: 30
+data:
+  stale_after_seconds: 15
+  warmup_candles: 120
+  ws_base_url: wss://fstream.binance.com
+  rest_base_url: https://fapi.binance.com
+runtime:
+  scoring_interval_seconds: 0.5
+  heartbeat_seconds: 1
+  max_event_loop_lag_seconds: 5
+strategies:
+  panic_rebound:
+    enabled: true
+    drop_threshold_pct: -2.0
+    rebound_fraction: 0.25
+    btc_crash_pct: -0.8
+    stop_buffer_pct: 0.15
+    observation_seconds: 300
+    cooldown_seconds: 180
+  trend_breakout:
+    enabled: true
+    min_trend_pct: 0.5
+    min_volume_ratio: 1.2
+    min_buy_pressure: 0.55
+  pullback_entry:
+    enabled: true
+    min_trend_pct: 0.8
+    pullback_pct: 0.3
+    bounce_pct: 0.2
+  fake_breakout_reverse:
+    enabled: true
+    breakout_buffer_pct: 0.05
+dashboard:
+  host: 127.0.0.1
+  port: 8765
+  require_auth: true
+  title: SOL AI 独立交易台
+  root_path: ''
+alerts:
+  enabled: false
+review:
+  daily_hour: 0
+  daily_minute: 5

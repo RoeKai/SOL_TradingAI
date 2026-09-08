@@ -1,0 +1,31 @@
+[Unit]
+Description=SOL AI OFFLINE isolation acceptance only (NOT trading service)
+# TEMPLATE ONLY: no network dependency, no bridge dependency, no boot activation.
+# Installation/real-server ACL acceptance has NOT been performed.
+
+[Service]
+Type=oneshot
+User=sol-ai
+Group=sol-ai
+WorkingDirectory=/opt/sol-ai-trading-system
+ExecStartPre=/opt/sol-ai-trading-system/.venv/bin/python scripts/verify_isolation.py
+ExecStart=/opt/sol-ai-trading-system/.venv/bin/python main.py --isolation-smoke --cycles 1
+Restart=no
+TimeoutStopSec=45
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/sol-ai-trading-system/logs /opt/sol-ai-trading-system/trades /opt/sol-ai-trading-system/reports
+PrivateNetwork=true
+IPAddressDeny=any
+RestrictAddressFamilies=AF_UNIX
+InaccessiblePaths=-/srv/tradingskill-test -/var/lib/mysql -/var/run/mysqld -/run/mysqld -/var/run/postgresql -/run/redis
+MemoryMax=768M
+TasksMax=64
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sol-ai-isolation-smoke
+# No [Install] section: do NOT enable as a permanent trading daemon.
