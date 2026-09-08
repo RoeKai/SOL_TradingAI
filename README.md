@@ -9,7 +9,7 @@
 Python 3.12。在独立服务器只复制本目录的源码与配置模板，排除 `.env`、`.venv`、`node_modules`、`dist`、`logs`、`reports`、`trades` 中的运行数据；不得复制原仓库的 `server/` 或任何旧数据库。
 
 ```sh
-git clone --branch phase-04-scorecard --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
+git clone --branch phase-05-risk-admission --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
 cd sol-ai-trading-system
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.lock.txt
@@ -102,7 +102,7 @@ npm run build
 
 ## 第二阶段：TradeSetup 结构（尚未接入交易）
 
-第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算和第四阶段的旁路评分见下节。新等级准入、移动止损和新 Paper 接入仍未实现。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及所有配置不变。
+第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算、第四阶段的旁路评分及第五阶段的纯准入决策见下节。新准入尚未接入 Paper，新的分批退出/移动止损阶段未开发。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及运行配置不变。
 
 旧信号可旁路映射为描述，但旧分数只保存到 `score.legacy_score`；结构依据、RR、等级、置信度、有效期及缺失数据不会被猜测补齐。所有新对象固定 `admission_status=not_evaluated`、`execution_authority=none`，没有 `TradeSetup → Signal` 执行转换。
 
@@ -131,6 +131,30 @@ npm run build
 .venv/bin/python main.py --check
 ```
 
-本阶段无需启动主程序、行情订阅、数据库或执行桥。评分规则、缺项语义、调用范例与实测结果见 [STAGE_04_REPORT.md](STAGE_04_REPORT.md)。第四阶段发布到独立分支后暂停，等待验收，不自动进入第五阶段。
+第四阶段无需启动主程序、行情订阅、数据库或执行桥。评分规则、缺项语义、调用范例与实测结果见 [STAGE_04_REPORT.md](STAGE_04_REPORT.md)。该报告保留第四阶段历史边界；第五阶段经独立授权新增以下旁路决策，不修改评分器。
+
+## 第五阶段：Admission / Risk Gate（纯决策，尚未接入 Paper）
+
+显式调用 `from app.admission.engine import admit_trade`，输入同一计划的 `TradeSetup / RRCalculation / Scorecard`，以及调用方明确提供的 Paper 风险快照、交易所约束、申请、策略配置和评估时间，输出不可变 `AdmissionDecision`：
+
+- `APPROVE`：全部硬条件满足，按正常计算后的风险预算具备 Paper 资格。
+- `REDUCE`：计划成立，但评分、市场、剩余预算或数量/保证金上限要求缩仓；不修改方向、入场、止损和目标。
+- `REJECT`：硬门槛、关键单维、覆盖度、总分或最小可用预算不满足；允许风险和数量均为零。
+
+先检查结构、成本、净 RR、数据新鲜度及账户硬约束，再由七项单维和第八项综合分确定机会风险档位。S/A/B/C **不是胜率，也不决定杠杆**。数量由止损风险反推并取各约束最小值，按交易所步长向下取整，随后使用第三阶段原函数按最终数量再次计算整单净 RR；不能用最远 TP 或毛 RR 代替。缺失/未确认安全状态一律不能默认通过。
+
+阈值模板为独立 [admission.yaml](admission.yaml)，通过 `parse_admission_policy(yaml_text)` 显式解析；它不读取文件或环境变量，`main.py` 不自动加载此文件。账户快照必须同时提供当前硬上限，最终取配置和账户上限中的较严值。
+
+未来消费契约 `require_paper_admission` 拒绝旧 Signal、裸 TradeSetup、伪造/过期决策、变更的快照/配置及未经 RR 重算的数量。**本阶段没有执行入口，也没有把既有 Paper 主流程改成新准入流程。** 哈希只是内容绑定，不是数据真实性认证或一次性交易凭证；可信快照、执行锁内二次检查、原子风险预留、持久化幂等消费仍须后续接入和验收。
+
+```sh
+# 纯离线测试；不启动主程序、账户客户端或 Bridge 服务
+.venv/bin/python -m pytest -q tests/test_admission.py
+.venv/bin/python -m pytest -q
+.venv/bin/python scripts/verify_isolation.py
+.venv/bin/python main.py --check
+```
+
+本阶段实测新增 216 项，Python 全量 692 项、Bridge 27 项均通过。完整结构、硬/软规则、配置、计算口径及边界见 [STAGE_05_REPORT.md](STAGE_05_REPORT.md)。**当前实盘继续硬关闭，没有真实账户访问、订单或服务器部署。第五阶段发布后暂停，不进入第六阶段，不合并 main。**
 
 详细边界见 [架构隔离](docs/ARCHITECTURE_ISOLATION.md)、[历史隔离验收](docs/ISOLATION_ACCEPTANCE.md)、[Paper 闭环验收与文件清单](docs/PAPER_ACCEPTANCE.md)。未连接或部署任何新/旧服务器，未改原前端或重启旧服务。

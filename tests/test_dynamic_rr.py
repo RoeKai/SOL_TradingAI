@@ -396,6 +396,10 @@ def test_rr_has_no_execution_dependencies_and_is_not_imported_by_runtime():
             elif isinstance(node,ast.Import): assert all(n.name in allowed for n in node.names)
     for file in (root/'app').rglob('*.py'):
         if 'setups' in file.parts: continue
+        # Only the explicit Stage 5 pure sidecars may depend on setup arithmetic.
+        if file.relative_to(root).as_posix() in {
+            'app/admission/engine.py','app/admission/models.py',
+            'app/admission/policy.py','app/admission/contract.py'}: continue
         tree=ast.parse(file.read_text())
         for node in ast.walk(tree):
             if isinstance(node,ast.ImportFrom): assert not (node.module or '').startswith('app.setups')
