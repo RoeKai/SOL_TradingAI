@@ -9,7 +9,7 @@
 Python 3.12。在独立服务器只复制本目录的源码与配置模板，排除 `.env`、`.venv`、`node_modules`、`dist`、`logs`、`reports`、`trades` 中的运行数据；不得复制原仓库的 `server/` 或任何旧数据库。
 
 ```sh
-git clone --branch phase-03-dynamic-rr --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
+git clone --branch phase-04-scorecard --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
 cd sol-ai-trading-system
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.lock.txt
@@ -102,7 +102,7 @@ npm run build
 
 ## 第二阶段：TradeSetup 结构（尚未接入交易）
 
-第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算见下节。八维评分、等级准入、移动止损和新 Paper 接入仍未实现。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及所有配置不变。
+第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算和第四阶段的旁路评分见下节。新等级准入、移动止损和新 Paper 接入仍未实现。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及所有配置不变。
 
 旧信号可旁路映射为描述，但旧分数只保存到 `score.legacy_score`；结构依据、RR、等级、置信度、有效期及缺失数据不会被猜测补齐。所有新对象固定 `admission_status=not_evaluated`、`execution_authority=none`，没有 `TradeSetup → Signal` 执行转换。
 
@@ -115,5 +115,22 @@ npm run build
 净 RR = 扣除成本后的目标收益 / 含成本的初始止损损失。滑点按不利方向作用于成交价，手续费按模拟成交名义金额计算，资金费明确区分支出与收入。缺失成本不按零处理：仍可算毛 RR，净 RR 标记未知。非零整单 USDT 资金费需要显式 `quantity=`（计算用标的数量，不是下单数量）；绝不使用仓位建议上限反推实际仓位。
 
 结果为独立旁路描述，Decimal 数值在 JSON 中为字符串。`complete` 只表示算术输入完整，**不是风控通过**；新结果仍为 `admission_status=not_evaluated`、`execution_authority=none`。不回写 TradeSetup，不接入 Paper、账本、执行锁、风控或实盘。完整公式、比例约束、边界与实际测试见 [STAGE_03_REPORT.md](STAGE_03_REPORT.md)。第三阶段交付后暂停，等待验收，不自动进入评分或准入阶段。
+
+## 第四阶段：八维计划评分描述（尚未接入交易）
+
+显式调用 `from app.setups.scorecard import score_trade_setup`，传入 `TradeSetup`、同一计划的 `RRCalculation` 和明确的 `evaluated_at` 时间。返回独立、不可变的 `Scorecard`，**只包含这八个质量维度**：方向置信度、入场质量、止损质量、止盈质量、盈亏比质量、仓位质量、执行清晰度、整体交易质量。每维有 `score / label / explanation`，整体附 `summary`。
+
+前七维等权平均为第八维，不重复计权。缺失、过期或未验证的必需输入返回 `score=null / label=invalid` 和结构化问题；不将可评分项重新归一化到 100 分，不猜测胜率。方向置信度只转述调用方的证据置信声明，不新增方向预测。RR 质量只描述既有净 RR，不调整价格或仓位，不生成 RR 准入阈值。
+
+这是新的旁路结果，不是旧 `Signal.score` 或第二阶段保留的市场因子 `TradeSetup.score`；它们均保持原样。**没有评分准入、下单、新 Paper 接线、分批退出或移动止损执行**。未修改实盘硬封禁或原运行流程。低分和负净 RR 仍正常返回描述，不成为交易拒绝。
+
+```sh
+.venv/bin/python -m pytest -q tests/test_scorecard.py
+.venv/bin/python -m pytest -q
+.venv/bin/python scripts/verify_isolation.py
+.venv/bin/python main.py --check
+```
+
+本阶段无需启动主程序、行情订阅、数据库或执行桥。评分规则、缺项语义、调用范例与实测结果见 [STAGE_04_REPORT.md](STAGE_04_REPORT.md)。第四阶段发布到独立分支后暂停，等待验收，不自动进入第五阶段。
 
 详细边界见 [架构隔离](docs/ARCHITECTURE_ISOLATION.md)、[历史隔离验收](docs/ISOLATION_ACCEPTANCE.md)、[Paper 闭环验收与文件清单](docs/PAPER_ACCEPTANCE.md)。未连接或部署任何新/旧服务器，未改原前端或重启旧服务。
