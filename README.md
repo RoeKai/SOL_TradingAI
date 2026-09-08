@@ -9,7 +9,7 @@
 Python 3.12。在独立服务器只复制本目录的源码与配置模板，排除 `.env`、`.venv`、`node_modules`、`dist`、`logs`、`reports`、`trades` 中的运行数据；不得复制原仓库的 `server/` 或任何旧数据库。
 
 ```sh
-git clone --branch phase-05-risk-admission --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
+git clone --branch phase-06-exit-policy --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
 cd sol-ai-trading-system
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.lock.txt
@@ -102,7 +102,7 @@ npm run build
 
 ## 第二阶段：TradeSetup 结构（尚未接入交易）
 
-第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算、第四阶段的旁路评分及第五阶段的纯准入决策见下节。新准入尚未接入 Paper，新的分批退出/移动止损阶段未开发。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及运行配置不变。
+第二阶段新增 `app/setups/models.py` 的不可变、版本化 `TradeSetup` 和 `app/setups/adapters.py` 的单向 `adapt_legacy_signal`。该阶段仅交付描述与序列化层；第三阶段的独立 RR 计算、第四阶段的旁路评分、第五阶段的纯准入决策及第六阶段的独立退出状态机见下节。新准入和新退出引擎都尚未接入 Paper。上文现有四策略/风控/止盈仍按原流程运行，`Signal`、下单、账本及运行配置不变。
 
 旧信号可旁路映射为描述，但旧分数只保存到 `score.legacy_score`；结构依据、RR、等级、置信度、有效期及缺失数据不会被猜测补齐。所有新对象固定 `admission_status=not_evaluated`、`execution_authority=none`，没有 `TradeSetup → Signal` 执行转换。
 
@@ -155,6 +155,30 @@ npm run build
 .venv/bin/python main.py --check
 ```
 
-本阶段实测新增 216 项，Python 全量 692 项、Bridge 27 项均通过。完整结构、硬/软规则、配置、计算口径及边界见 [STAGE_05_REPORT.md](STAGE_05_REPORT.md)。**当前实盘继续硬关闭，没有真实账户访问、订单或服务器部署。第五阶段发布后暂停，不进入第六阶段，不合并 main。**
+第五阶段历史实测新增 216 项，Python 全量 692 项、Bridge 27 项均通过。完整结构、硬/软规则、配置、计算口径及边界见 [STAGE_05_REPORT.md](STAGE_05_REPORT.md)。第六阶段经独立授权新增下列旁路模块，不修改第五阶段实现。
+
+## 第六阶段：Exit Policy / Position Protection（尚未接入 Paper）
+
+`app/exits/` 提供不可变退出记录、纯事件状态机、确定性尾仓规则和 JSON 检查点重放；不是订单客户端，也不读写数据库、文件、环境变量或时钟。
+
+- 首次确认开仓成交即冻结 `frozen_initial_r` 和 R 的入场锚点，后续移动止损不重定义 R。多次开仓成交的实际均价另行记录，开仓腿确认结束后按实际原始总量分配。
+- 默认 1R 计划减原始数量 30%，2R 再减原始数量 40%，余量归 Runner。触价只产生意图，数量、盈亏和 TP 完成标记只由确认成交更新。
+- TP1 完成后才申请纯保本或成本覆盖止损；只有保护确认回执才更新当前止损。LONG 只提高，SHORT 只降低。
+- 默认 Runner 从 3R 激活、以历史最有利可信报价回撤 1R 跟踪，不在 3R 强制全部卖出；另有确认 Swing、ATR 输入接口、时间退出及趋势失效退出。
+- Stop 优先于 TP；部分成交按真实数量处理。UNKNOWN、撤单未结算或终态先于成交明细时只对账，不重复发退出。最小量不足不向上凑单；最终尾差只使用显式确认的精确全退能力，不支持则报告保护异常，不能伪造平仓。
+- `restore_checkpoint` 完整重放验证历史并追加恢复阻断事件；未完成动作按原 ID 先对账，恢复本身不重新发 TP/止损订单。
+
+独立阈值见 [exit-policy.yaml](exit-policy.yaml)，主程序不加载。所有结果固定 `execution_authority=none_until_paper_integration`，实盘继续硬关闭。**既有 Paper 的旧 50%/50% 退出仍保持原状，本阶段没有替换它。**
+
+```sh
+.venv/bin/python -m pytest -q tests/test_exit_policy.py tests/test_exit_recovery.py
+.venv/bin/python -m pytest -q
+.venv/bin/python scripts/verify_isolation.py
+.venv/bin/python main.py --check
+```
+
+第六阶段新增 **145 项**测试；Python **837 项**、Bridge **27 项**通过，共 **864 项**。结构、完整转换表、确认/恢复语义及下一阶段缺项见 [STAGE_06_REPORT.md](STAGE_06_REPORT.md)。真实持久化事务、执行锁/出站队列和新 Paper 接线尚未实现；可重放状态不等于已完成交易所执行保证。
+
+**第六阶段发布后暂停，等待验收；不进入第七阶段、不合并 main、不部署，不访问真实账户。**
 
 详细边界见 [架构隔离](docs/ARCHITECTURE_ISOLATION.md)、[历史隔离验收](docs/ISOLATION_ACCEPTANCE.md)、[Paper 闭环验收与文件清单](docs/PAPER_ACCEPTANCE.md)。未连接或部署任何新/旧服务器，未改原前端或重启旧服务。

@@ -594,6 +594,8 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
             elif isinstance(node,ast.Import): assert all(n.name in allowed for n in node.names)
     for path in [ROOT/'main.py',*(ROOT/'app').rglob('*.py')]:
         if path.resolve() in pure: continue
+        # Only historical capture/schema sidecars, never an execution route.
+        if path.relative_to(ROOT).as_posix() in {'app/exits/bindings.py','app/exits/models.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

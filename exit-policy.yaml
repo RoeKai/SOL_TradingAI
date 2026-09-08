@@ -1,0 +1,21 @@
+# Stage 6 pure sidecar only. main.py DOES NOT load this policy.
+version: paper-exit-policy/v1
+mode: paper_only
+tp1_r: 1
+tp2_r: 2
+tp1_fraction: 0.3
+tp2_fraction: 0.4
+runner_fraction: 0.3
+break_even_mode: cost_covered
+expected_exit_fee_rate: 0.0005
+expected_exit_slippage_bps: 10
+runner_strategy: fixed_r
+runner_activation_r: 3
+runner_trail_r: 1
+swing_buffer_r: 0
+atr_multiple: 2
+max_holding_seconds: 3600
+trend_exit_enabled: true
+market_max_age_seconds: 5
+evidence_max_age_seconds: 30
+max_known_zero_fill_failures: 3

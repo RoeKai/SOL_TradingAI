@@ -473,5 +473,6 @@ def test_new_modules_are_pure_and_not_imported_into_existing_runtime():
         # Stage 5 is another opt-in pure sidecar, not an existing runtime entry.
         if path.relative_to(root).as_posix() in {
             'app/admission/engine.py','app/admission/models.py',
-            'app/admission/policy.py','app/admission/contract.py'}: continue
+            'app/admission/policy.py','app/admission/contract.py',
+            'app/exits/bindings.py','app/exits/models.py'}: continue
         assert 'scorecard' not in path.read_text().lower(), str(path.relative_to(root))
