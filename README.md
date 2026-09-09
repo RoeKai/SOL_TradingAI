@@ -171,20 +171,22 @@ npm run build
 - 冻结 R、历史开仓 VWAP、剩余持仓成本分别记录；最终毛盈亏独立核对全部确认成交金额差，净盈亏扣实际费用。
 - CANCEL/RECONCILE 明确失败采用可配置有界重试；UNKNOWN 不重发退出单，目标订单的权威回执才解除控制动作等待。耗尽重试升级保护异常。
 - R2 回执排序修复：终态锁存独立于 SETTLING；旧止损的迟到 ACCEPTED/UNKNOWN 不恢复保护身份。累计成交高水位不倒退，明细补齐前不解除原 ID 对账和恢复阻断；真实迟到成交仍按唯一 fill_id 入账。
+- R3 ProtectionLost 入口修复：与 ActionReceipt 共用累计证据、终态和明细结算逻辑。UNKNOWN 携带的数量不丢失，None 不等于 0；旧 ACK 不能抹去待核对量，矛盾终态隔离并按原订单 ID 对账，不放行新的全退意图。只有 ExitFill 改变持仓、费用和盈亏。
 - 退出状态、检查点和默认政策升级为 v2；旧 v1 检查点拒绝自动恢复，不能重建历史动作 ID 冒充安全迁移。
-- R2 不改 JSON 字段和动作 ID 算法，但收紧 v2 语义：旧快照必须与新规则完整重放一致才允许恢复；有差异时保留原记录并阻断，不自动清空/迁移。
+- R2/R3 不改 JSON 字段和动作 ID 算法，但收紧 v2 语义：旧快照必须与新规则完整重放一致才允许恢复；有差异时保留原记录并阻断，不自动清空/迁移。
 
 独立阈值见 [exit-policy.yaml](exit-policy.yaml)，主程序不加载。所有结果固定 `execution_authority=none_until_paper_integration`，实盘继续硬关闭。**既有 Paper 的旧 50%/50% 退出仍保持原状，本阶段没有替换它。**
 
 ```sh
 .venv/bin/python -m pytest -q tests/test_exit_policy.py tests/test_exit_recovery.py tests/test_stage06_review_regressions.py
 .venv/bin/python -m pytest -q tests/test_stage06_r1_receipt_ordering.py tests/test_exit_receipt_invariants.py
+.venv/bin/python -m pytest -q tests/test_stage06_r2_protection_lost.py tests/test_exit_protection_lost.py
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/verify_isolation.py
 .venv/bin/python main.py --check
 ```
 
-第六阶段原有 145 项退出测试、R1 的 108 项测试原样保留。R2 原样收录审查方四项复现（SHA-256 不变）并补 174 项排列/补齐/重复/恢复回归，本轮新增 **178 项**。Python **1123 项**、Bridge **27 项**通过，共 **1150 项**；原样四项在 def0c6e 基线上全部失败，修后通过。完整证据、状态转换与限制见 [STAGE_06_REPORT.md 第 11 节](STAGE_06_REPORT.md#11-审查修订-r2回执乱序终态锁存与累计成交高水位)。真实持久化事务、执行锁/出站队列和新 Paper 接线尚未实现；可重放状态不等于已完成交易所执行保证。
+第六阶段原有 145 项退出测试、R1 的 108 项和 R2 的 178 项测试原样保留。本轮 R3 原样收录审查方六项复现（SHA-256 不变）并补 150 项 ProtectionLost 证据/终态/补齐/恢复回归，新增 **156 项**。Python **1279 项**、Bridge **27 项**通过，共 **1306 项**；原样六项在 58fff0ab 基线上全部失败，修后通过。完整证据、状态转换与限制见 [STAGE_06_REPORT.md 第 12 节](STAGE_06_REPORT.md#12-审查修订-r3protectionlost-累计证据入口统一)。真实持久化事务、执行锁/出站队列和新 Paper 接线尚未实现；可重放状态不等于已完成交易所执行保证。
 
 **第六阶段发布后暂停，等待验收；不进入第七阶段、不合并 main、不部署，不访问真实账户。**
 

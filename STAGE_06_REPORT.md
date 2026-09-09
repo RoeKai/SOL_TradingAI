@@ -6,13 +6,14 @@
 - 已验收父阶段：`phase-05-risk-admission`
 - 第五阶段验收起点：`45d7035421aef6dae436a7a9222d3629dfa5450d`
 - 原第六阶段提交：`daa68658e4a0219fa8fb05122ebe637e9bf8c66e`（保留历史）
-- 本轮 R2 唯一父提交：`def0c6e103bad3ba78cecbc90a56a213c723806c`（R1 修复提交，继续在原分支追加）
+- R1 修复提交：`def0c6e103bad3ba78cecbc90a56a213c723806c`（保留历史）
+- 本轮 R3 唯一父提交：`58fff0ab2142a42565fc9604dc1d10e03b4650fa`（R2 修复提交，继续在原分支追加）
 - 本阶段提交：包含本报告的提交，交付消息提供完整 SHA；本报告不嵌入自己的 SHA。
 - 范围：纯退出决策模型、确定性规则、确认事件状态机、序列化/重放恢复契约及测试。没有接入 Paper/Live，没有部署或合并 main。
 
 ## 1. 交付结论与不可越界项
 
-**当前交付为 R2：回执乱序修复，完成后暂停等待复验，第六阶段尚未宣称通过验收。** 审查方提供的测试先在 def0c6e 基线原样运行，两个问题的 LONG/SHORT 四项均失败；修后四项通过，并补充排列、真实明细补齐、重复投递、重启与现金流测试。最新范围和结果见第 11 节。第 10 节保留 R1 三项修复的历史证据；本轮不改其测试断言，不把旧全量通过替代新边界验证。
+**当前交付为 R3：ProtectionLost 累计证据入口修复，完成后暂停等待复验，第六阶段尚未宣称通过验收。** 审查方提供的独立 Probe 测试先在 58fff0ab 基线原样运行，LONG/SHORT 六项均失败；修后六项通过，另新增 150 项缺失量/高水位/终态矛盾/明细补齐/重复投递/恢复测试。最新范围和结果见第 12 节。第 10、11 节保留 R1/R2 历史证据；本轮不改既有测试断言，不把旧全量通过替代新入口验证。
 
 新增 `app/exits/`，回答“已确认成交的仓位应减多少、何时申请收紧止损、何时退出余仓”。输入是合成/未来可信 Paper 成交和回执；输出是**待持久化的决策意图**，不是已发送订单或已执行保护。
 
@@ -51,13 +52,15 @@ TradeSetup、Dynamic RR、Scorecard、AdmissionDecision 均不回写。R 退出�
 | tests/test_stage06_review_regressions.py | R1 新增 | 六项原始复现及覆盖/成本守恒/控制重试扩展回归，本轮不变 |
 | tests/test_stage06_r1_receipt_ordering.py | R2 新增 | 审查方文件原样收录，四项回执乱序复现 |
 | tests/test_exit_receipt_invariants.py | R2 新增 | 174 项终态/明细/ACK 排列、补齐、重复、恢复及守恒回归 |
+| tests/test_stage06_r2_protection_lost.py | R3 新增 | 审查方独立 Probe 文件原样收录，六项 ProtectionLost 累计证据复现 |
+| tests/test_exit_protection_lost.py | R3 新增 | 150 项入口一致性、None/0、终态矛盾、迟到明细、重复及恢复回归 |
 | STAGE_06_REPORT.md | 新增 | 本报告 |
 | README.md | 修改 | 第六阶段旁路入口、命令、边界、分支 |
 | tests/test_dynamic_rr.py | 修改 | 只允许四个新增纯文件引用既有模型，不放行运行入口 |
 | tests/test_scorecard.py | 修改 | 只允许新 bindings/models 旁路保留历史评分描述 |
 | tests/test_admission.py | 修改 | 只允许新 bindings/models 旁路保留历史准入记录 |
 
-相对第五阶段累计：**14 个新增、4 个修改；完整发布树 126 个文件，其余 108 个既有文件内容哈希不变。** 原第六阶段对三项旧测试的旁路白名单扩展保留，本轮未修改任何既有测试或放宽断言。相对本轮 def0c6e 基线是 **2 个新增、4 个修改，其余 120 个文件内容不变**；R2 精确清单见第 11 节，R1 清单保留在第 10 节。
+相对第五阶段累计：**16 个新增、4 个修改；完整发布树 128 个文件，其余 108 个既有文件内容哈希不变。** 原第六阶段对三项旧测试的旁路白名单扩展保留，本轮未修改任何既有测试或放宽断言。相对本轮 58fff0ab 基线是 **2 个新增、4 个修改，其余 122 个文件内容不变**；R3 精确清单见第 12 节，R1/R2 清单保留在第 10、11 节。
 
 未修改任何既有实现，包括 `app/setups/`、`app/admission/`、`app/models.py`、全部策略/风控/Paper/执行/行情/账本代码、`main.py`、`config.yaml`、隔离政策、全部 Bridge/vendor 和依赖版本。原跟单工作树已有修改未提交或发布。
 
@@ -87,7 +90,7 @@ TradeSetup、Dynamic RR、Scorecard、AdmissionDecision 均不回写。R 退出�
 | MarketEvent | observed_at、bid、ask、confirmed、evidence；新信号暂停、日熔断、Admission 拒绝、评分可用性只作信息，不能阻断保护 |
 | ActionReceipt | action_id、status、cumulative_filled_quantity；止损确认另需 stop_price、reduce_only_verified、coverage；旧 covers_remaining 只兼容该固定数量订单；替换还需 old_stop_retired 和 retired_stop_cumulative_filled |
 | ExitFill | action_id、fill_id、quantity、price、fee_usdt、occurred_at、confirmed=true；只有它改变剩余仓位、已成交 TP 数量和退出盈亏 |
-| ProtectionLost | action_id、CANCELED/FAILED/UNKNOWN，以及可选累计成交总量；总量不明时一律先对账 |
+| ProtectionLost | action_id、CANCELED/FAILED/UNKNOWN，以及可选累计成交总量；None 代表未提供，0 代表明确观察值。UNKNOWN 不丢弃已提供数量；与 ActionReceipt 共用证据、终态一致性及等待明细规则 |
 | RecoveryRequired | 独立恢复事件；根据持久化动作自动建立恢复阻断，不接受调用方随意清空待核对 ID |
 
 `RunnerEvidence` 支持 swing_low / swing_high / atr / trend_invalid，含唯一 evidence_id、value 或 invalid、confirmed 和 observed_at。不是 AI 自由文本指令，不在引擎内计算或猜测 Swing/ATR。
@@ -137,6 +140,8 @@ TradeSetup、Dynamic RR、Scorecard、AdmissionDecision 均不回写。R 退出�
 R1 新增 position_quantity_version（形成意图时的数量版本）、protection_mode（固定或动态）、confirmed_coverage（已确认契约）、target_confirmed（控制动作已收到目标订单权威事实，而非仅收到控制 ACK）。后两项为回执状态，不反写意图身份。
 
 R2 不增加序列化字段，明确分离两轴：terminal_status/terminal_quantity 为确认后不可回退的订单生命周期事实；status=SETTLING 表示成交明细未结算，并不代表订单恢复有效。acknowledged_quantity 持久化全部已知累计执行的高水位（回执、终态累计、真实成交明细三者联合核验）。新增只读派生属性 lifecycle_terminal、known_filled_quantity、settlement_complete，不进入 JSON 或动作摘要。明细未补齐、终态累计冲突或原结果 UNKNOWN 均不得据旧 ACK 解除对账。
+
+R3 不新增字段：ProtectionLost 同样进入上述归约器。非终态 UNKNOWN 的明确累计量保留为高水位和按原 ID 核对的义务；无数量不等于零。与已锁存终态矛盾的观察不覆盖终态，原始内容留在 journal，故障隔离并为该原订单建立对账意图，即使它已退役/已结算；仍不伪造 ExitFill。
 
 kind 为 ARM_STOP / MOVE_STOP / TP1 / TP2 / TP_COMBINED / CLOSE_ALL / CANCEL / RECONCILE。动作 ID 由固定 seed/policy 摘要、序号和不可变动作内容确定性产生。
 
@@ -235,6 +240,8 @@ TP2 完整确认后保留 TP2_FILLED 里程碑并原子进入 RUNNER；剩余数
 | 任意动作 | 终态累计数量大于已收到明细 | SETTLING，等待缺失成交；不补猜成交、不释放重复退出额度 |
 | 旧保护终态已锁存，明细未齐 | 迟到 ACCEPTED/UNKNOWN/旧保护丢失报告 | 保留终态/高水位及当前新保护 ID；不复活旧单、不新建 MOVE_STOP/退出单 |
 | 已知累计量高于明细 | 较小或相同累计量 ACK | 不降低高水位、不解除对账/恢复阻断；只等待真实明细 |
+| 当前保护 | ProtectionLost UNKNOWN 携带累计量 | 保留累计高水位；UNKNOWN/PROTECTION_REQUIRED，原 ID 对账；仓位/费用/盈亏不变 |
+| 当前保护 | ProtectionLost 任意状态但累计量为 None | 不把 None 转成 0，不确认终态累计量；保留已知量并按原 ID 对账 |
 | SETTLING | 后续真实 ExitFill | 幂等记账；只在明细追平已知累计及终态累计后解除对应等待；终态订单仍保持原终态 |
 | 任意已知累计/终态 | 新终态低于已知量，或回执与已锁存终态矛盾 | PROTECTION_REQUIRED + 原因码；不改写终态、不凭回执生成成交 |
 | TP 已确认撤销/拒绝 | 累计量与成交明细一致 | 只对原档未完成量建立新 ID 的意图；明确失败重试有上限 |
@@ -273,7 +280,7 @@ Stop 与 TP 竞态：保护/全退优先；取消在途 TP 的目标订单并核
 
 ### 6.2 检查点
 
-`ExitCheckpoint` 包含 schema_version=exit-checkpoint/v2、完整 seed、policy、journal、state、state_digest。R1 改变了成本和覆盖契约及动作内容，因此 v1 不能静默升级或直接恢复。R2 仍用 v2 字段，但高水位与终态语义收紧；旧 v2 也须与新规则完整重放一致才能恢复，有差异时拒绝，保留原日志/动作 ID，待独立迁移验收。不得清空旧状态后重建意图冒充迁移。
+`ExitCheckpoint` 包含 schema_version=exit-checkpoint/v2、完整 seed、policy、journal、state、state_digest。R1 改变了成本和覆盖契约及动作内容，因此 v1 不能静默升级或直接恢复。R2/R3 仍用 v2 字段，但高水位、终态及 ProtectionLost 入口语义收紧；旧 v2 也须与新规则完整重放一致才能恢复，有差异时拒绝，保留原日志/动作 ID，待独立迁移验收。不得清空旧状态后重建意图冒充迁移。
 
 - `checkpoint(seed, policy, journal)` 从首次确认成交完整重放，生成可 JSON 序列化检查点，不写文件。
 - `restore_checkpoint(json_text, recovery_event=...)` 重新验证模型、完整重放并与保存 state/hash 比较；不一致拒绝，不能靠清掉 TP 标记继续。
@@ -320,6 +327,7 @@ Stop 与 TP 竞态：保护/全退优先；取消在途 TP 的目标订单并核
 ```sh
 .venv/bin/python -m pytest -q tests/test_exit_policy.py tests/test_exit_recovery.py tests/test_stage06_review_regressions.py
 .venv/bin/python -m pytest -q tests/test_stage06_r1_receipt_ordering.py tests/test_exit_receipt_invariants.py
+.venv/bin/python -m pytest -q tests/test_stage06_r2_protection_lost.py tests/test_exit_protection_lost.py
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/verify_isolation.py
 .venv/bin/python main.py --check
@@ -338,9 +346,11 @@ npm run build
 | R1 审查回归 | **108 项保留并通过；其中六项原始复现的失败证据保留在第 10 节** |
 | R2 原样审查文件 | **4 项在 def0c6e 基线失败，修后通过；文件哈希未改** |
 | R2 扩展回归 | **174 项通过，覆盖第 11 节的乱序及恢复边界** |
-| Python 全量 | **1123 passed，2 个既有依赖弃用告警** |
+| R3 原样审查文件 | **6 项在 58fff0ab 基线失败，修后通过；文件哈希未改** |
+| R3 扩展回归 | **150 项通过，覆盖第 12 节的 ProtectionLost 全入口与恢复边界** |
+| Python 全量 | **1279 passed，2 个既有依赖弃用告警，9.55s** |
 | Bridge 测试 | **27 passed，0 failed** |
-| 总计 | **1150 项通过** |
+| 总计 | **1306 项通过，无跳过** |
 | 静态隔离 | `ISOLATION_SOURCE_PASS: 51 Python files` |
 | 启动前纯检查 | `ok=true, config_valid=true, dry_run=true, live_capability=false, network=none` |
 | Bridge TypeScript / 构建 | 通过；6 个隔离复用快照，82 个构建输入，独立 bundle 导入通过 |
@@ -382,9 +392,9 @@ restored = restore_checkpoint(saved.model_dump_json(), recovery_event=recovery_e
 
 ### 发布范围
 
-本轮 R2 只追加第 11 节所列 6 个差异文件，逐文件核对 def0c6e 审查基线完整树。保留 `.gitignore`，不上传 `.env`、API Key、真实账户、数据库、日志、运行报告、node_modules、dist、旧跟单系统 Git 历史或本机部署信息；`.env.example` 变量值继续为空。历史验收材料保持已发布脱敏版本。
+本轮 R3 只追加第 12 节所列 6 个差异文件，逐文件核对 58fff0ab 审查基线完整树。保留 `.gitignore`，不上传 `.env`、API Key、真实账户、数据库、日志、运行报告、node_modules、dist、旧跟单系统 Git 历史或本机部署信息；`.env.example` 变量值继续为空。历史验收材料保持已发布脱敏版本。
 
-本轮在现有 phase-06-exit-policy 上追加单父修复提交，父提交为 def0c6e；保留 daa68658 → def0c6e 历史，不 rebase、不 force push。GitHub 发布树与本地审查树逐文件 hash 一致。main 和其他阶段分支保持不变，不合并，不运行旧服务。
+本轮在现有 phase-06-exit-policy 上追加单父修复提交，父提交为 58fff0ab；保留 daa68658 → def0c6e → 58fff0ab 历史，不 rebase、不 force push。GitHub 发布树与本地审查树逐文件 hash 一致。main 和其他阶段分支保持不变，不合并，不运行旧服务。
 
 ### 进入 Paper 全链路之前还缺
 
@@ -401,7 +411,7 @@ restored = restore_checkpoint(saved.model_dump_json(), recovery_event=recovery_e
 
 ## 10. 审查修订 R1：三项阻断问题的复现、修复与证据
 
-本节是 def0c6e 提交的历史修复记录；其中“本轮”指 R1。当前 R2 的新增修改、最终测试及恢复限制以第 11 节为准。
+本节是 def0c6e 提交的历史修复记录；其中“本轮”指 R1。当前 R3 的新增修改、最终测试及恢复限制以第 12 节为准。
 
 ### 10.1 先复现，后修复
 
@@ -510,6 +520,8 @@ net = gross − 全部实际开仓费用 − 全部实际退出费用
 
 ## 11. 审查修订 R2：回执乱序、终态锁存与累计成交高水位
 
+本节是 58fff0ab 提交的历史修复记录；其中“本轮”指 R2。当前 R3 的新增修改、最终测试及恢复限制以第 12 节为准。
+
 ### 11.1 原样基线复现
 
 本轮唯一父提交：`def0c6e103bad3ba78cecbc90a56a213c723806c`。开始时本地独立仓库及远端 phase-06-exit-policy 均为该提交，工作副本干净。先阅读审查报告，再直接运行审查方提供的 `test_stage06_r1_receipt_ordering.py`，未先改实现或测试。ZIP 内同名文件、独立附件及本次收录的测试文件 SHA-256 一致：
@@ -602,3 +614,107 @@ settlement_complete = (filled_quantity == known_filled_quantity)
 5. 没有改变当前运行中的任何交易行为，没有改旧跟单系统或 Paper/Live 主流程；没有访问真实账户、创建订单、部署服务器、解除 Bridge 封禁、合并 main 或推进第七阶段。
 
 **发布到 phase-06-exit-policy 的追加提交后暂停，等待 R2 复验。**
+
+## 12. 审查修订 R3：ProtectionLost 累计证据入口统一
+
+### 12.1 原样复现与修复后同文件复验
+
+本轮唯一父提交为 `58fff0ab2142a42565fc9604dc1d10e03b4650fa`。开始时独立 Git 副本及远端 phase-06-exit-policy 均为该提交，源码干净。先读取审查报告、核对 ZIP 清单与独立附件，再直接运行审查方的 `test_stage06_r2_protection_lost.py`，未先修改实现。该文件自带合成 Probe，不依赖项目原 Harness；ZIP 内文件、独立附件和收录到 tests/ 的原文件字节 SHA-256 均为：
+
+```text
+66aa1cd91d28b57f5ed1ad8c1ed39674f790a9d8234918d38848d70052bb954a
+```
+
+原样运行的核心命令（实际测试从独立附件位置读取）：
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 \
+  python -m pytest -q -s -p no:cacheprovider test_stage06_r2_protection_lost.py
+```
+
+外层系统沙箱禁止网络和原跟单目录。**修前：6 failed in 0.24s；修后同文件：6 passed in 0.23s。** 文件原始断言和合成 Probe 均未改动。
+
+| 步骤（LONG/SHORT 均验证） | 58fff0ab 基线实际结果 | R3 实际结果 |
+| --- | --- | --- |
+| 持仓 10、固定止损已确认 10；ProtectionLost UNKNOWN/累计 2 | known_filled_quantity=0，明确提供的 2 丢失 | acknowledged/known=2，UNKNOWN，按原止损 ID 对账；持仓仍 10，费用/盈亏不变 |
+| 原止损迟到 ACCEPTED/累计 0 | 动作恢复 ACCEPTED，对账 target_confirmed=true | 高水位仍 2，原未知/待明细状态保留，target_confirmed=false；恢复阻断不解除 |
+| 再收到 CANCELED/累计 0 | 无数量矛盾，产生 CLOSE_ALL quantity=10 | TERMINAL_TOTAL_BEHIND_KNOWN_CUMULATIVE；PROTECTION_REQUIRED，原 ID 对账；没有新 CLOSE_ALL |
+
+六项原测试分别独立检查以上三处、每处 LONG/SHORT 各一例，并非将它们当成六次真实交易。没有以旧 1150 项通过代替本次入口复现。
+
+### 12.2 根因与最小修复范围
+
+R2 已让 `ActionReceipt` 使用高水位/终态/明细结算逻辑，但 `apply_event(ProtectionLost)` 保留另一套状态分支：UNKNOWN 或缺少累计量时仅设置 UNKNOWN，未将**已明确给出的累计量**交给 `_receipt`。后续 ACK 因而只看到旧的 0，并按“无欠缺明细”解除控制。它不是 `_apply_fill` 的成本问题，也不是需要取消幂等限制。
+
+现在两个事件直接调用同一个 `_receipt(seed, state, event: ActionReceipt | ProtectionLost)`。删除 ProtectionLost 独立的累计处理分支，不再把 UNKNOWN 与“没有累计量”混为一谈。不改正常下单客户端、不改主流程，不新增另一套盈亏或恢复算法。
+
+对 ProtectionLost 先验证 action_id 确实属于已知 Stop；未知 ID 或非 Stop 动作为 `UNRECOGNIZED_PROTECTION_LOSS`，不挪用到当前保护。合法输入归一化规则如下：
+
+| ProtectionLost 输入 | 状态/数量证据规则 |
+| --- | --- |
+| UNKNOWN，明确数量 q（包括 0） | 状态仍未知；非终态累计高水位取 max(此前已知, q)。q 保留在事件及状态中，不凭它制造成交 |
+| 任意状态，数量 None | 没有累计量证据；保留旧高水位，按 UNKNOWN 对账，不把 None 转成 0，不锁存虚构终态累计量 |
+| CANCELED/FAILED，明确最终数量 q | 沿用既有“保护已退役”到 CANCELED 的契约；先做终态/高水位一致性检查，只有一致才锁存终态；欠明细则 SETTLING |
+| 已锁存终态，后来 UNKNOWN/None 或较小非终态量 | 订单生命周期不倒退，保护 ID 不复活，不把状态未知解释为旧终态失效 |
+| 已锁存终态，后来非终态量大于终态量，或明确终态相互矛盾 | 不覆盖既有终态；保留原始冲突事件，故障隔离并按该原订单 ID 对账 |
+
+`None` 与显式 `0` 的模型值、journal 内容和摘要不同。对于没有其他矛盾证据的订单，明确可信终态 0 可表示确认零成交；None 不能证明这一点。对 UNKNOWN 而言，即使显式 0 也不能确认订单已经结束。
+
+`ProtectionLost` 的类注释明确以上契约。此模块不将该输入默认为“非权威所以丢弃”：明确数量会形成持久化待核对义务。未来适配器仍须认证来源、订单身份及累计量；UNKNOWN 指保护/订单状态未知，不自动否定已提供的成交数量证据。如果上游无法给出可信数量，应显式传 None，不能把缺省值编码成 0 或隐去仍待核对的观察。
+
+### 12.3 等待明细、冲突隔离和迟到入账
+
+共享归约器继续联合检查 `acknowledged_quantity`、`filled_quantity` 和 `terminal_quantity`。已知 2、明细 0 时，旧 ACK/0 不改变高水位，也不能触发 `_resolve_controls` 或恢复列表解除；终态 0 则与已知 2 冲突，不能据此计算“还可全退 10”。UNKNOWN 退出不得换 ID 重发的规则保持不变。
+
+回执冲突除现有整体故障隔离外，显式建立/保留**针对原 action_id 的 RECONCILE 意图**，原因码 `ORDER_RECEIPT_CONFLICT_REQUIRES_RECONCILIATION`。这也覆盖已经退役、甚至明细已结算的旧止损，避免只查询当前整仓而丢失原单争议。它复用 `_control_once` 的在途去重和有界失败预算，不取消幂等，不直接调用接口或启动对账服务。
+
+只有通过原有确认/归属校验的 `ExitFill` 才改变数量、成本、费用和盈亏。新测试核对：
+
+- UNKNOWN/2、ACK/0、终态/2 这些回执本身都不产生减仓；真实明细 1+1 后余量才从 10 变 9、再变 8。
+- 正确终态/2 与两笔真实明细的六种先后排列均支持；必须全部结算清楚后，才有一次 CLOSE_ALL/8 意图。
+- 明细 2 单位按多 95/空 105 退出、其余 8 按多 90/空 110 退出（入场 100），两方向全部确认成交金额守恒：毛盈亏 −90，实际三笔退出费用合计 0.06，净盈亏 −90.06。
+- 若已出现矛盾终态/0，之后真实明细 1+1 仍能正常幂等入账，余量为 8、毛盈亏 −10、净盈亏 −10.04；但原矛盾 fault 不自动抹掉，不因此恢复新的全退许可。
+- 旧止损已经 CANCELED/累计 2，但还有明细未到时，后续 ProtectionLost 不得替换当前新止损身份。真实旧单明细仍可补齐；UNKNOWN/更大量或冲突终态保留争议并按旧 ID 查询。
+
+同 event_id 重投返回原状态/空新动作；不同投递 ID 的同 fill_id 不重复扣量/扣费。冻结 R、原始止损、结构目标、RR、评分及 Admission 均不改写。R1 的覆盖容量、剩余成本与控制失败重试测试全部保持原断言。
+
+### 12.4 新增/修改文件与实际回归
+
+| 文件 | 类型 | 本轮内容 |
+| --- | --- | --- |
+| app/exits/engine.py | 修改 | 合并 ProtectionLost/ActionReceipt 入口；None 与 0 分离；复用高水位、终态和结算逻辑；冲突保留原订单 ID 对账 |
+| app/exits/models.py | 修改 | 仅补 ProtectionLost 状态/数量证据契约说明，不新增序列化字段 |
+| tests/test_stage06_r2_protection_lost.py | 新增 | 审查方六项用例和独立 Probe 原样收录，SHA-256 不变 |
+| tests/test_exit_protection_lost.py | 新增 | 150 项扩展合成回归、重放和现金流断言 |
+| STAGE_06_REPORT.md | 修改 | 本轮复现、根因、归一化规则、实际结果、限制；保留 R1/R2 历史证据 |
+| README.md | 修改 | R3 边界、测试命令、当前总数与恢复说明 |
+
+相对 58fff0ab 仅上述 **6 文件（新增 2、修改 4）**；其余 **122 个文件哈希不变**。未删除、修改或放宽任何既有测试；未改 policy、runner、persistence、原四策略、风控、Paper、执行、账户日志、主配置、Bridge 或实盘封禁。发布树 128 个纯代码/文档/模板文件经哈希和敏感项审查；构建产物不提交。
+
+150 项扩展测试的参数矩阵（均包含 LONG/SHORT）：
+
+| 覆盖范围 | 项数 |
+| --- | --- |
+| 三种 ProtectionLost 状态 × None × 既有累计 0/2 | 12 |
+| 三种状态的 None 与明确 0 区别 | 6 |
+| ACK/0 后矛盾终态，三种终态来源、是否重启、后补真实明细 | 12 |
+| 正确终态/2 和两笔明细全部六种排列 × 三种终态来源，直到全平及重启 | 36 |
+| 已退役旧止损：三种状态 × None/0/1/2/3 × 是否已补齐明细 | 60 |
+| None/0/1/2 的重复保护丢失及较小 ACK，连续两次重启后补齐 | 8 |
+| ActionReceipt/ProtectionLost 两种入口的高水位和终态结算一致性 | 12 |
+| 篡改快照累计量并重算摘要仍被完整重放拒绝 | 2 |
+| 未知/非 Stop 目标不接受保护丢失量归属 | 2 |
+
+最终完整回归：**1279 Python passed，2 个既有依赖弃用告警，9.55s；27 Bridge passed，0 failed。合计 1306 项通过，无跳过。** 本轮新增 156 项（原样 6 + 扩展 150）；R1/R2 及原退出的 431 项全部保留并通过。未把先前扩展矩阵较小的中间测试结果作为最终结果。
+
+静态隔离 `ISOLATION_SOURCE_PASS: 51 Python files`；启动前纯检查 `ok=true, config_valid=true, dry_run=true, live_capability=false, network=none`。Bridge TypeScript 检查、构建和独立 bundle 导入通过（6 个隔离 vendor 快照，82 个构建输入），Dashboard JS 语法检查通过。Python/检查/构建使用禁止全部网络及原跟单目录的系统沙箱；Bridge HTTP 测试仅允许本机回环 mock。没有运行交易服务、访问真实账户、发送订单、部署服务器或接入 Paper/Live 主流程。
+
+### 12.5 恢复、可信性与剩余限制
+
+1. state/checkpoint 继续为 v2，字段和动作 ID 构造算法不变，但受旧 ProtectionLost 缺陷影响的旧快照不能保证直接兼容。恢复必须按新规则完整重放并匹配保存状态；高水位或动作义务不一致时拒绝，不删 journal、不重建原始 R/动作、不自动迁移。新增测试证明仅把累计量改 0 再重算摘要仍无法通过恢复。
+2. 终态矛盾采取隔离和按原 ID 对账，故障不会因晚到普通 ACK 或明细补齐而自动清除；可信修复事件、人工处理闭环、对账调度与超时升级发送器仍未实现。本阶段只生成明确意图，不能把它声称为查询已完成或资金已安全。
+3. 高水位只能约束已收到的证据。未来适配器必须提供可信身份、回执累计量及生命周期/快照顺序和新鲜度；如果上游把未知编码为零，或没有顺序信息的两个观察本身不可区分，纯模块无法凭空推断哪个回执更旧。UNKNOWN 量不被丢弃不等于完成了真实交易所认证。
+4. 仍缺第 9 节的可信 Paper 回执接线、独立事务账本/收件箱/出站队列、锁内复核、恢复和故障注入全链路验收；没有新增真实数据库或后台服务。R3 不授予 Paper 执行权限，更不授予 Live 权限。
+5. 不改变既有交易行为，不修改原跟单系统，main 和其他阶段分支不变；只向 phase-06-exit-policy 追加 58fff0ab 的单父修复提交，不 force push、不合并、不进入第七阶段。
+
+**本轮修复推送后暂停，等待 R3 独立复验；第六阶段整体仍由用户验收。**

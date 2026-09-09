@@ -144,6 +144,13 @@ class ExitFill(BaseEvent):
 
 
 class ProtectionLost(BaseEvent):
+    """Protection status and cumulative execution evidence are independent.
+
+    None means no quantity evidence; zero is an explicit cumulative observation.
+    UNKNOWN does not invalidate a supplied quantity: it creates/retains an
+    original-order reconciliation obligation, never a synthetic ExitFill.
+    As for ActionReceipt, the future adapter must authenticate these inputs.
+    """
     kind: Literal['PROTECTION_LOST'] = 'PROTECTION_LOST'
     action_id: Text
     status: Literal['CANCELED', 'FAILED', 'UNKNOWN']
