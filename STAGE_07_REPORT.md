@@ -438,3 +438,62 @@ node scripts/build.mjs
 未运行：当前未提供可访问原件的 `test_stage07_semantic_key_collisions.py`；真实账户、真实行情/订单、部署、Paper/Live 全链路接入。这些不能冒充通过。收到审查附件后仍需原样补跑，当前 94 项自行编写用例不代表已覆盖该附件所有断言。
 
 第 9 节前置清单及 RR/Runner 未建模项仍未解决；本轮没有扩展准入/执行/事务/调度能力。实盘继续硬关闭；只上传脱敏源码、测试和文档。**追加推送后立即暂停，等待第七阶段复验，不进入第八阶段。**
+
+### 10.6 从 GitHub 收到原件后的补验结果
+
+补验日期：2026-09-10。上文“原件不可访问”及当时的未运行说明是 R1 修复交付时的历史事实，原样保留；本节记录收到原件后的实际补验，不将之前的合成测试冒充原件，也不改写历史测试数。
+
+#### 收取、同步与原件校验
+
+- 原件来自审查方提交 `33c848d03ec8e629b8d47508cd56c0f17902e64d`，父提交为修复基线 `fbe32d771250451a5903d2161c39a676a6648106`。
+- 实际先检查独立工作副本：无未提交修改，fetch 后相对远端为 ahead 0 / behind 1；使用 `git merge --ff-only origin/phase-07-config-contracts` 快进到上述收录提交，没有产生合并提交、丢弃修改或操作 main。
+- 核对收录差异：仅新增 `tests/test_stage07_semantic_key_collisions.py`，没有修改解析/交易实现、配置或其他测试。
+- `wc -c` 实测 **4770 字节**；`shasum -a 256` 实测 **`757ec0b46741fd22f51c5e181a431bf9196943ce6040ed311c3ce11b9f27c8e3`**，与审查方提供值完全一致。
+- 从 Git 获取后直接执行该原件，未重新生成、复制改写、格式化或修改断言/辅助函数。执行后及提交前复核大小和哈希仍一致；原件已由审查方提交，本次不重复提交该文件。
+
+#### 实际执行命令与结果
+
+使用项目自己的独立依赖环境 **Python 3.12.13**，未安装或升级依赖。以下是实际执行的命令主体；Python 命令外层使用既有 OS 沙箱，禁止网络及原跟单目录读写，不启动交易循环或账户适配器。
+
+```sh
+wc -c tests/test_stage07_semantic_key_collisions.py
+shasum -a 256 tests/test_stage07_semantic_key_collisions.py
+python -m pytest -q tests/test_stage07_semantic_key_collisions.py
+```
+
+原件专项实测输出（退出码 0）：
+
+```text
+..................                                                       [100%]
+18 passed in 0.16s
+```
+
+通过后补跑：
+
+```sh
+python -m pytest -q
+python scripts/verify_isolation.py
+python main.py --check
+cd bridge
+node --import tsx --test tests/*.test.ts
+```
+
+| 本次实际检查 | 结果 |
+| --- | --- |
+| 原始审查测试，原样运行 | **18 passed，0 failed，0 skipped；0.16 秒** |
+| Python 完整回归（含原件及所有既有回归） | **1660 passed，0 failed，0 skipped；34.71 秒** |
+| Bridge 本机 mock 回归 | **27 passed，0 failed，0 skipped** |
+| Python 静态隔离 | `ISOLATION_SOURCE_PASS: 60 Python files` |
+| 原 `main.py --check` | `config_valid=true, dry_run=true, live_capability=false, network=none` |
+
+**计数口径：专项 18 项已经包含在全量 1660 项中，不再重复相加。** 若合并不同测试套件，本次为 1660 Python + 27 Bridge = **1687 项**；不再加上第 10.4 节的历史 1642/94/27 或本节专项的 18 项。全量测试仍有两个既有依赖弃用警告（Starlette/httpx、anyio BlockingPortal），没有改依赖或放宽断言。
+
+本轮没有在旧的 `3960dda…` 上再次执行原件；审查方提供的“6 failed / 12 passed”仅为参考，不作为本次实测结果。Bridge 类型/构建、Dashboard 语法检查未在本轮文档收尾中重跑，不将第 10.4 节的历史结果写成本轮通过。
+
+#### 提交范围、安全边界与剩余事项
+
+本轮追加提交**只修改 `STAGE_07_REPORT.md`**，仅新增本小节；相对 `33c848d…`，包括测试原件在内的其余 144 个已跟踪文件内容不变。没有新失败，因此没有修改已修复解析实现、任何测试断言或配置。上文原件不可访问的历史说明完整保留。
+
+Bridge 测试只使用合成应答和本机 mock 回环；外网及旧系统目录访问仍被 OS 沙箱禁止。日志中的模拟 FILLED 不是真实订单。实盘继续硬关闭，没有访问账户、创建订单、部署或接入 Paper/Live。原件获取与原样补验这一缺项已完成，不等于第七阶段自动验收通过；第 9 节运行时前置项和 RR/Runner 未建模项仍保留。
+
+在 `phase-07-config-contracts` 追加推送补验记录后暂停，等待复验；不修改/合并 main、不 force push、不自动进入第八阶段。
