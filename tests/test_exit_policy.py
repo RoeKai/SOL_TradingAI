@@ -397,6 +397,9 @@ def test_no_live_mode_no_upstream_mutation_and_no_runtime_wiring():
             if isinstance(node,ast.ImportFrom): assert node.module in allowed
     for path in [ROOT/'main.py',*(ROOT/'app').rglob('*.py')]:
         if 'exits' in path.parts: continue
+        # Stage 7 exact offline content checks; no Paper/Live wiring permitted.
+        if path.relative_to(ROOT).as_posix() in {
+            'app/configuration/contracts.py','app/configuration/inputs.py','app/configuration/compiler.py'}: continue
         assert 'app.exits' not in path.read_text()
     assert 'exit-policy' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

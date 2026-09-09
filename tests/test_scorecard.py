@@ -474,5 +474,8 @@ def test_new_modules_are_pure_and_not_imported_into_existing_runtime():
         if path.relative_to(root).as_posix() in {
             'app/admission/engine.py','app/admission/models.py',
             'app/admission/policy.py','app/admission/contract.py',
-            'app/exits/bindings.py','app/exits/models.py'}: continue
+            'app/exits/bindings.py','app/exits/models.py',
+            # Stage 7 exact offline descriptors/validators, no runtime imports.
+            'app/configuration/models.py','app/configuration/inputs.py','app/configuration/contracts.py',
+            'app/configuration/compiler.py','app/configuration/registry.py'}: continue
         assert 'scorecard' not in path.read_text().lower(), str(path.relative_to(root))

@@ -9,7 +9,7 @@
 Python 3.12。在独立服务器只复制本目录的源码与配置模板，排除 `.env`、`.venv`、`node_modules`、`dist`、`logs`、`reports`、`trades` 中的运行数据；不得复制原仓库的 `server/` 或任何旧数据库。
 
 ```sh
-git clone --branch phase-06-exit-policy --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
+git clone --branch phase-07-config-contracts --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-trading-system
 cd sol-ai-trading-system
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.lock.txt
@@ -188,6 +188,57 @@ npm run build
 
 第六阶段原有 145 项退出测试、R1 的 108 项和 R2 的 178 项测试原样保留。本轮 R3 原样收录审查方六项复现（SHA-256 不变）并补 150 项 ProtectionLost 证据/终态/补齐/恢复回归，新增 **156 项**。Python **1279 项**、Bridge **27 项**通过，共 **1306 项**；原样六项在 58fff0ab 基线上全部失败，修后通过。完整证据、状态转换与限制见 [STAGE_06_REPORT.md 第 12 节](STAGE_06_REPORT.md#12-审查修订-r3protectionlost-累计证据入口统一)。真实持久化事务、执行锁/出站队列和新 Paper 接线尚未实现；可重放状态不等于已完成交易所执行保证。
 
-**第六阶段发布后暂停，等待验收；不进入第七阶段、不合并 main、不部署，不访问真实账户。**
+第六阶段 R3 已按独立决策与可重放恢复范围验收；第七阶段只新增下述离线配置契约，不接入执行。
+
+## 第七阶段：配置快照与跨模块一致性（独立、离线）
+
+`app/configuration/` 编译显式提供的 `config.yaml`、`admission.yaml`、`exit-policy.yaml` 和新的 [configuration.yaml](configuration.yaml) 版本/作用域声明，生成不可变 `ConfigBundle`。三个原配置文件、现有四策略、Paper、账本、Bridge 和退出状态机实现均未修改。
+
+纯函数入口：`app.configuration.compiler.compile_bundle(...)` 接收四段 YAML **文本**；`app.configuration.contracts.validate_contract(bundle, inputs, evaluated_at=...)` 接收明确的 `PlanInputs` 和 UTC 秒。核心不读取文件、环境变量、时钟、账户或数据库。复用原 `calculate_rr` 和原评分函数核对描述；如显式给出全部历史审批输入，只在原时间重放原 `admit_trade` 核对记录，不产生新审批或订单资格。
+
+不用创建 `.env`、运行 `main.py` 或启动任何服务，直接执行：
+
+```sh
+# 只检查配置：退出码 0，不代表计划、运行时或执行已就绪
+.venv/bin/python -m app.configuration.check
+.venv/bin/python -m app.configuration.check --example config-valid --json --parameters
+
+# 同义参数矛盾：退出码 2；不采用最后值覆盖
+.venv/bin/python -m app.configuration.check --example synonym-conflict --json
+
+# 上游 50/50 与拟用 30/40/30 不匹配：退出码 3
+.venv/bin/python -m app.configuration.check --example allocation-mismatch --at 1800000000 --json
+
+# 即使比例匹配，Runner 的完整路径收益仍未建模：退出码 3 / UNSUPPORTED
+.venv/bin/python -m app.configuration.check --example runner-unmodeled --at 1800000000 --json
+
+# 仅在本模块的指定示例子目录读取本地显式资料；plan.json 默认被 Git 忽略
+# 自行提供原始、独立的历史记录，不为通过校验编造评分/资金费/确认来源
+.venv/bin/python -m app.configuration.check --plan examples/configuration/local/plan.json --at 1800000000 --json
+
+.venv/bin/python -m pytest -q tests/test_config_bundle.py tests/test_config_contracts.py tests/test_config_cli_isolation.py
+```
+
+CLI 只读指定的本模块配置文件（或 `examples/configuration/<case>/` 下对应固定文件名），同时检查本模块 `isolation-policy.json`；无父目录扫描、外部根目录参数、`.env`、配置回退或环境插值。符号链接/硬链接被现有隔离边界拒绝。`--at` 是显式测试时间，不自动读系统时钟。不得把真实记录导出进 Public 仓库；公开例子是代码生成的缺资料合成说明，不含评分、账户或真实结构证据。
+
+默认输出摘要：
+
+```text
+Config parse: PASS; config consistency: PASS
+Plan: NOT_EVALUATED; runtime metadata: NOT_EVALUATED; trusted runtime: INCOMPLETE
+NOT_INTEGRATED; execution_authority=none; live_allowed=false; no account or order access
+```
+
+JSON 独立记录 `config_parsing / config_consistency / plan_consistency / runtime_metadata / runtime_trust / execution`。错误带 `reason_code、severity、field_path、source、actual、expected、suggestion`。`runtime_metadata=PASS` 仅表示提供的声明完整且内部一致；`verified=true`、来源名称和内容哈希都不是真实性认证。`runtime_trust` 固定 `INCOMPLETE`，执行固定 `NOT_INTEGRATED / none`，没有订单权限。
+
+- 对可比较的单笔风险、杠杆、权益保证金比例和仓位数取更严上限，保留每个来源；日净现金损失与累计负交易结果、已用次数与待开仓预留不能混算。BTC 负百分数阈值用相同 `<=` 谓词组合，不能机械取数值最小值。
+- 费率 `.0005 = .05%`，`10 bps = .1%`；USDT 损失预算、BASE 数量、名义金额、保证金、杠杆分别记录。金额/比例/价格比较用 Decimal；原模型浮点字段不能精确表示的政策声明明确拒绝，不静默舍入。
+- 同 ID/版本但止损、目标、比例、成本、评分、政策或其他计划内容变化，不能复用旧绑定/审批。新计划须在审批前声明完整配置摘要，真实签发与原子消费尚未接入；旧审批不自动追认。
+- 原市场结构、参考 R 触发价、静态 RR 场景分别保留。Runner 到 3R 激活不等于 3R 成交；分批、移动止损、时间/趋势退出及资金费路径未完整估值，返回 `UNSUPPORTED`，不补造收益/资金费、不拉远目标。
+- 已有持仓继续绑定原 seed/policy；新配置错误不停止旧仓必要保护。旧检查点仍必须按原契约完整重放一致，不清空历史、不迁移账本、不热更新政策。
+
+字段/单位/默认值/覆盖规则见 [参数来源表](docs/STAGE_07_PARAMETER_SOURCES.md)；最终结构、例子、真实测试与第八阶段前置清单见 [STAGE_07_REPORT.md](STAGE_07_REPORT.md)。
+
+**第七阶段交付后暂停等待验收；不进入第八阶段、不合并 main、不部署、不接入 Paper/Live。实盘继续硬关闭。**
 
 详细边界见 [架构隔离](docs/ARCHITECTURE_ISOLATION.md)、[历史隔离验收](docs/ISOLATION_ACCEPTANCE.md)、[Paper 闭环验收与文件清单](docs/PAPER_ACCEPTANCE.md)。未连接或部署任何新/旧服务器，未改原前端或重启旧服务。

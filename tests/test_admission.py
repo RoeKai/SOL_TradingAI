@@ -595,7 +595,10 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
     for path in [ROOT/'main.py',*(ROOT/'app').rglob('*.py')]:
         if path.resolve() in pure: continue
         # Only historical capture/schema sidecars, never an execution route.
-        if path.relative_to(ROOT).as_posix() in {'app/exits/bindings.py','app/exits/models.py'}: continue
+        if path.relative_to(ROOT).as_posix() in {'app/exits/bindings.py','app/exits/models.py',
+            # Stage 7 exact offline configuration/validation/CLI, not execution.
+            'app/configuration/models.py','app/configuration/inputs.py','app/configuration/compiler.py',
+            'app/configuration/contracts.py','app/configuration/check.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

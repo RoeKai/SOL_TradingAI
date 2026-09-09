@@ -401,7 +401,10 @@ def test_rr_has_no_execution_dependencies_and_is_not_imported_by_runtime():
             'app/admission/engine.py','app/admission/models.py',
             'app/admission/policy.py','app/admission/contract.py',
             'app/exits/bindings.py','app/exits/models.py',
-            'app/exits/policy.py','app/exits/runner.py'}: continue
+            'app/exits/policy.py','app/exits/runner.py',
+            # Stage 7 exact offline validation modules; never runtime/execution.
+            'app/configuration/models.py','app/configuration/inputs.py',
+            'app/configuration/contracts.py','app/configuration/examples.py'}: continue
         tree=ast.parse(file.read_text())
         for node in ast.walk(tree):
             if isinstance(node,ast.ImportFrom): assert not (node.module or '').startswith('app.setups')

@@ -240,6 +240,21 @@ config.production.*
 *.local.yaml
 *.local.yml
 
+# Stage 7 local configuration snapshots can contain private declared records.
+# Public examples are synthesized by code, never exported account/plan files.
+plan.json
+*.bundle.json
+*.contracts.json
+admission.local.*
+admission.live.*
+admission.production.*
+exit-policy.local.*
+exit-policy.live.*
+exit-policy.production.*
+configuration.local.*
+configuration.live.*
+configuration.production.*
+
 # Independent database / operational state / outputs
 *.db
 *.db-*

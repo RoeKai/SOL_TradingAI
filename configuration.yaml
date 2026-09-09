@@ -1,0 +1,21 @@
+# Stage 7 offline declarations only. main.py does not load this file.
+schema_version: config-bundle/v1
+bundle_revision: sol-paper-config/v1
+catalog_version: config-catalog/v1
+main_contract_version: main-config-contract/v1
+setup_schema_version: trade-setup/v1
+rr_calculation_version: linear-usdt-rr/v1
+scorecard_schema_version: trade-scorecard/v1
+scoring_rule_version: plan-quality/v1
+admission_policy_version: paper-risk-admission/v1
+exit_policy_version: paper-exit-policy/v2
+exit_state_version: position-exit/v2
+exit_checkpoint_version: exit-checkpoint/v2
+mode: paper_only
+instance_id: sol-ai-local
+exchange: BINANCE_USDT_M
+contract_type: linear_usdt
+trade_symbol: SOLUSDT
+quote_currency: USDT
+score_context_max_age_seconds: 300
+live_allowed: false
