@@ -8,7 +8,7 @@ from .engine import initialize_exit, apply_event, digest
 
 
 class ExitCheckpoint(Record):
-    schema_version: str = Field(default='exit-checkpoint/v1',pattern=r'^exit-checkpoint/v1$')
+    schema_version: str = Field(default='exit-checkpoint/v2',pattern=r'^exit-checkpoint/v2$')
     seed: ExitSeed
     policy: ExitPolicy
     journal: tuple[Event, ...]

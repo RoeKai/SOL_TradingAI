@@ -1,5 +1,5 @@
 # Stage 6 pure sidecar only. main.py DOES NOT load this policy.
-version: paper-exit-policy/v1
+version: paper-exit-policy/v2
 mode: paper_only
 tp1_r: 1
 tp2_r: 2
@@ -19,3 +19,4 @@ trend_exit_enabled: true
 market_max_age_seconds: 5
 evidence_max_age_seconds: 30
 max_known_zero_fill_failures: 3
+max_control_attempts: 3

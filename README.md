@@ -167,17 +167,21 @@ npm run build
 - 默认 Runner 从 3R 激活、以历史最有利可信报价回撤 1R 跟踪，不在 3R 强制全部卖出；另有确认 Swing、ATR 输入接口、时间退出及趋势失效退出。
 - Stop 优先于 TP；部分成交按真实数量处理。UNKNOWN、撤单未结算或终态先于成交明细时只对账，不重复发退出。最小量不足不向上凑单；最终尾差只使用显式确认的精确全退能力，不支持则报告保护异常，不能伪造平仓。
 - `restore_checkpoint` 完整重放验证历史并追加恢复阻断事件；未完成动作按原 ID 先对账，恢复本身不重新发 TP/止损订单。
+- 审查修复：固定数量止损显式记录覆盖数量/仓位数量版本；新增成交后原子补保护，不把旧 ACK 当作整仓覆盖。动态整仓必须显式配置能力和对应确认契约。
+- 冻结 R、历史开仓 VWAP、剩余持仓成本分别记录；最终毛盈亏独立核对全部确认成交金额差，净盈亏扣实际费用。
+- CANCEL/RECONCILE 明确失败采用可配置有界重试；UNKNOWN 不重发退出单，目标订单的权威回执才解除控制动作等待。耗尽重试升级保护异常。
+- 退出状态、检查点和默认政策升级为 v2；旧 v1 检查点拒绝自动恢复，不能重建历史动作 ID 冒充安全迁移。
 
 独立阈值见 [exit-policy.yaml](exit-policy.yaml)，主程序不加载。所有结果固定 `execution_authority=none_until_paper_integration`，实盘继续硬关闭。**既有 Paper 的旧 50%/50% 退出仍保持原状，本阶段没有替换它。**
 
 ```sh
-.venv/bin/python -m pytest -q tests/test_exit_policy.py tests/test_exit_recovery.py
+.venv/bin/python -m pytest -q tests/test_exit_policy.py tests/test_exit_recovery.py tests/test_stage06_review_regressions.py
 .venv/bin/python -m pytest -q
 .venv/bin/python scripts/verify_isolation.py
 .venv/bin/python main.py --check
 ```
 
-第六阶段新增 **145 项**测试；Python **837 项**、Bridge **27 项**通过，共 **864 项**。结构、完整转换表、确认/恢复语义及下一阶段缺项见 [STAGE_06_REPORT.md](STAGE_06_REPORT.md)。真实持久化事务、执行锁/出站队列和新 Paper 接线尚未实现；可重放状态不等于已完成交易所执行保证。
+第六阶段原有 145 项退出测试完整保留，本轮新增 **108 项**审查回归（含三问题的六个多/空复现用例）。Python **945 项**、Bridge **27 项**通过，共 **972 项**。基线六个复现全部失败，修复后通过；复现、根因、结构、完整转换表及限制见 [STAGE_06_REPORT.md](STAGE_06_REPORT.md)。真实持久化事务、执行锁/出站队列和新 Paper 接线尚未实现；可重放状态不等于已完成交易所执行保证。
 
 **第六阶段发布后暂停，等待验收；不进入第七阶段、不合并 main、不部署，不访问真实账户。**
 

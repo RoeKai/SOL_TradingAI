@@ -9,7 +9,7 @@ from typing import Literal
 
 
 class ExitPolicy(Record):
-    version: Text = 'paper-exit-policy/v1'
+    version: Text = 'paper-exit-policy/v2'
     mode: Literal['paper_only'] = 'paper_only'
     tp1_r: Positive = '1'
     tp2_r: Positive = '2'
@@ -29,6 +29,7 @@ class ExitPolicy(Record):
     market_max_age_seconds: Positive = '5'
     evidence_max_age_seconds: Positive = '30'
     max_known_zero_fill_failures: int = Field(default=3,strict=True,gt=0)
+    max_control_attempts: int = Field(default=3,strict=True,gt=0)
 
     @model_validator(mode='after')
     def ordered(self):

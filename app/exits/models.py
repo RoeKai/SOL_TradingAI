@@ -48,11 +48,15 @@ class ExitVenueRules(Record):
     reduce_only_min_notional_exempt: StrictBool
     exact_close_remainder: StrictBool
     atomic_stop_replace: StrictBool
+    dynamic_full_position_stop: StrictBool = False
+    dynamic_stop_contract_id: Text | None = None
 
     @model_validator(mode='after')
     def ordered(self):
         if self.min_quantity > self.max_quantity:
             raise ValueError('Invalid venue quantity bounds')
+        if self.dynamic_full_position_stop != (self.dynamic_stop_contract_id is not None):
+            raise ValueError('Dynamic protection needs an explicit future-fill coverage contract')
         return self
 
 
@@ -102,6 +106,19 @@ class MarketEvent(BaseEvent):
     score_available: StrictBool = True
 
 
+class StopCoverage(Record):
+    """Adapter assertion bound to one position/order, not network authentication.
+
+    quantity is total order capacity including already filled quantity. Dynamic
+    mode explicitly includes future fills of THIS position until order retirement.
+    """
+    mode: Literal['fixed_quantity', 'dynamic_position'] = 'fixed_quantity'
+    quantity: Positive
+    quantity_version: Count
+    evidence_id: Text
+    dynamic_contract_id: Text | None = None
+
+
 class ActionReceipt(BaseEvent):
     kind: Literal['RECEIPT'] = 'RECEIPT'
     action_id: Text
@@ -112,6 +129,7 @@ class ActionReceipt(BaseEvent):
     covers_remaining: StrictBool = False
     old_stop_retired: StrictBool = False
     retired_stop_cumulative_filled: Amount | None = None
+    coverage: StopCoverage | None = None
 
 
 class ExitFill(BaseEvent):
@@ -153,12 +171,16 @@ class ExitAction(Record):
     close_exact_remainder: StrictBool = False
     reduce_only: Literal[True] = True
     side: Literal['SELL', 'BUY']
+    position_quantity_version: Count = 0
+    protection_mode: Literal['fixed_quantity', 'dynamic_position'] = 'fixed_quantity'
     status: Literal['INTENT', 'ACCEPTED', 'UNKNOWN', 'SETTLING', 'FILLED', 'CANCELED', 'REJECTED'] = 'INTENT'
     filled_quantity: Amount = Decimal(0)
     acknowledged_quantity: Amount = Decimal(0)
     stop_confirmed: StrictBool = False
     terminal_status: Literal['FILLED', 'CANCELED', 'REJECTED'] | None = None
     terminal_quantity: Amount | None = None
+    confirmed_coverage: StopCoverage | None = None
+    target_confirmed: StrictBool = False
     execution_authority: Literal['none_until_paper_integration'] = 'none_until_paper_integration'
 
 
@@ -170,6 +192,7 @@ class FillFact(Record):
     fee_usdt: Amount
     occurred_at: Timestamp
     entry_basis_price: Positive | None = None
+    entry_basis_notional: Amount | None = None
 
 
 class ExitSeed(Record):
@@ -187,7 +210,7 @@ class ExitSeed(Record):
 
 
 class ExitState(Record):
-    schema_version: Literal['position-exit/v1'] = 'position-exit/v1'
+    schema_version: Literal['position-exit/v2'] = 'position-exit/v2'
     mode: Literal['paper'] = 'paper'
     seed_digest: Digest
     policy_digest: Digest
@@ -203,12 +226,18 @@ class ExitState(Record):
     remaining_quantity: Amount
     actual_average_entry: Positive
     entry_notional: Positive
+    remaining_entry_cost: Amount
+    remaining_average_entry: Positive | None
+    exit_notional: Amount = Decimal(0)
+    position_quantity_version: Count = 0
     frozen_r_anchor_entry: Positive
     frozen_initial_r: Amount
     original_stop: Positive
     current_stop: Positive
-    protection_status: Literal['MISSING', 'PENDING', 'ACTIVE', 'UNKNOWN'] = 'MISSING'
+    protection_status: Literal['MISSING', 'PARTIAL', 'PENDING', 'ACTIVE', 'UNKNOWN'] = 'MISSING'
     protection_action_id: Text | None = None
+    protection_covered_quantity: Amount = Decimal(0)
+    protection_coverage_version: Count | None = None
     tp1_planned: Amount = Decimal(0)
     tp2_planned: Amount = Decimal(0)
     runner_planned: Amount = Decimal(0)

@@ -7,7 +7,7 @@ from decimal import Context, Decimal, ROUND_FLOOR, ROUND_HALF_EVEN, localcontext
 from pydantic import TypeAdapter
 
 from .models import (Record, EntryFill, EntrySealed, MarketEvent, ActionReceipt, ExitFill,
-    ProtectionLost, RecoveryRequired, Event, ExitAction, ExitContractError, ExitResult, ExitSeed, ExitState, FillFact)
+    ProtectionLost, RecoveryRequired, Event, ExitAction, ExitContractError, ExitResult, ExitSeed, ExitState, FillFact, StopCoverage)
 from .policy import ExitPolicy
 from .runner import break_even_price, inward_tick, propose_runner, trend_invalid
 
@@ -44,20 +44,84 @@ def _set_action(state,action):
                  completed_action_ids=done)
 
 
-def _emit(state,kind,reason,*,quantity=ZERO,stop_price=None,target=None,replaces=None,exact=False):
+def _emit(state,kind,reason,*,quantity=ZERO,stop_price=None,target=None,replaces=None,exact=False,protection_mode='fixed_quantity'):
     seq=len(state.actions)+1
     action=ExitAction(action_id='0'*64,position_id=state.position_id,sequence=seq,kind=kind,
         reason_code=reason,quantity=quantity,stop_price=stop_price,target_action_id=target,
-        replaces_action_id=replaces,close_exact_remainder=exact,side='SELL' if state.side=='LONG' else 'BUY')
+        replaces_action_id=replaces,close_exact_remainder=exact,side='SELL' if state.side=='LONG' else 'BUY',
+        position_quantity_version=state.position_quantity_version,protection_mode=protection_mode)
     key=hashlib.sha256((state.seed_digest+state.policy_digest+digest(action)).encode()).hexdigest()
     action=action.model_copy(update={'action_id':key})
     return _copy(state,actions=(*state.actions,action))
 
 
-def _control_once(state,kind,target,reason):
-    if any(a.kind==kind and a.target_action_id==target for a in state.actions):
-        return state
+def _control_failures(attempts):
+    failures=0
+    for old in reversed(attempts):
+        if old.target_confirmed: break
+        failures+=old.status in ('REJECTED','CANCELED')
+    return failures
+
+
+def _control_once(state,policy,kind,target,reason):
+    order=_action(state,target)
+    if kind=='CANCEL' and (order is not None and order.status in ('FILLED','CANCELED','REJECTED')
+                          or target==state.entry_action_id and state.entry_sealed):
+        return state  # A confirmed terminal target never needs another cancel.
+    attempts=[a for a in state.actions if a.kind==kind and a.target_action_id==target]
+    if attempts:
+        last=attempts[-1]
+        if last.status=='UNKNOWN':
+            if kind=='CANCEL':
+                return _control_once(state,policy,'RECONCILE',target,'UNKNOWN_CANCEL_QUERY_ORIGINAL_TARGET')
+            return _fault(state,'RECONCILE_RESULT_UNKNOWN_REQUIRES_REVIEW')
+        if last.status in ('INTENT','ACCEPTED','SETTLING'): return state
+        if last.status=='FILLED' and not last.target_confirmed:
+            return _fault(state,'CONTROL_RESULT_WITHOUT_TARGET_CONFIRMATION')
+        # Bound attempts since the last successful authoritative target check.
+        if _control_failures(attempts)>=policy.max_control_attempts:
+            return _fault(state,kind+'_CONTROL_ATTEMPTS_EXHAUSTED')
     return _emit(state,kind,reason,target=target)
+
+
+def _resolve_controls(state,target,status):
+    """Only an authoritative TARGET fact resolves control work, not its ACK."""
+    if status not in ('ACCEPTED','FILLED','CANCELED','REJECTED'): return state
+    for action in state.actions:
+        if (action.target_action_id==target and action.kind in ('CANCEL','RECONCILE')
+            and action.status in (*BUSY,'FILLED') and not action.target_confirmed
+            and (action.kind=='RECONCILE' or status!='ACCEPTED')):
+            state=_set_action(state,action.model_copy(update={'status':'FILLED','target_confirmed':True}))
+    return state
+
+
+def _coverage_status(state):
+    action=_action(state,state.protection_action_id)
+    if action is None or action.status in ('FILLED','CANCELED','REJECTED'):
+        return ZERO,None,'MISSING'
+    coverage=action.confirmed_coverage
+    if action.status in ('UNKNOWN','SETTLING'):
+        return ZERO,coverage.quantity_version if coverage else None,'UNKNOWN'
+    if not action.stop_confirmed or coverage is None: return ZERO,None,'MISSING'
+    capacity=(state.remaining_quantity if coverage.mode=='dynamic_position' else
+              max(ZERO,coverage.quantity-action.filled_quantity))
+    covered=min(state.remaining_quantity,capacity)
+    status='ACTIVE' if covered>=state.remaining_quantity and covered>0 else 'PARTIAL' if covered>0 else 'MISSING'
+    return covered,coverage.quantity_version,status
+
+
+def _refresh_coverage(state):
+    covered,version,status=_coverage_status(state)
+    pending=[a for a in state.actions if a.kind in STOP_KINDS and a.status in ('INTENT','UNKNOWN','SETTLING')]
+    if pending:
+        status='UNKNOWN' if any(a.status in ('UNKNOWN','SETTLING') for a in pending) else 'PENDING'
+    return _copy(state,protection_covered_quantity=covered,protection_coverage_version=version,protection_status=status)
+
+
+def _stop_intent(state,seed,kind,reason,price):
+    return _emit(state,kind,reason,quantity=state.remaining_quantity,stop_price=price,
+        replaces=state.protection_action_id if kind=='MOVE_STOP' else None,
+        protection_mode='dynamic_position' if seed.rules.dynamic_full_position_stop else 'fixed_quantity')
 
 
 def _quote(state,policy,now):
@@ -103,12 +167,13 @@ def _close_all(state,seed,price,reason):
 
 
 def _drive(state,seed,policy,now,reasons):
+    state=_refresh_coverage(state)
     if state.faults:
         reasons.extend(state.faults)
-        return _control_once(state,'RECONCILE',state.position_id,'STATE_RECONCILIATION_REQUIRED')
+        return _control_once(state,policy,'RECONCILE',state.position_id,'STATE_RECONCILIATION_REQUIRED')
     if state.recovery_pending_action_ids:
         for key in state.recovery_pending_action_ids:
-            state=_control_once(state,'RECONCILE',key,'RESTART_RECONCILE_ORIGINAL_ACTION')
+            state=_control_once(state,policy,'RECONCILE',key,'RESTART_RECONCILE_ORIGINAL_ACTION')
         reasons.append('RECOVERY_RECONCILIATION_REQUIRED')
         return _copy(state,phase='PROTECTION_REQUIRED')
     if state.phase=='PROTECTION_REQUIRED' and not state.emergency_reason:
@@ -117,12 +182,12 @@ def _drive(state,seed,policy,now,reasons):
     pending_stops=[a for a in state.actions if a.kind in STOP_KINDS and a.status in ('INTENT','UNKNOWN','SETTLING')]
     if state.remaining_quantity==0:
         for a in (*exits,*pending_stops):
-            state=_control_once(state,'CANCEL',a.action_id,'FLAT_CANCEL_REMAINING_INTENT')
+            state=_control_once(state,policy,'CANCEL',a.action_id,'FLAT_CANCEL_REMAINING_INTENT')
         if state.protection_action_id:
-            state=_control_once(state,'CANCEL',state.protection_action_id,'FLAT_CANCEL_PROTECTION')
+            state=_control_once(state,policy,'CANCEL',state.protection_action_id,'FLAT_CANCEL_PROTECTION')
         if not state.entry_sealed:
             reasons.append('ENTRY_NOT_TERMINAL_AFTER_EXIT')
-            state=_control_once(state,'CANCEL',state.entry_action_id,'CANCEL_UNFINISHED_OPENING_LEG')
+            state=_control_once(state,policy,'CANCEL',state.entry_action_id,'CANCEL_UNFINISHED_OPENING_LEG')
             return _copy(state,phase='PROTECTION_REQUIRED',runner_quantity=ZERO)
         return _copy(state,phase='CLOSED',runner_quantity=ZERO)
     price=_quote(state,policy,now)
@@ -136,17 +201,17 @@ def _drive(state,seed,policy,now,reasons):
         reasons.append(state.emergency_reason)
         for a in exits:
             if a.kind!='CLOSE_ALL':
-                state=_control_once(state,'CANCEL',a.action_id,'EXIT_PRIORITY_CANCEL_TP')
+                state=_control_once(state,policy,'CANCEL',a.action_id,'EXIT_PRIORITY_CANCEL_TP')
             if a.status in ('UNKNOWN','SETTLING'):
-                state=_control_once(state,'RECONCILE',a.action_id,'ORIGINAL_ACTION_RECONCILIATION')
+                state=_control_once(state,policy,'RECONCILE',a.action_id,'ORIGINAL_ACTION_RECONCILIATION')
         for a in pending_stops:
-            state=_control_once(state,'RECONCILE',a.action_id,'STOP_RESULT_UNCONFIRMED')
+            state=_control_once(state,policy,'RECONCILE',a.action_id,'STOP_RESULT_UNCONFIRMED')
         if exits or pending_stops:
             return _copy(state,phase='PROTECTION_REQUIRED' if pending_stops or any(a.status=='UNKNOWN' for a in exits) else 'STOP_PENDING')
-        if state.protection_status in ('ACTIVE','UNKNOWN') and state.protection_action_id:
-            state=_control_once(state,'CANCEL',state.protection_action_id,'CANCEL_OR_RECONCILE_NATIVE_STOP_BEFORE_CLOSE')
+        if state.protection_status in ('ACTIVE','PARTIAL','UNKNOWN') and state.protection_action_id:
+            state=_control_once(state,policy,'CANCEL',state.protection_action_id,'CANCEL_OR_RECONCILE_NATIVE_STOP_BEFORE_CLOSE')
             if state.protection_status=='UNKNOWN':
-                state=_control_once(state,'RECONCILE',state.protection_action_id,'ORIGINAL_STOP_RECONCILIATION')
+                state=_control_once(state,policy,'RECONCILE',state.protection_action_id,'ORIGINAL_STOP_RECONCILIATION')
             return _copy(state,phase='STOP_PENDING')
         if _failures(state,'CLOSE_ALL')>=policy.max_known_zero_fill_failures:
             return _fault(state,'EMERGENCY_EXIT_REPEATED_REJECTION')
@@ -154,20 +219,26 @@ def _drive(state,seed,policy,now,reasons):
     if exits:
         for a in exits:
             if a.status in ('UNKNOWN','SETTLING'):
-                state=_control_once(state,'RECONCILE',a.action_id,'ORIGINAL_ACTION_RECONCILIATION')
+                state=_control_once(state,policy,'RECONCILE',a.action_id,'ORIGINAL_ACTION_RECONCILIATION')
         phase='PROTECTION_REQUIRED' if any(a.status in ('UNKNOWN','SETTLING') for a in exits) else 'TP2_PENDING' if exits[0].kind=='TP2' else 'TP1_PENDING'
         return _copy(state,phase=phase)
     if pending_stops:
         for a in pending_stops:
             if a.status in ('UNKNOWN','SETTLING'):
-                state=_control_once(state,'RECONCILE',a.action_id,'ORIGINAL_STOP_RECONCILIATION')
+                state=_control_once(state,policy,'RECONCILE',a.action_id,'ORIGINAL_STOP_RECONCILIATION')
         return _copy(state,phase='PROTECTION_REQUIRED') if any(a.status in ('UNKNOWN','SETTLING') for a in pending_stops) else state
+    if state.protection_status=='PARTIAL':
+        reasons.append('PROTECTION_COVERAGE_INSUFFICIENT')
+        if not seed.rules.verified or not seed.rules.atomic_stop_replace:
+            return _fault(state,'PROTECTION_COVERAGE_REPAIR_UNAVAILABLE')
+        state=_stop_intent(state,seed,'MOVE_STOP','REPAIR_PROTECTION_COVERAGE',state.current_stop)
+        return _copy(state,protection_status='PENDING',phase='PROTECTION_REQUIRED')
     if state.protection_status!='ACTIVE':
         if state.protection_status=='UNKNOWN':
-            return _copy(_control_once(state,'RECONCILE',state.protection_action_id,'ORIGINAL_STOP_RECONCILIATION'),phase='PROTECTION_REQUIRED')
+            return _copy(_control_once(state,policy,'RECONCILE',state.protection_action_id,'ORIGINAL_STOP_RECONCILIATION'),phase='PROTECTION_REQUIRED')
         if not seed.rules.verified or state.current_stop%seed.rules.price_tick!=0:
             return _drive(_copy(state,emergency_reason='INITIAL_PROTECTION_NOT_ARMABLE'),seed,policy,now,reasons)
-        state=_emit(state,'ARM_STOP','ARM_INITIAL_PROTECTION',quantity=state.remaining_quantity,stop_price=state.current_stop)
+        state=_stop_intent(state,seed,'ARM_STOP','ARM_INITIAL_PROTECTION',state.current_stop)
         return _copy(state,protection_status='PENDING')
     if not state.entry_sealed:
         reasons.append('ENTRY_NOT_SEALED_NO_TP')
@@ -192,8 +263,7 @@ def _drive(state,seed,policy,now,reasons):
                 return _drive(_copy(state,emergency_reason='PROPOSED_STOP_ALREADY_CROSSED'),seed,policy,now,reasons)
             if not seed.rules.atomic_stop_replace:
                 return _drive(_copy(state,emergency_reason='ATOMIC_STOP_REPLACE_UNAVAILABLE'),seed,policy,now,reasons)
-            state=_emit(state,'MOVE_STOP','RUNNER_STOP_TIGHTEN' if state.tp2_complete else 'TP1_CONFIRMED_BREAK_EVEN',
-                        quantity=state.remaining_quantity,stop_price=desired,replaces=state.protection_action_id)
+            state=_stop_intent(state,seed,'MOVE_STOP','RUNNER_STOP_TIGHTEN' if state.tp2_complete else 'TP1_CONFIRMED_BREAK_EVEN',desired)
             return _copy(state,protection_status='PENDING')
     if state.tp2_complete:
         return _copy(state,phase='RUNNER',runner_quantity=state.remaining_quantity)
@@ -226,14 +296,16 @@ def _drive(state,seed,policy,now,reasons):
     return state
 
 
-def _fill_fact(event,action_id,entry_basis=None):
+def _fill_fact(event,action_id,entry_basis=None,entry_basis_notional=None):
     return FillFact(fill_id=event.fill_id,action_id=action_id,quantity=event.quantity,
-                    price=event.price,fee_usdt=event.fee_usdt,occurred_at=event.occurred_at,entry_basis_price=entry_basis)
+                    price=event.price,fee_usdt=event.fee_usdt,occurred_at=event.occurred_at,
+                    entry_basis_price=entry_basis,entry_basis_notional=entry_basis_notional)
 
 
 def _is_duplicate_fill(state,fact):
     old=next((f for f in state.fill_facts if f.fill_id==fact.fill_id),None)
-    if old is not None and old.model_copy(update={'entry_basis_price':None})!=fact.model_copy(update={'entry_basis_price':None}):
+    blank={'entry_basis_price':None,'entry_basis_notional':None}
+    if old is not None and old.model_copy(update=blank)!=fact.model_copy(update=blank):
         raise ExitContractError('Fill ID reused with different immutable facts')
     return old is not None
 
@@ -242,17 +314,26 @@ def _apply_fill(state,event):
     action=_action(state,event.action_id)
     if action is None or action.kind not in (*EXIT_KINDS,*STOP_KINDS):
         return _fault(state,'UNRECOGNIZED_EXIT_FILL_REQUIRES_RECONCILIATION')
-    fact=_fill_fact(event,event.action_id,state.actual_average_entry)
+    fact=_fill_fact(event,event.action_id)
     if _is_duplicate_fill(state,fact): return state
     if event.quantity>state.remaining_quantity:
         return _fault(state,'CONFIRMED_FILL_EXCEEDS_REMAINING')
     filled=action.filled_quantity+event.quantity
     if action.kind in EXIT_KINDS and filled>action.quantity:
         return _fault(state,'CONFIRMED_FILL_EXCEEDS_INTENT')
+    basis=state.remaining_entry_cost/state.remaining_quantity
+    consumed=(state.remaining_entry_cost if event.quantity==state.remaining_quantity else
+              state.remaining_entry_cost*event.quantity/state.remaining_quantity)
+    cost=state.remaining_entry_cost-consumed
+    remaining=state.remaining_quantity-event.quantity
+    fact=_fill_fact(event,event.action_id,basis,consumed)
     sign=1 if state.side=='LONG' else -1
-    gross=state.realized_gross_pnl+sign*(event.price-state.actual_average_entry)*event.quantity
+    exit_notional=state.exit_notional+event.price*event.quantity
+    gross=sign*(exit_notional-(state.entry_notional-cost))
     fees=state.exit_fees+event.fee_usdt
-    state=_copy(state,remaining_quantity=state.remaining_quantity-event.quantity,
+    state=_copy(state,remaining_quantity=remaining,remaining_entry_cost=cost,
+        remaining_average_entry=cost/remaining if remaining else None,exit_notional=exit_notional,
+        position_quantity_version=state.position_quantity_version+1,
         exit_fees=fees,realized_gross_pnl=gross,realized_net_pnl=gross-state.entry_fees-fees,
         fill_facts=(*state.fill_facts,fact),last_confirmation_event=event.event_id,
         confirmed_fill_action_ids=tuple(dict.fromkeys((*state.confirmed_fill_action_ids,event.action_id))))
@@ -284,7 +365,26 @@ def _apply_fill(state,event):
     return _set_action(state,action.model_copy(update={'filled_quantity':filled,'status':status}))
 
 
-def _receipt(state,event):
+def _confirmed_coverage(seed,state,action,event):
+    coverage=event.coverage
+    if coverage is None:
+        # Legacy boolean ACKs mean only the immutable fixed order quantity.
+        # They NEVER grant dynamic or future-opening-fill coverage.
+        if not event.covers_remaining or action.protection_mode!='fixed_quantity': return None
+        coverage=StopCoverage(quantity=action.quantity,quantity_version=action.position_quantity_version,
+                              evidence_id=event.event_id)
+    if (coverage.mode!=action.protection_mode
+        or not action.position_quantity_version<=coverage.quantity_version<=state.position_quantity_version): return None
+    if coverage.mode=='fixed_quantity':
+        if coverage.quantity!=action.quantity or coverage.dynamic_contract_id is not None: return None
+    elif (not seed.rules.verified or not seed.rules.dynamic_full_position_stop
+          or coverage.dynamic_contract_id!=seed.rules.dynamic_stop_contract_id
+          or coverage.quantity_version!=state.position_quantity_version
+          or coverage.quantity<state.remaining_quantity+event.cumulative_filled_quantity): return None
+    return coverage
+
+
+def _receipt(seed,state,event):
     action=_action(state,event.action_id)
     if action is None: return _fault(state,'UNRECOGNIZED_ACTION_RECEIPT')
     if action.kind in ('CANCEL','RECONCILE'):
@@ -302,9 +402,11 @@ def _receipt(state,event):
     if action.kind in STOP_KINDS and event.status=='ACCEPTED':
         if action.status in ('FILLED','CANCELED','REJECTED'):
             return state  # Late old acknowledgement cannot resurrect retired protection.
-        if (not event.reduce_only_verified or not event.covers_remaining or event.stop_price!=action.stop_price
+        if (not event.reduce_only_verified or event.stop_price!=action.stop_price
             or action.kind=='MOVE_STOP' and (not event.old_stop_retired or event.retired_stop_cumulative_filled is None)):
             return _fault(state,'STOP_ACK_NOT_AUTHORITATIVE')
+        coverage=_confirmed_coverage(seed,state,action,event)
+        if coverage is None: return _fault(state,'STOP_COVERAGE_CONTRACT_INVALID')
         if action.stop_price!=state.current_stop and not _tightens(state,action.stop_price):
             return _fault(state,'STOP_WIDENING_FORBIDDEN')
         old=None
@@ -315,7 +417,8 @@ def _receipt(state,event):
                 return _fault(state,'RETIRED_STOP_TOTAL_BEHIND_FILLS')
         state=_set_action(state,action.model_copy(update={
             'status':'SETTLING' if event.cumulative_filled_quantity>action.filled_quantity else 'ACCEPTED',
-            'acknowledged_quantity':max(action.filled_quantity,event.cumulative_filled_quantity),'stop_confirmed':True}))
+            'acknowledged_quantity':max(action.filled_quantity,event.cumulative_filled_quantity),'stop_confirmed':True,
+            'confirmed_coverage':coverage}))
         if action.replaces_action_id:
             state=_set_action(state,old.model_copy(update={
                 'status':'SETTLING' if event.retired_stop_cumulative_filled>old.filled_quantity else 'CANCELED',
@@ -341,6 +444,8 @@ def _receipt(state,event):
             state=_copy(state,protection_status='MISSING',protection_action_id=None)
         elif action.kind=='MOVE_STOP':
             state=_copy(state,protection_status='ACTIVE' if state.protection_action_id else 'MISSING')
+        if action.reason_code=='REPAIR_PROTECTION_COVERAGE':
+            return _fault(state,'PROTECTION_COVERAGE_REPAIR_FAILED')
         state=_copy(state,emergency_reason=state.emergency_reason or 'PROTECTION_ORDER_FAILED_OR_CANCELED')
     return _copy(state,last_confirmation_event=event.event_id)
 
@@ -363,6 +468,24 @@ def _validate(seed,policy,state):
         raise ExitContractError('Confirmed quantity conservation failed')
     if sum((f.quantity*f.price for f in entries),ZERO)!=state.entry_notional or state.actual_average_entry!=state.entry_notional/total:
         raise ExitContractError('Actual entry average mismatch')
+    # Independently replay remaining-cost allocation in confirmed ingestion order.
+    # Exchange occurrence times do not retroactively re-price already booked exits.
+    qty=cost=ZERO
+    for fact in state.fill_facts:
+        if fact.action_id==state.entry_action_id:
+            qty+=fact.quantity;cost+=fact.price*fact.quantity
+            if fact.entry_basis_price is not None or fact.entry_basis_notional is not None:
+                raise ExitContractError('Entry fact cannot carry an exit cost allocation')
+        else:
+            if fact.quantity>qty: raise ExitContractError('Exit cost lacks confirmed inventory')
+            basis=cost/qty
+            allocated=cost if fact.quantity==qty else cost*fact.quantity/qty
+            if fact.entry_basis_price!=basis or fact.entry_basis_notional!=allocated:
+                raise ExitContractError('Remaining cost allocation mismatch')
+            qty-=fact.quantity;cost-=allocated
+    if (state.remaining_entry_cost!=cost or state.remaining_average_entry!=(cost/qty if qty else None)
+        or state.position_quantity_version!=len(state.fill_facts)-1):
+        raise ExitContractError('Remaining position cost/version mismatch')
     if (state.side=='LONG' and state.current_stop<state.original_stop or state.side=='SHORT' and state.current_stop>state.original_stop):
         raise ExitContractError('Protection stop widened beyond original')
     if state.tp1_filled>state.tp1_planned or state.tp2_filled>state.tp2_planned:
@@ -393,11 +516,14 @@ def _validate(seed,policy,state):
         raise ExitContractError('Terminal action IDs mismatch')
     if state.entry_fees!=sum((f.fee_usdt for f in entries),ZERO) or state.exit_fees!=sum((f.fee_usdt for f in exits),ZERO):
         raise ExitContractError('Confirmed fees mismatch')
-    if any(f.entry_basis_price is None for f in exits):
-        raise ExitContractError('Exit fill lacks historical entry basis')
-    gross=sum(((f.price-f.entry_basis_price)*f.quantity*(1 if state.side=='LONG' else -1) for f in exits),ZERO)
+    exit_notional=sum((f.quantity*f.price for f in exits),ZERO)
+    if state.exit_notional!=exit_notional:
+        raise ExitContractError('Exit notional does not match confirmed cashflows')
+    gross=(exit_notional-(state.entry_notional-cost))*(1 if state.side=='LONG' else -1)
     if state.realized_gross_pnl!=gross or state.realized_net_pnl!=gross-state.entry_fees-state.exit_fees:
-        raise ExitContractError('Historical realized PnL mismatch')
+        raise ExitContractError('Confirmed cashflow/cost PnL conservation failed')
+    if state.remaining_quantity==0 and (cost!=0 or gross!=(exit_notional-state.entry_notional)*(1 if state.side=='LONG' else -1)):
+        raise ExitContractError('Flat position cashflow conservation failed')
     if state.entry_sealed:
         q1=(total*policy.tp1_fraction/seed.rules.quantity_step).to_integral_value(rounding=ROUND_FLOOR)*seed.rules.quantity_step
         q2=(total*policy.tp2_fraction/seed.rules.quantity_step).to_integral_value(rounding=ROUND_FLOOR)*seed.rules.quantity_step
@@ -411,11 +537,28 @@ def _validate(seed,policy,state):
     for index,action in enumerate(state.actions,1):
         if action.filled_quantity!=sum((f.quantity for f in exits if f.action_id==action.action_id),ZERO):
             raise ExitContractError('Action cumulative fill does not match actual fills')
+        if action.confirmed_coverage is not None:
+            c=action.confirmed_coverage
+            if (action.kind not in STOP_KINDS or not action.stop_confirmed or c.mode!=action.protection_mode
+                or not action.position_quantity_version<=c.quantity_version<=state.position_quantity_version
+                or c.mode=='fixed_quantity' and (c.quantity!=action.quantity or c.dynamic_contract_id is not None)
+                or c.mode=='dynamic_position' and (not seed.rules.verified or not seed.rules.dynamic_full_position_stop
+                                                   or c.dynamic_contract_id!=seed.rules.dynamic_stop_contract_id)):
+                raise ExitContractError('Persisted stop coverage contract invalid')
+        elif action.stop_confirmed:
+            raise ExitContractError('Confirmed stop lacks a coverage contract')
+        if action.target_confirmed and (action.kind not in ('CANCEL','RECONCILE') or action.status!='FILLED'):
+            raise ExitContractError('Invalid control target confirmation')
         raw=action.model_copy(update={'action_id':'0'*64,'status':'INTENT','filled_quantity':ZERO,
-            'acknowledged_quantity':ZERO,'stop_confirmed':False,'terminal_status':None,'terminal_quantity':None})
+            'acknowledged_quantity':ZERO,'stop_confirmed':False,'terminal_status':None,'terminal_quantity':None,
+            'confirmed_coverage':None,'target_confirmed':False})
         expected=hashlib.sha256((state.seed_digest+state.policy_digest+digest(raw)).encode()).hexdigest()
         if action.sequence!=index or action.action_id!=expected:
             raise ExitContractError('Persisted action identity/terms mismatch')
+    refreshed=_refresh_coverage(state)
+    if (state.protection_status,state.protection_covered_quantity,state.protection_coverage_version)!=(
+        refreshed.protection_status,refreshed.protection_covered_quantity,refreshed.protection_coverage_version):
+        raise ExitContractError('Claimed protection coverage disagrees with confirmed capacity')
     return seed,policy,state
 
 
@@ -431,13 +574,14 @@ def initialize_exit(seed: ExitSeed, policy: ExitPolicy) -> ExitResult:
             symbol=seed.plan.symbol,side=seed.plan.side,version=0,phase='OPEN',entry_action_id=fill.entry_action_id,
             opened_at=fill.occurred_at,original_quantity=fill.quantity,remaining_quantity=fill.quantity,
             actual_average_entry=fill.price,entry_notional=fill.price*fill.quantity,
+            remaining_entry_cost=fill.price*fill.quantity,remaining_average_entry=fill.price,
             frozen_r_anchor_entry=fill.price,frozen_initial_r=initial_r,original_stop=seed.plan.original_stop,
             current_stop=seed.plan.original_stop,entry_fees=fill.fee_usdt,realized_net_pnl=-fill.fee_usdt,
             favorable_extreme=fill.price,last_received_at=fill.received_at,last_confirmation_event=fill.event_id,
             event_receipts=((fill.event_id,digest(fill)),),fill_facts=(_fill_fact(fill,fill.entry_action_id),))
         if _crossed(state,fill.price,state.original_stop):
             state=_copy(state,emergency_reason='FILL_ALREADY_BEYOND_INITIAL_STOP')
-        reasons=[];state=_drive(state,seed,policy,fill.received_at,reasons)
+        reasons=[];state=_refresh_coverage(_drive(state,seed,policy,fill.received_at,reasons))
         return ExitResult(state=state,actions=state.actions,reason_codes=tuple(reasons) or ('FIRST_FILL_R_FROZEN',))
 
 
@@ -467,7 +611,11 @@ def apply_event(seed: ExitSeed, policy: ExitPolicy, state: ExitState, event: Eve
                 else:
                     late=any(f.action_id!=state.entry_action_id for f in state.fill_facts)
                     q=state.original_quantity+event.quantity;notional=state.entry_notional+event.price*event.quantity
-                    state=_copy(state,original_quantity=q,remaining_quantity=state.remaining_quantity+event.quantity,
+                    remaining=state.remaining_quantity+event.quantity
+                    cost=state.remaining_entry_cost+event.price*event.quantity
+                    state=_copy(state,original_quantity=q,remaining_quantity=remaining,
+                        remaining_entry_cost=cost,remaining_average_entry=cost/remaining,
+                        position_quantity_version=state.position_quantity_version+1,
                         opened_at=min(state.opened_at,event.occurred_at),
                         actual_average_entry=notional/q,entry_notional=notional,entry_fees=state.entry_fees+event.fee_usdt,
                         realized_net_pnl=state.realized_net_pnl-event.fee_usdt,fill_facts=(*state.fill_facts,fact),
@@ -496,7 +644,7 @@ def apply_event(seed: ExitSeed, policy: ExitPolicy, state: ExitState, event: Eve
             if event.occurred_at>event.received_at or event.occurred_at<state.opened_at:
                 state=_fault(state,'EXIT_FILL_TIME_INCONSISTENT')
             else: state=_apply_fill(state,event)
-        elif isinstance(event,ActionReceipt): state=_receipt(state,event)
+        elif isinstance(event,ActionReceipt): state=_receipt(seed,state,event)
         elif isinstance(event,ProtectionLost):
             action=_action(state,event.action_id)
             if action is None or action.kind not in STOP_KINDS:
@@ -507,18 +655,31 @@ def apply_event(seed: ExitSeed, policy: ExitPolicy, state: ExitState, event: Eve
                     protection_action_id=event.action_id if unknown else None,last_confirmation_event=event.event_id)
                 if unknown: state=_set_action(state,action.model_copy(update={'status':'UNKNOWN'}))
                 else:
-                    state=_receipt(state,ActionReceipt(event_id=event.event_id,position_id=event.position_id,
+                    state=_receipt(seed,state,ActionReceipt(event_id=event.event_id,position_id=event.position_id,
                         received_at=event.received_at,action_id=event.action_id,status='CANCELED',
                         cumulative_filled_quantity=event.cumulative_filled_quantity))
         elif isinstance(event,RecoveryRequired):
             ids=tuple(a.action_id for a in state.actions if a.kind in (*EXIT_KINDS,*STOP_KINDS) and a.status in BUSY)
             state=_copy(state,recovery_pending_action_ids=ids,last_market=None)
             for key in ids:
-                state=_emit(state,'RECONCILE','RESTART_RECONCILE_ORIGINAL_ACTION',target=key)
+                attempts=[a for a in state.actions if a.kind=='RECONCILE' and a.target_action_id==key]
+                if _control_failures(attempts)>=policy.max_control_attempts:
+                    state=_fault(state,'RECONCILE_CONTROL_ATTEMPTS_EXHAUSTED')
+                else:
+                    state=_emit(state,'RECONCILE','RESTART_RECONCILE_ORIGINAL_ACTION',target=key)
+        if isinstance(event,EntrySealed) and state.entry_sealed and not state.faults:
+            state=_resolve_controls(state,state.entry_action_id,'FILLED')
+        if isinstance(event,(ActionReceipt,ExitFill,ProtectionLost)) and not state.faults:
+            action=_action(state,event.action_id)
+            if action is not None and action.kind not in ('CANCEL','RECONCILE'):
+                state=_resolve_controls(state,action.action_id,action.status)
         if isinstance(event,(ActionReceipt,ExitFill,ProtectionLost)) and state.recovery_pending_action_ids:
             action=_action(state,event.action_id)
             if action is not None and action.status in ('ACCEPTED','FILLED','CANCELED','REJECTED') and not state.faults:
                 state=_copy(state,recovery_pending_action_ids=tuple(k for k in state.recovery_pending_action_ids if k!=event.action_id))
-        state=_drive(state,seed,policy,event.received_at,reasons)
+        state=_refresh_coverage(_drive(state,seed,policy,event.received_at,reasons))
+        if state.faults:
+            state=_copy(state,phase='PROTECTION_REQUIRED')
+            reasons.extend(state.faults)
         state=ExitState.model_validate(state.model_dump())
         return ExitResult(state=state,actions=state.actions[start:],reason_codes=tuple(dict.fromkeys(reasons)) or ('CONFIRMED_EVENT_REDUCED',))

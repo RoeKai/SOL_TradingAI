@@ -25,14 +25,17 @@ def inward_tick(price, tick, side):
 
 
 def break_even_price(state: ExitState, policy: ExitPolicy) -> Decimal:
+    basis=state.remaining_average_entry
+    if basis is None:
+        raise ValueError('No remaining position cost for break-even protection')
     if policy.break_even_mode=='entry_price':
-        return state.actual_average_entry
+        return basis
     cost=(state.entry_fees+state.exit_fees)/state.remaining_quantity
     fee=policy.expected_exit_fee_rate
     slip=policy.expected_exit_slippage_bps/10000
     if state.side=='LONG':
-        return (state.actual_average_entry+cost)/((1-slip)*(1-fee))
-    return (state.actual_average_entry-cost)/((1+slip)*(1+fee))
+        return (basis+cost)/((1-slip)*(1-fee))
+    return (basis-cost)/((1+slip)*(1+fee))
 
 
 def _fresh_evidence(state,market,policy,kind):
