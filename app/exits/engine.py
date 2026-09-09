@@ -65,9 +65,12 @@ def _control_failures(attempts):
 
 def _control_once(state,policy,kind,target,reason):
     order=_action(state,target)
-    if kind=='CANCEL' and (order is not None and order.status in ('FILLED','CANCELED','REJECTED')
-                          or target==state.entry_action_id and state.entry_sealed):
-        return state  # A confirmed terminal target never needs another cancel.
+    if kind=='CANCEL' and order is not None and order.lifecycle_terminal:
+        # Terminal orders cannot be canceled again, but may still owe fills.
+        if not order.settlement_complete:
+            return _control_once(state,policy,'RECONCILE',target,'TERMINAL_FILL_DETAILS_REQUIRED')
+        return state
+    if kind=='CANCEL' and target==state.entry_action_id and state.entry_sealed: return state
     attempts=[a for a in state.actions if a.kind==kind and a.target_action_id==target]
     if attempts:
         last=attempts[-1]
@@ -84,9 +87,15 @@ def _control_once(state,policy,kind,target,reason):
     return _emit(state,kind,reason,target=target)
 
 
+def _target_settled(action):
+    return action.status in ('ACCEPTED','FILLED','CANCELED','REJECTED') and action.settlement_complete
+
+
 def _resolve_controls(state,target,status):
     """Only an authoritative TARGET fact resolves control work, not its ACK."""
     if status not in ('ACCEPTED','FILLED','CANCELED','REJECTED'): return state
+    order=_action(state,target)
+    if order is not None and not _target_settled(order): return state
     for action in state.actions:
         if (action.target_action_id==target and action.kind in ('CANCEL','RECONCILE')
             and action.status in (*BUSY,'FILLED') and not action.target_confirmed
@@ -97,7 +106,7 @@ def _resolve_controls(state,target,status):
 
 def _coverage_status(state):
     action=_action(state,state.protection_action_id)
-    if action is None or action.status in ('FILLED','CANCELED','REJECTED'):
+    if action is None or action.lifecycle_terminal:
         return ZERO,None,'MISSING'
     coverage=action.confirmed_coverage
     if action.status in ('UNKNOWN','SETTLING'):
@@ -358,11 +367,13 @@ def _apply_fill(state,event):
     if action.terminal_quantity is not None:
         if filled>action.terminal_quantity:
             state=_fault(state,'LATE_FILL_CONTRADICTS_TERMINAL_TOTAL')
-        elif filled==action.terminal_quantity:
-            status=action.terminal_status
-    elif status=='SETTLING' and filled>=action.acknowledged_quantity:
+        status=action.terminal_status if filled>=action.terminal_quantity else 'SETTLING'
+    elif filled<action.known_filled_quantity:
+        status='SETTLING'
+    elif status=='SETTLING':
         status='ACCEPTED'
-    return _set_action(state,action.model_copy(update={'filled_quantity':filled,'status':status}))
+    return _set_action(state,action.model_copy(update={'filled_quantity':filled,'status':status,
+        'acknowledged_quantity':max(action.known_filled_quantity,filled)}))
 
 
 def _confirmed_coverage(seed,state,action,event):
@@ -391,17 +402,32 @@ def _receipt(seed,state,event):
         # Acknowledging cancellation is NOT confirmation that its target is canceled.
         if action.status in ('FILLED','CANCELED','REJECTED'): return state
         return _set_action(state,action.model_copy(update={'status':event.status}))
+    if action.kind in EXIT_KINDS and event.cumulative_filled_quantity>action.quantity:
+        return _fault(state,'RECEIPT_QUANTITY_EXCEEDS_INTENT')
+    if action.terminal_status is not None:
+        # The lifecycle latch survives SETTLING. Older ACKs (including UNKNOWN)
+        # cannot restore a retired order or transfer the protection identity.
+        if event.status in ('ACCEPTED','UNKNOWN'):
+            if event.cumulative_filled_quantity>action.terminal_quantity:
+                return _fault(state,'NONTERMINAL_RECEIPT_EXCEEDS_TERMINAL_TOTAL')
+        elif (event.status!=action.terminal_status
+              or event.cumulative_filled_quantity!=action.terminal_quantity):
+            return _fault(state,'CONFLICTING_TERMINAL_RECEIPT')
+        return state  # Fill details are processed independently by _apply_fill.
     if event.status=='UNKNOWN':
-        if action.status in ('FILLED','CANCELED','REJECTED'): return state
-        state=_set_action(state,action.model_copy(update={'status':'UNKNOWN'}))
+        if action.lifecycle_terminal: return state
+        state=_set_action(state,action.model_copy(update={'status':'UNKNOWN',
+            'acknowledged_quantity':max(action.known_filled_quantity,event.cumulative_filled_quantity)}))
         return _copy(state,protection_status='UNKNOWN') if action.kind in STOP_KINDS else state
     if event.status!='ACCEPTED' and event.cumulative_filled_quantity<action.filled_quantity:
         return _fault(state,'RECEIPT_BEHIND_CONFIRMED_FILLS')
-    if action.kind in EXIT_KINDS and event.cumulative_filled_quantity>action.quantity:
-        return _fault(state,'RECEIPT_QUANTITY_EXCEEDS_INTENT')
+    if event.status!='ACCEPTED' and event.cumulative_filled_quantity<action.known_filled_quantity:
+        return _fault(state,'TERMINAL_TOTAL_BEHIND_KNOWN_CUMULATIVE')
+    if event.status=='ACCEPTED' and (action.lifecycle_terminal
+                                    or event.cumulative_filled_quantity<action.known_filled_quantity):
+        return state  # Stale snapshot: no state regression or reconciliation release.
+    known=max(action.known_filled_quantity,event.cumulative_filled_quantity)
     if action.kind in STOP_KINDS and event.status=='ACCEPTED':
-        if action.status in ('FILLED','CANCELED','REJECTED'):
-            return state  # Late old acknowledgement cannot resurrect retired protection.
         if (not event.reduce_only_verified or event.stop_price!=action.stop_price
             or action.kind=='MOVE_STOP' and (not event.old_stop_retired or event.retired_stop_cumulative_filled is None)):
             return _fault(state,'STOP_ACK_NOT_AUTHORITATIVE')
@@ -415,36 +441,42 @@ def _receipt(seed,state,event):
             if old is None: return _fault(state,'STOP_REPLACEMENT_IDENTITY_MISMATCH')
             if event.retired_stop_cumulative_filled<old.filled_quantity:
                 return _fault(state,'RETIRED_STOP_TOTAL_BEHIND_FILLS')
+            if event.retired_stop_cumulative_filled<old.known_filled_quantity:
+                return _fault(state,'RETIRED_STOP_TOTAL_BEHIND_KNOWN_CUMULATIVE')
+            if old.terminal_status is not None and (old.terminal_status!='CANCELED'
+                    or old.terminal_quantity!=event.retired_stop_cumulative_filled):
+                return _fault(state,'CONFLICTING_RETIRED_STOP_TERMINAL_RECEIPT')
         state=_set_action(state,action.model_copy(update={
-            'status':'SETTLING' if event.cumulative_filled_quantity>action.filled_quantity else 'ACCEPTED',
-            'acknowledged_quantity':max(action.filled_quantity,event.cumulative_filled_quantity),'stop_confirmed':True,
+            'status':'SETTLING' if known>action.filled_quantity else 'ACCEPTED',
+            'acknowledged_quantity':known,'stop_confirmed':True,
             'confirmed_coverage':coverage}))
         if action.replaces_action_id:
             state=_set_action(state,old.model_copy(update={
                 'status':'SETTLING' if event.retired_stop_cumulative_filled>old.filled_quantity else 'CANCELED',
+                'acknowledged_quantity':max(old.known_filled_quantity,event.retired_stop_cumulative_filled),
                 'terminal_status':'CANCELED','terminal_quantity':event.retired_stop_cumulative_filled}))
         return _copy(state,current_stop=action.stop_price,protection_status='ACTIVE',
                      protection_action_id=action.action_id,last_confirmation_event=event.event_id)
     if event.status=='ACCEPTED':
-        if action.status in ('FILLED','CANCELED','REJECTED'): return state
         if not event.reduce_only_verified: return _fault(state,'EXIT_REDUCE_ONLY_UNCONFIRMED')
         state=_set_action(state,action.model_copy(update={
-            'status':'SETTLING' if event.cumulative_filled_quantity>action.filled_quantity else 'ACCEPTED',
-            'acknowledged_quantity':max(action.filled_quantity,event.cumulative_filled_quantity)}))
+            'status':'SETTLING' if known>action.filled_quantity else 'ACCEPTED',
+            'acknowledged_quantity':known}))
         return _copy(state,last_confirmation_event=event.event_id)
     if event.status=='FILLED' and action.kind in EXIT_KINDS and event.cumulative_filled_quantity!=action.quantity:
         return _fault(state,'FILLED_STATUS_WITH_PARTIAL_QUANTITY')
-    if action.terminal_status is not None and (event.status!=action.terminal_status or event.cumulative_filled_quantity!=action.terminal_quantity):
-        return _fault(state,'CONFLICTING_TERMINAL_RECEIPT')
     status='SETTLING' if event.cumulative_filled_quantity>action.filled_quantity else event.status
     state=_set_action(state,action.model_copy(update={'status':status,'terminal_status':event.status,
+                                'acknowledged_quantity':known,
                                 'terminal_quantity':event.cumulative_filled_quantity}))
     if action.kind in STOP_KINDS and status in ('REJECTED','CANCELED'):
-        if action.action_id==state.protection_action_id or action.kind=='ARM_STOP':
+        if action.action_id==state.protection_action_id:
             state=_copy(state,protection_status='MISSING',protection_action_id=None)
         elif action.kind=='MOVE_STOP':
             state=_copy(state,protection_status='ACTIVE' if state.protection_action_id else 'MISSING')
-        if action.reason_code=='REPAIR_PROTECTION_COVERAGE':
+        # Failure before confirmation differs from retiring a proven replacement
+        # later during emergency exit. The latter must not strand the remainder.
+        if action.reason_code=='REPAIR_PROTECTION_COVERAGE' and not action.stop_confirmed:
             return _fault(state,'PROTECTION_COVERAGE_REPAIR_FAILED')
         state=_copy(state,emergency_reason=state.emergency_reason or 'PROTECTION_ORDER_FAILED_OR_CANCELED')
     return _copy(state,last_confirmation_event=event.event_id)
@@ -537,6 +569,20 @@ def _validate(seed,policy,state):
     for index,action in enumerate(state.actions,1):
         if action.filled_quantity!=sum((f.quantity for f in exits if f.action_id==action.action_id),ZERO):
             raise ExitContractError('Action cumulative fill does not match actual fills')
+        if (action.terminal_status is None)!=(action.terminal_quantity is None):
+            raise ExitContractError('Terminal lifecycle requires its cumulative quantity')
+        if action.acknowledged_quantity!=action.known_filled_quantity:
+            raise ExitContractError('Known cumulative execution high-water mark regressed')
+        if action.terminal_status is not None:
+            if (action.status not in ('SETTLING',action.terminal_status)
+                or action.filled_quantity<action.terminal_quantity and action.status!='SETTLING'):
+                raise ExitContractError('Terminal lifecycle cannot be restored to a live order')
+            if (action.terminal_quantity<action.known_filled_quantity
+                and 'LATE_FILL_CONTRADICTS_TERMINAL_TOTAL' not in state.faults):
+                raise ExitContractError('Terminal cumulative execution conflicts with known facts')
+        if (action.filled_quantity<action.known_filled_quantity
+            and action.status not in ('SETTLING','UNKNOWN')):
+            raise ExitContractError('Missing fill details cannot be treated as settled')
         if action.confirmed_coverage is not None:
             c=action.confirmed_coverage
             if (action.kind not in STOP_KINDS or not action.stop_confirmed or c.mode!=action.protection_mode
@@ -649,6 +695,13 @@ def apply_event(seed: ExitSeed, policy: ExitPolicy, state: ExitState, event: Eve
             action=_action(state,event.action_id)
             if action is None or action.kind not in STOP_KINDS:
                 state=_fault(state,'UNRECOGNIZED_PROTECTION_LOSS')
+            elif action.lifecycle_terminal:
+                # A delayed loss/UNKNOWN report for a retired stop cannot rebind
+                # the current protection. Validate any final total without reactivation.
+                if event.status!='UNKNOWN' and event.cumulative_filled_quantity is not None:
+                    state=_receipt(seed,state,ActionReceipt(event_id=event.event_id,position_id=event.position_id,
+                        received_at=event.received_at,action_id=event.action_id,status='CANCELED',
+                        cumulative_filled_quantity=event.cumulative_filled_quantity))
             elif event.action_id==state.protection_action_id or action.status in ('INTENT','UNKNOWN','SETTLING'):
                 unknown=event.status=='UNKNOWN' or event.cumulative_filled_quantity is None
                 state=_copy(state,emergency_reason='PROTECTION_LOST',protection_status='UNKNOWN' if unknown else 'MISSING',
@@ -675,7 +728,7 @@ def apply_event(seed: ExitSeed, policy: ExitPolicy, state: ExitState, event: Eve
                 state=_resolve_controls(state,action.action_id,action.status)
         if isinstance(event,(ActionReceipt,ExitFill,ProtectionLost)) and state.recovery_pending_action_ids:
             action=_action(state,event.action_id)
-            if action is not None and action.status in ('ACCEPTED','FILLED','CANCELED','REJECTED') and not state.faults:
+            if action is not None and _target_settled(action) and not state.faults:
                 state=_copy(state,recovery_pending_action_ids=tuple(k for k in state.recovery_pending_action_ids if k!=event.action_id))
         state=_refresh_coverage(_drive(state,seed,policy,event.received_at,reasons))
         if state.faults:

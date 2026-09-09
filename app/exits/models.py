@@ -159,6 +159,13 @@ Event = Annotated[Union[EntryFill, EntrySealed, MarketEvent, ActionReceipt, Exit
 
 
 class ExitAction(Record):
+    """Lifecycle terminality and fill-detail settlement are independent.
+
+    terminal_status/terminal_quantity latch the confirmed final order fact.
+    SETTLING only means details are owed; it never makes a terminal order live.
+    acknowledged_quantity is the persisted high-water mark of known cumulative
+    execution, including confirmed fill facts. Receipts never book inventory.
+    """
     action_id: Digest
     position_id: Text
     sequence: Count
@@ -182,6 +189,19 @@ class ExitAction(Record):
     confirmed_coverage: StopCoverage | None = None
     target_confirmed: StrictBool = False
     execution_authority: Literal['none_until_paper_integration'] = 'none_until_paper_integration'
+
+    @property
+    def lifecycle_terminal(self) -> bool:
+        return self.terminal_status is not None or self.status in ('FILLED', 'CANCELED', 'REJECTED')
+
+    @property
+    def known_filled_quantity(self) -> Decimal:
+        return max(self.acknowledged_quantity, self.filled_quantity, self.terminal_quantity or Decimal(0))
+
+    @property
+    def settlement_complete(self) -> bool:
+        return (self.filled_quantity == self.known_filled_quantity
+                and (self.terminal_quantity is None or self.filled_quantity == self.terminal_quantity))
 
 
 class FillFact(Record):
