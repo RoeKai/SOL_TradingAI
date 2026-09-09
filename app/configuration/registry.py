@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from decimal import Decimal
 import re
 
-from .encoding import flatten
+from .encoding import flatten, validate_mapping_key
 from .models import ConfigurationError, decimal_input
 
 
@@ -135,6 +135,7 @@ def prepare_main(raw):
     def keys(value,prefix=''):
         if not isinstance(value,dict): return
         for k,v in value.items():
+            validate_mapping_key(k)
             path=prefix+'.'+k if prefix else k
             if path not in allowed and not any(x.startswith(path+'.') for x in allowed):
                 raise ConfigurationError('UNKNOWN_FIELD: '+path)
@@ -145,6 +146,7 @@ def prepare_main(raw):
             keys(v,path)
     keys(raw)
     explicit = dict(flatten(raw))
+    supplied_paths = frozenset(explicit)
     # symbols are one semantic collection, not three overridable scalar slots.
     for k in list(explicit):
         if k.startswith('symbols.'): del explicit[k]
@@ -162,7 +164,7 @@ def prepare_main(raw):
         if target in explicit and decimal_input(explicit[target]) != -value:
             raise ConfigurationError('SEMANTIC_ALIAS_CONFLICT: '+alias+' vs '+target)
         if target not in explicit: explicit[target] = -value
-        origins[target] = target+' + '+alias if target in dict(flatten(raw)) else alias
+        origins[target] = target+' + '+alias if target in supplied_paths else alias
     unknown = set(explicit)-set(specs)
     if unknown: raise ConfigurationError('UNKNOWN_FIELD: '+','.join(sorted(unknown)))
     result, provenance = {}, {}

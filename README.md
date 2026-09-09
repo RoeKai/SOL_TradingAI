@@ -221,6 +221,8 @@ npm run build
 
 CLI 只读指定的本模块配置文件（或 `examples/configuration/<case>/` 下对应固定文件名），同时检查本模块 `isolation-policy.json`；无父目录扫描、外部根目录参数、`.env`、配置回退或环境插值。符号链接/硬链接被现有隔离边界拒绝。`--at` 是显式测试时间，不自动读系统时钟。不得把真实记录导出进 Public 仓库；公开例子是代码生成的缺资料合成说明，不含评分、账户或真实结构证据。
 
+配置文件只支持嵌套 YAML：请写 `risk: {max_loss_per_trade: 5}`，不能写字面键 `risk.max_loss_per_trade: 5`。任何层级（包括列表中的映射）的点号键都在 flatten/defaults 前拒绝；即使值相等或没有另一种写法也不接受。内部来源路径可以含点号，字符串值/URL 中的点号不受影响。正式字段别名 `drop_pct`、`btc_max_drop_pct` 仍须写在对应策略的嵌套节中，保留符号转换、冲突检查和来源追踪；YAML anchor/alias 语法继续禁止。解析失败时 `bundle=null`，CLI 返回退出码 2。修复与复验记录见 [Stage 7 R1](STAGE_07_REPORT.md#10-审查修订-r1嵌套键与字面点号键碰撞)。
+
 默认输出摘要：
 
 ```text

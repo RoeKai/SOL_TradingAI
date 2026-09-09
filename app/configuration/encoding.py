@@ -34,6 +34,20 @@ def content_hash(value):
     return text_hash(canonical(value))
 
 
+def validate_mapping_key(key):
+    """Raw keys are individual field names, never encoded semantic paths.
+
+    Dots belong only to internally generated provenance paths. Accepting them
+    here would make nested and literal keys indistinguishable during flattening.
+    Field-name aliases (e.g. drop_pct) remain ordinary nested keys.
+    """
+    if type(key) is not str or not key or key == '<<':
+        raise ConfigurationError('Nonempty string YAML field name required; merge keys are forbidden')
+    if '.' in key:
+        # Do not echo arbitrary user-controlled keys or values in diagnostics.
+        raise ConfigurationError('LITERAL_DOTTED_KEY_FORBIDDEN: use nested YAML mappings, including field-name aliases')
+
+
 class _Loader(yaml.SafeLoader):
     def construct_mapping(self, node, deep=False):
         result = {}
@@ -41,6 +55,7 @@ class _Loader(yaml.SafeLoader):
             key = self.construct_object(key_node, deep=deep)
             if type(key) is not str or key == '<<' or key in result:
                 raise ConfigurationError('Duplicate, merged or non-string YAML key')
+            validate_mapping_key(key)
             result[key] = self.construct_object(value_node, deep=deep)
         return result
 
@@ -90,6 +105,10 @@ def parse_text(text):
 
 def flatten(value, prefix=''):
     if isinstance(value, dict):
+        # Defence for explicit mapping callers that did not use parse_text().
+        # Reject ambiguous segments before exposing leaves to dict(flatten()).
+        for key in value:
+            validate_mapping_key(key)
         for key in sorted(value):
             yield from flatten(value[key], prefix+'.'+key if prefix else key)
     elif isinstance(value, (tuple, list)):

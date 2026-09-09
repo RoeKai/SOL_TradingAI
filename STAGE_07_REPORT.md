@@ -1,5 +1,7 @@
 # STAGE 07 — Configuration Bundle / Cross-Module Contract Validation
 
+**审查状态：第七阶段暂缓验收。第 1–9 节保留原始交付的范围与历史测试记录；本轮修复及最新实测见第 10 节，不将原始提交或历史通过数重复当作修复交付。**
+
 ## 1. 交付范围与基线
 
 - 仓库：`RoeKai/SOL_TradingAI`。
@@ -326,3 +328,113 @@ Python/CLI/类型/构建在操作系统沙箱下禁止全部网络及原跟单�
 上述事项未接入。没有改变任何已验收交易语义来让配置“看起来能用”。本阶段只上传源码、测试、文档、脱敏模板；不上传.env、真实配置/账户、账本、日志或运行快照。
 
 **推送第七阶段独立分支后暂停，等待验收；不进入第八阶段，不合并main，实盘继续硬关闭。**
+
+## 10. 审查修订 R1：嵌套键与字面点号键碰撞
+
+### 10.1 基线、复现与证据范围
+
+- 修复父提交：`3960dda922f7ddc31a53babf1b5f9111f6f7f56e`，分支 `phase-07-config-contracts`。
+- 只追加修复提交，保留全部历史，不 force push，不修改/合并 main，不进入第八阶段。
+- 本轮可访问文件中未找到审查方提到的 `test_stage07_semantic_key_collisions.py`，已请求重新附上。**没有原样运行该附件，也不声称重跑了附件的断言。**
+- 在修改生产实现前，自行建立 `tests/test_config_semantic_collisions.py` 的首批 27 项合成回归：9 种输入各测两种根键顺序，共 18 项 `compile_bundle`；另有 9 项通过实际文件读取、argparse 和编译器的离线 CLI 子进程测试。
+- 在上述原始基线中实际结果：**27 failed，3.24 秒**。18 项编译测试错误返回 `parsing=PASS`；9 项 CLI 错误返回退出码 0 并生成非空 bundle，均与拒绝断言不符。后续修复没有删除或放宽这些断言，也没有修改任何原有测试文件。
+
+最小复现（在正常模板的 risk 节内将原值改成 true，再在根部添加字面点号键）：
+
+```yaml
+risk:
+  max_loss_per_trade: true
+  # 其余必填风险字段保持正常模板值
+risk.max_loss_per_trade: 5
+```
+
+其他复现包含：5 与 4 冲突；非法字符串/0 被 5 遮盖；`live.enabled=true` 被字面键 false 遮盖；杠杆99被5遮盖；策略节内局部点号键；根部点号节；非法旧字段别名被另一种写法遮盖。所有配置均为合成文本，错误接受 `live.enabled` 的测试未构建任何私有客户端或执行订单，不能混同于发生过实盘访问。
+
+### 10.2 根因与修复
+
+旧 `prepare_main.keys()` 使用字符串拼接核对字段路径，没有区分一个原始键段与多个嵌套键段；`flatten()` 再将二者编码为同一个路径。`dict(flatten(raw))` 因而静默保留后一个值，真正的原值在类型/安全约束检查前已经丢失。flatten 还会排序键，所以交换 YAML 的填写顺序并不能消除漏洞。旧别名来源代码第二次构造该字典，也沿用了歧义。
+
+修复选择用户允许的**仅支持嵌套 YAML**方案，不增加新的覆盖语言：
+
+1. `encoding.validate_mapping_key()` 限定原始键为非空、不含点号的字符串，merge 键不允许。`_Loader.construct_mapping()` 在构建原始映射时执行检查，早于 flatten、默认值、政策模型和来源追踪。
+2. 字面点号键统一报 `LITERAL_DOTTED_KEY_FORBIDDEN`；相同值、只写点号键、引号/转义写法、列表中的映射同样拒绝。不会先对碰撞值做归一化或选更严格值，因为这会掩盖非法原始输入。
+3. `prepare_main()` 与 `flatten()` 共享键段验证，为直接提供 mapping 的内部调用补同一防线。后续 `dict(flatten(...))` 不会收到由含点号/空键段造成的歧义路径。
+4. 来源追踪使用一次已校验的 `supplied_paths` 集合，不再重建原始路径字典。正式嵌套别名的符号转换、等值双来源记录和 `SEMANTIC_ALIAS_CONFLICT` 保持不变。
+5. 内部生成的点号来源路径、版本文本、URL/普通字符串值不受限制；本轮限制的是原始字段键，不是所有含点号字符串。
+
+实际入口错误契约不变：`compile_bundle` 返回 `CONFIG_INPUT_INVALID`，source/field_path 标明错误配置角色，suggestion 包含上述明确语法原因，实际值隐去；`parsing=FAIL`、`consistency=NOT_EVALUATED`、`bundle=None`。不返回可用快照，也不触发任何执行行为。
+
+### 10.3 本轮文件清单与行为影响
+
+| 文件 | 本轮变化 |
+| --- | --- |
+| app/configuration/encoding.py | 新增共享原始键段校验；YAML 构建入口及 flatten 调用 |
+| app/configuration/registry.py | 主配置 mapping 入口同规则；复用已校验原始路径集记录别名来源 |
+| tests/test_config_semantic_collisions.py | 新增 94 项回归，含首批 27 项复现及真实离线 CLI 集成 |
+| README.md | 说明嵌套语法、拒绝点号键、别名与 CLI 失败结果 |
+| docs/STAGE_07_PARAMETER_SOURCES.md | 明确表中语义路径并非 YAML 点号写法，保留来源和覆盖规则 |
+| STAGE_07_REPORT.md | 保留历史报告，追加本修订记录与未运行项 |
+
+共 **1 新增、5 修改**；父提交其余 **138 个文件字节不变**。所有既有测试文件/断言、参数模板、导入白名单、TradeSetup、RR、评分、Admission、Exit/R1/R2/R3、Paper/Live 主流程和 Bridge 均不变。
+
+正常模板的 bundle 摘要保持：`88bfb9aff742aa99cefd8c8aa2a96ce1eadd8973ffaca1e6e033bc8d27c5c982`。回归同时核对其 235 项有效参数、来源、各配置内容摘要和 CLI JSON 完全一致。没有改变参数默认值、政策版本或交易业务规则。过去错误接受的点号键配置现在拒绝，这是本次唯一有意的解析行为变化；原始数据须改写为合法嵌套结构后重新校验，不能以旧摘要/版本号绕过 `verify_bundle` 的原文重新编译。
+
+### 10.4 测试设计与实际结果
+
+新增覆盖：冲突及非法原值、两个键顺序、隐藏实盘开关/杠杆、嵌套/根部点号节、非法别名；拒绝发生在默认/标量校验之前；直接 mapping 不能绕过；等值/单独/引号/转义/列表键；四份配置共享解析入口及错误值脱敏；全部 5 个正式别名的独立/等值/冲突语义和精确来源；正常模板原摘要；字符串值/内部来源路径中的点号；空键/非字符串/merge 段。
+
+离线 CLI 集成使用临时的独立源码副本和四份合成配置，保留实际安全文件读取、解析、编译及返回码，不 mock `parse_text`、`compile_bundle` 或 CLI 结果，不修改仓库中的模板。
+
+| 检查 | 本轮实际结果 |
+| --- | --- |
+| 修复前原始基线的首批合成复现 | 27 failed（预期复现漏洞），3.24 秒 |
+| 修复后新增专项回归 | 94 passed，8.23 秒 |
+| Python 全量，保留全部旧回归 | **1642 passed，0 failed，0 skipped；40.10 秒** |
+| Bridge 本机 mock 回归 | **27 passed，0 failed，0 skipped** |
+| Python 静态隔离 | `ISOLATION_SOURCE_PASS: 60 Python files` |
+| 原 `main.py --check` | `config_valid=true, dry_run=true, live_capability=false, network=none` |
+| Bridge 类型检查 | `tsc --noEmit` 通过 |
+| Bridge 构建与独立导入 | 6 个 vendor 快照、82 个输入核对通过；standalone import 通过 |
+| Dashboard JS 语法 | `node --check` 通过 |
+
+合计 **1669 项 Python + Bridge 测试通过**。Python 保留两个既有依赖弃用警告（Starlette/httpx、anyio BlockingPortal），未改依赖以消除警告。补测试时，通用 dumper 对整值 Decimal 生成了已禁止的 `!!float` 标签；测试夹具改用既有契约允许的十进制字符串，未放开生产标签校验或修改通过/拒绝断言。
+
+复验命令（在独立项目目录、现有依赖环境中；不启动交易服务）：
+
+```sh
+python -m pytest -q tests/test_config_semantic_collisions.py
+python -m pytest -q
+python scripts/verify_isolation.py
+python main.py --check
+python -m app.configuration.check --json --parameters
+node --check app/dashboard/assets/dashboard.js
+cd bridge
+node node_modules/typescript/bin/tsc --noEmit
+node --import tsx --test tests/*.test.ts
+node scripts/build.mjs
+```
+
+对上述冲突配置，真实 CLI 集成已验证返回码 **2**，机器结果关键字段为：
+
+```json
+{
+  "bundle": null,
+  "validation": {
+    "config_parsing": "FAIL",
+    "config_consistency": "NOT_EVALUATED",
+    "execution": "NOT_INTEGRATED",
+    "execution_authority": "none",
+    "live_allowed": false
+  }
+}
+```
+
+此处为结果字段摘录；完整输出另含 `CONFIG_INPUT_INVALID` 和 `LITERAL_DOTTED_KEY_FORBIDDEN` 提示，不回显原始配置值。
+
+### 10.5 隔离、未运行项与暂停
+
+本轮实现/测试在独立 Git 副本进行，没有写入原跟单目录或其模块镜像。Python/CLI/类型/构建在 OS 沙箱中禁止所有网络和原系统目录访问；Bridge mock 仅允许本机回环，外网仍被禁止。没有通过账户查询来证明“无订单”。
+
+未运行：当前未提供可访问原件的 `test_stage07_semantic_key_collisions.py`；真实账户、真实行情/订单、部署、Paper/Live 全链路接入。这些不能冒充通过。收到审查附件后仍需原样补跑，当前 94 项自行编写用例不代表已覆盖该附件所有断言。
+
+第 9 节前置清单及 RR/Runner 未建模项仍未解决；本轮没有扩展准入/执行/事务/调度能力。实盘继续硬关闭；只上传脱敏源码、测试和文档。**追加推送后立即暂停，等待第七阶段复验，不进入第八阶段。**
