@@ -477,5 +477,6 @@ def test_new_modules_are_pure_and_not_imported_into_existing_runtime():
             'app/exits/bindings.py','app/exits/models.py',
             # Stage 7 exact offline descriptors/validators, no runtime imports.
             'app/configuration/models.py','app/configuration/inputs.py','app/configuration/contracts.py',
-            'app/configuration/compiler.py','app/configuration/registry.py'}: continue
+            'app/configuration/compiler.py','app/configuration/registry.py',
+            'app/offline_paper/engine.py'}: continue
         assert 'scorecard' not in path.read_text().lower(), str(path.relative_to(root))

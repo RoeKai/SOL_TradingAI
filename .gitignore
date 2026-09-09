@@ -291,3 +291,5 @@ node_modules/
 .npmrc
 .netrc
 .git-credentials
+# Stage 8A state, WAL, generated reviews and run outputs are never source artifacts.
+offline-runs/

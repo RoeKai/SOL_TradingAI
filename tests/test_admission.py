@@ -598,7 +598,9 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
         if path.relative_to(ROOT).as_posix() in {'app/exits/bindings.py','app/exits/models.py',
             # Stage 7 exact offline configuration/validation/CLI, not execution.
             'app/configuration/models.py','app/configuration/inputs.py','app/configuration/compiler.py',
-            'app/configuration/contracts.py','app/configuration/check.py'}: continue
+            'app/configuration/contracts.py','app/configuration/check.py',
+            'app/offline_paper/models.py','app/offline_paper/engine.py','app/offline_paper/risk.py',
+            'app/offline_paper/fixtures.py','app/offline_paper/cli.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

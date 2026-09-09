@@ -1,5 +1,38 @@
 # sol-ai-trading-system · 独立 PAPER 交易 agent
 
+## 当前交付：8A 独立离线 Paper（不运行下方旧实时入口）
+
+`phase-08a-offline-paper` 新增独立模拟 Broker、SQLite 事务账本、事件收件箱、动作出站队列和崩溃恢复。**只使用显式合成报价、成交流及逻辑时钟；没有行情连接、账户连接、Telegram、部署或实盘能力。** 不替换 `main.py`，不读取旧 Paper 账本。
+
+普通新开仓入口实际调用第七阶段校验、原 RR、原 Scorecard、原 Admission，但仍因结构/成本缺项与完整 Runner 政策未建模而 **REJECT**；没有预留或下单，也没有旧 Signal 回退。以下退出演示属于 **B：显式 fixture 已有持仓/开仓腿重放**，不代表 **A：完整新开仓准入链路**已打通。
+
+```sh
+git clone --branch phase-08a-offline-paper --single-branch https://github.com/RoeKai/SOL_TradingAI.git sol-ai-offline
+cd sol-ai-offline
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.lock.txt
+
+# A：普通准入入口，预期明确 REJECT；不会产生订单
+.venv/bin/python -m app.offline_paper.cli init --run admission-demo --compact
+.venv/bin/python -m app.offline_paper.cli run --run admission-demo --scenario admission-rejection --compact
+
+# B：仅显式 fixture 实例允许合成已有持仓/开仓腿，非通过准入的新交易
+.venv/bin/python -m app.offline_paper.cli init --run exit-demo --allow-fixtures --compact
+.venv/bin/python -m app.offline_paper.cli run --run exit-demo --scenario tp-runner --side LONG --compact
+.venv/bin/python -m app.offline_paper.cli resume --run exit-demo --compact
+.venv/bin/python -m app.offline_paper.cli review --run exit-demo
+
+.venv/bin/python -m pytest -q tests/test_offline_paper.py tests/test_offline_recovery.py tests/test_offline_boundaries.py
+```
+
+每个场景使用全新的 `--run`。同名实例不能重新初始化余额。可选场景：`admission-rejection`、`partial-cover`、`partial-cancel`、`tp-runner`、`stop-gap`、`unknown-reconcile`；多空均可用。完整 JSON 不加 `--compact`。状态仅在 `offline-runs/<run>/ledger.sqlite3` 及其 SQLite sidecar，已忽略且不得上传；`resume` 先重放检查点、按原动作 ID 对账，不换 ID 重发。未知数据库/版本/实例及损坏状态拒绝，不删 WAL 或历史解锁。
+
+`review` 从确认成交账本输出 Markdown，明确 fixture 不是策略有效性证据。事务、故障点、限制和下一子阶段前置见 [STAGE_08A_REPORT.md](STAGE_08A_REPORT.md)。完成 8A 后暂停，不自动进入 8B。
+
+## 以下为保留的旧运行路径说明
+
+下面描述的是既有 `main.py` 公共行情 Paper 路径；8A 不启动、不替换、不接入这条路径。历史阶段的“未接入”说明保留其当时范围，新离线组合以本页上方及 8A 报告为准。
+
 已接通 **Binance 公共实时行情 → 指标 → 四策略评分 → 两次风控 → 模拟成交/持仓保护 → 独立账本 → 规则化复盘**。只交易模拟 SOLUSDT，BTCUSDT 作为做多过滤，ETHUSDT 提供辅助行情与完整性检查。所有成交都是模拟，不能据此推断实盘收益。
 
 **默认 `dry_run: true`、`live.enabled: false`，当前生产实盘入口仍硬关闭；即使手动改成实盘也会拒绝启动。** 本模块不启动旧跟单服务、执行桥或旧数据库，不读取旧凭据/账户/订单，不创建交易所验证订单。原系统保持不动。

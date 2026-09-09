@@ -30,7 +30,7 @@ IMPORT_LOCATION_ALLOWLIST = {
     "fastapi": {"app/dashboard/server.py"},
     "starlette": {"app/dashboard/server.py"},
     "uvicorn": {"main.py"},
-    "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py"},
+    "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py", "app/offline_paper/storage.py", "app/offline_paper/cli.py"},
 }
 FORBIDDEN_NAMES = frozenset({
     "__import__", "__builtins__", "__loader__", "__spec__", "eval", "exec", "compile",
