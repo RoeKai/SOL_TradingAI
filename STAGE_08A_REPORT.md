@@ -2,6 +2,8 @@
 
 日期：2026-09-10。范围仅为合成离线 8A，不进入 8B。
 
+> 第 1–9 节保留首次 8A 交付记录；该版本随后因开仓恢复/回执问题暂缓验收。针对审查基线 `31f6fc15706c3654c39fad5fdf5ddbb44f352058` 的 R1 修复及最新实测见第 10 节，不以原测试通过数代替本轮补验。
+
 - 仓库：`RoeKai/SOL_TradingAI`
 - 唯一开发基线：`98107391af8bc9f0a10ff9a7435b22a15cfe6a82`
 - 独立分支：`phase-08a-offline-paper`；完整发布 SHA 以本报告所在提交和交付回执为准。
@@ -258,3 +260,125 @@ node scripts/build.mjs
 8. **接线验收与授权。** 单独验收“普通新开仓→确认成交→退出→恢复”，再讨论实时只读行情；无论下一步结果如何，都不自动开放 Bridge 私有能力、真实账户或实盘。
 
 只提交源码、测试、文档和明确的合成模板。`offline-runs` 数据库/WAL/运行状态、依赖构建产物和日志不上传。推送本分支后立即暂停，等待 8A 验收；不进入 8B、第九阶段或实盘开发。
+
+## 10. 8A R1：开仓侧恢复与回执一致性专项修复
+
+### 10.1 基线、复现材料及边界
+
+- 审查/修复基线：`31f6fc15706c3654c39fad5fdf5ddbb44f352058`。
+- 在原 `phase-08a-offline-paper` 追加提交，父提交保持上述 SHA；不 force push，不修改或合并 main。
+- 本轮没有收到可访问的审查方测试原件。没有反复搜索附件，也没有把审查方的 **6 failed / 8 passed** 当作自己的执行结果。
+- `tests/test_offline_entry_review_regressions.py` 是明确标记的**自行编写**复现与回归，直接使用真实项目依赖、正常配置编译、`Store.create`、`fixture_entry` 和有状态 Broker；配置没有替换成固定测试对象。
+- 修改实现前先运行该文件最初的 10 项：**10 failed，1.54 秒**。8 项复现首次/后续明细漏恢复（多空 × 已入账 0/.2 × 完整/部分成交），2 项复现 CANCELED/0 后 ACCEPTED/.2 未隔离。保留这 10 项的断言与辅助逻辑，后续只追加覆盖。
+
+### 10.2 问题一：恢复遗漏开仓成交
+
+复现：原订单已 ACCEPTED 且回执消费完毕 → Broker 持久化成交，`defer_details=True, defer_receipt=True` → 新进程恢复。原实现按 positions 和 PENDING/INFLIGHT 动作恢复，已 CONFIRMED 的 ENTRY 不再查询；没有首笔账本仓位时尤其会漏掉整条腿。
+
+基线断言实际看到 `ledger=0, Broker=.1/.5`，或 `ledger=.2, Broker=.3/.5`。只有发单请求得到回执，并不能证明订单终结、所有成交归集完毕。
+
+修复：
+
+1. 恢复集合以所有持久化 reservations/原始 ENTRY 意图为基础，同时检查 Broker 开仓订单及成交事实的归属；**已释放/已有 CONFIRMED ACK 的腿也审查**，不依赖是否已有 positions。
+2. 为已接受腿持久化专用 RECONCILE 出站控制，目标始终是原开仓 action/order ID；Broker 只返回其持久化订单状态和成交明细，不重新开仓。
+3. 比对原意图、命令摘要、订单内容、Broker 累计量、Broker 明细集合与确认账本；缺失订单/命令、孤儿成交、数量矛盾不能恢复为 ready。损坏的 INFLIGHT 开仓意图隔离，不覆盖原订单重新执行。
+4. 明细仍走原 EntryFill 适配、原退出 reducer 和同一账本事务；保留唯一 fill_id、成交时间、价格、费用及原 R。首次明细创建仓位并建立保护，随后成交增长重新确认覆盖。
+5. 恢复完成前核对缺失明细、未完成对账及实际确认的保护覆盖。ARM_STOP 意图或 Broker 已接受但保护回执未到，不代表已经 ACTIVE。
+6. 明细投递暂时不可用时持久化待核对原因、动作和 `reconciliation_clear=false`，不释放风险、不伪造成交。投递恢复后再按原 ID 获取；双次恢复/新投递 ID 不重复记仓、扣费。
+
+### 10.3 问题二：开仓终态与累计高水位
+
+复现：原单 CANCELED/0，entry_sealed=true 且 released=true → 迟到 ACCEPTED/.2。原实现只提高高水位，没有把非终态证据同已锁存的终态数量比较；也没有重新占用风险或留下隔离记录。
+
+现在 ENTRY_STATUS、确认开仓明细及启动重核共用开仓证据合并/审查：
+
+- 高水位取已有已知量、明确提供的累计量、已确认明细量的最大值；旧 ACK/较小值不能降低它。
+- 订单终态及其累计数量一旦锁存，不因较晚非终态 ACK 或矛盾终态覆写。高水位超出锁存终态、终态内容矛盾、累计超过请求数量等均记录明确原因。
+- `None` 不等于 0：UNKNOWN/缺累计量留下待查询义务；提供了累计量就保留该量。已知量/实际 Broker 事实未归集前，ACK/0 不能解除等待。
+- 每次确认前同时核对本模拟 Broker 的原订单与事实。不能用错误的终态/0 把一个已经有未通知成交的开仓腿提前封口。
+- 对合法格式但矛盾的回执，**消费并保留原始 inbox 证据，同时持久化隔离和原 ID 对账义务**；不把它做成永远阻挡后续真实明细的毒消息。后到真实明细仍可幂等记账、建立保护；矛盾本身不自动消失。
+- `entry_sealed` 是历史封口记录，不是当前风险已解除的充分条件。存在 `entry_faults` 或归集义务时，`released=false`，风险与未成交保证金/名额继续保守占用；后续 `_save` 不能重新误释放。
+- 高水位/终态从不直接改变仓位、费用或盈亏。相关例子在收到实际 EntryFill 前仍是零仓位/零成交。
+
+### 10.4 新增/修改文件与持久化语义
+
+相对审查基线只涉及以下 5 个文件（新增 2、修改 3）：
+
+| 文件 | 变化 |
+| --- | --- |
+| `app/offline_paper/entries.py` | 新增：开仓证据合并、原意图/订单/成交集合审查；不创建成交 |
+| `app/offline_paper/engine.py` | 修改：原 ID 开仓恢复控制、隔离/风险释放约束、保护就绪检查、开仓对账输出 |
+| `app/offline_paper/risk.py` | 修改：未结算/矛盾开仓风险及名额保留、账本快照重核、新预留诊断字段 |
+| `tests/test_offline_entry_review_regressions.py` | 新增：完整项目路径、多空、乱序、重复恢复、真实子进程/CLI 回归 |
+| `STAGE_08A_REPORT.md` | 修改：保留首次记录并追加本轮复现、根因、结果和限制 |
+
+未改 Broker 撮合/成本实现、Store 数据库身份/事务实现、Exit Policy（含 R1/R2/R3）、RR/评分/Admission、配置解析、Bridge 或旧入口。没有修改任何既有测试文件/断言或扩大静态导入白名单。
+
+新增 reservation 诊断字段：
+
+| 字段 | 含义 |
+| --- | --- |
+| `entry_faults` | 锁存的机器可读开仓矛盾/故障原因；不自动抹掉 |
+| `entry_status_unknown` | 状态/累计量是否仍需原订单权威回执核对 |
+| `entry_reconciliation_required` | 已知量、明细、订单事实或故障尚未结算，风险不能释放 |
+| `entry_pending_reasons` | 当前缺口与故障原因，供 JSON/复验使用 |
+
+原 `entry_high_water`、`entry_terminal`、`entry_terminal_quantity` 继续为必需证据，不缺省成安全值。基线 reservation 没有新诊断字段时从原证据/本库事实重核导出，不重建数据库、改身份、补回余额或改历史检查点。
+
+开仓对账 outbox 标记 `entry_reconciliation=true`，保存 `target_confirmed`；控制 ACK 已消费不等于原订单明细已结算。每个不同证据指纹只创建一次查询，每个显式恢复轮次可追加一次原 ID 查询；矛盾/查询失败保持故障，不在循环中无限重试。重复恢复允许产生新的**查询控制记录**，不产生新的 ENTRY 订单、fill 或费用。
+
+证据更新、去重、风险重新占用、隔离与下一对账意图同属一个 SQLite 事务。`pending_reconciliation` 输出增添 `scope=OPENING_LEG`，与原退出控制分列；没有把新的账户隔离旗标用于停止已有仓位的保护/退出。
+
+### 10.5 实际回归与故障验证
+
+实际运行环境为 Python 3.12.13 项目既有依赖及 Node 24，没有升级依赖。全部测试为离线合成，未访问真实账户或实时行情。
+
+| 本轮实际执行 | 结果 |
+| --- | --- |
+| 修改实现前的 10 项完整路径复现 | **10 failed，1.54 秒**；实际复现两类缺口，不是审查方组件测试计数 |
+| 最终新增专项文件 | **42 passed，10.57 秒** |
+| Python 全量回归 | **1810 passed，0 failed，0 skipped，60.85 秒**；保留 2 个原有依赖弃用警告 |
+| Bridge 本机 mock | **27 passed，0 failed，0 skipped** |
+| Bridge tsc / vendor / build | 通过；6 份 vendor 快照相符，82 输入独立构建和导入通过 |
+| 静态隔离 | **ISOLATION_SOURCE_PASS: 70 Python files**；未新增白名单例外 |
+| 原入口只读检查 | `config_valid=true, dry_run=true, live_capability=false, network=none` |
+| Dashboard JS 语法 / git diff --check | 通过 |
+| 原配置审查测试文件 | 仍为 4770 字节，SHA-256 `757ec0b46741fd22f51c5e181a431bf9196943ce6040ed311c3ce11b9f27c8e3`；18 项已在全量内 |
+
+42 项专项分类：漏通知恢复 8；终态 0 后大 ACK 2；终态/明细/旧 ACK 排列及重复投递 8；矛盾终态后真实迟到明细及保护 4；UNKNOWN 的 None/0/.2 6；明细投递暂不可用 2；真实子进程持久化成交后退出及 CLI 双恢复 4；原订单丢失隔离 2；保护回执未确认不就绪 2；基线旧 reservation 诊断字段兼容 2；命令损坏但原订单存在时禁止重开 2。全部涉及价格/方向的用例覆盖 LONG/SHORT。
+
+所有专项都包含在 1810 项全量中，**不再加一次 42，也不叠加中途 117/144 项复跑**。独立套件合计是 **1810 Python + 27 Bridge = 1837**。中途原数据库失败测试发现就绪检查遮住 `STORE_FAILED`；已恢复该错误优先级，原断言未改，最终全量通过。
+
+可复制命令（从项目根目录，使用项目依赖环境）：
+
+```sh
+python -m pytest -q tests/test_offline_entry_review_regressions.py
+python -m pytest -q
+python scripts/verify_isolation.py
+python main.py --check
+node --check app/dashboard/assets/dashboard.js
+cd bridge
+node node_modules/typescript/bin/tsc --noEmit
+node --import tsx --test tests/*.test.ts
+node scripts/vendor.mjs --verify
+node scripts/build.mjs
+```
+
+实际执行时 Python、CLI、静态检查、类型和构建外包 OS 沙箱，禁止全部网络及原跟单目录读写；Bridge mock 沙箱仅允许 localhost 回环，不允许外网。CLI 恢复测试正常使用 `python -m app.offline_paper.cli resume --workspace <临时合成项目> --run test-run`，没有用配置桩替代完整环境。
+
+关键断言：
+
+- 漏首笔或漏后续成交：恢复后 Broker/账本数量相同，仅一张原 ENTRY；真实费用和现金守恒；保护覆盖等于实际剩余数量。恢复两次不重复订单、成交、费用。
+- 回执矛盾：终态仍是原 CANCELED/0，高水位保留 .2；无明细时仍零持仓，风险重新占用 5 USDT；账户隔离且原 ID 对账可见。
+- 有效迟到明细：已确认事实进入原退出模型并建立 .2 的保护，累计错误不凭空消失；账户仍不允许新增交易，不能用正常保护掩盖账务证据矛盾。
+- 查询/明细不可用：连续两次恢复仍 not-ready、保留风险/待对账动作；恢复投递后归集一次，不复制 ENTRY。
+- `os._exit(91)` 在 Broker 成交已提交但两类通知都未发出之后终止子进程；新 CLI 进程恢复，再启动第二次 CLI，订单、成交、现金保持幂等。
+
+### 10.6 剩余限制与暂停
+
+- 普通新开仓仍固定返回既有 Runner/证据契约拒绝，未增加任何普通入场权限。新用例全部是 B 类显式 fixture/恢复检查，不能冒称 A 类普通准入全链路已通。
+- 无法调和的终态/原订单矛盾仍须隔离、按原 ID 留待核查；本轮不提供人工解锁、自动重写终态或受损历史检查点迁移。已封口检查点若与后来事实不可重放一致，仍保留原始 Broker 事实/待消费事件并拒绝恢复，不篡改原 ExitState/历史 R 来放行。
+- 对账投递不可用或保护确认缺失时可以保持不就绪，不能承诺无数据仍完成恢复。正常/异常恢复均不自行释放仍可能占用的风险。
+- 未模拟硬盘断电、跨主机服务/网络分区或真实交易所；真实子进程退出与 SQLite 错误注入不冒充这些能力验证。
+- 无实时行情、测试网、真实账户、真实订单、Telegram 或部署；原 Paper/Live 路径没有接入或修改。只上传上述代码、测试和说明，不上传数据库、WAL、日志、配置实例、密钥或运行状态。
+- 发布后暂停等待本轮复验，不进入 8B。

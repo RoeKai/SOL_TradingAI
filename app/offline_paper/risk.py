@@ -4,6 +4,7 @@ from decimal import Decimal as D
 from app.admission.models import PaperRiskSnapshot, ExchangeConstraints
 from .storage import get, put, rows
 from .models import OfflineError, amount
+from .entries import audit_entry
 
 
 def snapshot(store,db):
@@ -29,7 +30,7 @@ def snapshot(store,db):
     for key,r in rows(db,'reservations'):
         if not r['released']:
             reserved+=D(r['risk'])
-            if not r['entry_sealed']:
+            if not r['entry_sealed'] or r.get('entry_reconciliation_required') or r.get('entry_faults'):
                 filled=sum((D(f['quantity']) for _,f in rows(db,'fills') if f['position_id']==key and f['kind']=='ENTRY_FILL'),D(0))
                 fraction=max(D(0),1-filled/D(r['quantity']))
                 pending_margin+=(D(r['margin'])+D(r['fee_reserve']))*fraction
@@ -47,7 +48,8 @@ def snapshot(store,db):
         unrealized_loss_usdt=None if missing else float_loss,reserved_risk_usdt=reserved,
         trades_today=len(trades),consecutive_losses=consecutive,positions=tuple(positions),pending_entries=tuple(pending),
         paused=a['paused'],reconciliation_clear=a['reconciliation_clear'] and not a['quarantined'] and
-            not any(not event['consumed'] for _,event in rows(db,'broker_events')),
+            not any(not event['consumed'] for _,event in rows(db,'broker_events')) and
+            not any(any(audit_entry(db,pid,r)) for pid,r in rows(db,'reservations')),
         margin_mode='ISOLATED',configured_leverage=settings.leverage,auto_add_margin_enabled=False,
         martingale_enabled=False,limits=settings.limits)
 
@@ -93,6 +95,8 @@ def reserve_fixture(store,db,fixture,policy,plan,rules,entry_costs):
     return dict(origin=fixture.origin,side=fixture.side,quantity=str(fixture.quantity),risk=str(risk),margin=str(margin),
         fee_reserve=str(fee),reference_price=str(fixture.reference_price),expires_at=fixture.expires_at,
         bundle_digest=fixture.bundle_digest,account_revision=a['version'],released=False,entry_sealed=False,
-        entry_high_water='0',entry_terminal=None,entry_terminal_quantity=None,plan=plan.model_dump(mode='json'),
+        entry_high_water='0',entry_terminal=None,entry_terminal_quantity=None,
+        entry_status_unknown=False,entry_faults=[],entry_reconciliation_required=False,entry_pending_reasons=[],
+        plan=plan.model_dump(mode='json'),
         entry_costs=entry_costs,
         exit_policy=policy.model_dump(mode='json'),rules=rules.model_dump(mode='json'))

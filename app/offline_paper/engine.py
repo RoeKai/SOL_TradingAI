@@ -18,11 +18,77 @@ from .broker import Broker, synthetic_rules
 from .models import OfflineError, FixtureEntry, Quote
 from .storage import get, put, rows, digest
 from .risk import snapshot, exchange_snapshot, reserve_fixture
+from .entries import detail_quantity, merge_evidence, audit_entry
 
 
 class OfflinePaper:
     def __init__(self,store):
-        self.store=store;self.broker=Broker(store);self.ready=False
+        self.store=store;self.broker=Broker(store);self.ready=False;self._recovered=False
+
+    def _entry_query(self,db,pid,r,token):
+        """One durable control per evidence fingerprint/recovery epoch, original ID.
+
+        Control ACCEPTED is not target settlement. Failed/contradictory queries
+        stay visible; a new startup may query again, never create another ENTRY.
+        """
+        key=digest({'entry-reconcile':r['entry_action_id'],'token':token})
+        if get(db,'outbox',key) is None:
+            put(db,'outbox',key,dict(origin=r['origin'],status='PENDING',attempts=0,
+                entry_reconciliation=True,target_confirmed=False,
+                action=dict(action_id=key,kind='RECONCILE',position_id=pid,target_action_id=r['entry_action_id'])))
+        return key
+
+    def _update_entry(self,db,pid,*,status=None,cumulative=None):
+        r=get(db,'reservations',pid)
+        if r is None: raise OfflineError('Opening evidence has no reservation')
+        r=merge_evidence(r,detail_quantity(db,pid),status=status,cumulative=cumulative)
+        pending,faults=audit_entry(db,pid,r)
+        r['entry_faults']=faults
+        r['entry_reconciliation_required']=bool(pending or faults)
+        r['entry_pending_reasons']=list(dict.fromkeys([*pending,*faults]))
+        if r['entry_reconciliation_required']:
+            r['released']=False
+            a=get(db,'account','account');a['reconciliation_clear']=False
+            self.ready=False
+            if faults:
+                a['quarantined']=True
+                opening_intent=get(db,'outbox',r['entry_action_id'])
+                if opening_intent is not None and opening_intent['status'] in ('PENDING','INFLIGHT'):
+                    opening_intent['status']='QUARANTINED';put(db,'outbox',r['entry_action_id'],opening_intent)
+                for reason in faults:
+                    key=digest({'entry':r['entry_action_id'],'reason':reason})
+                    if get(db,'quarantine',key) is None:
+                        put(db,'quarantine',key,dict(reason=reason,position_id=pid,
+                            entry_action_id=r['entry_action_id'],at=a['now']))
+            put(db,'account','account',a)
+            token=digest({'high':r['entry_high_water'],'terminal':r['entry_terminal'],
+                'terminal_quantity':r['entry_terminal_quantity'],'unknown':r['entry_status_unknown'],
+                'faults':faults})
+            self._entry_query(db,pid,r,token)
+        put(db,'reservations',pid,r)
+        # A successful control ACK alone cannot resolve missing details or faults.
+        for key,item in rows(db,'outbox'):
+            if (item.get('entry_reconciliation') and item['action']['position_id']==pid):
+                item['target_confirmed']=not r['entry_reconciliation_required'] and item['status']=='CONFIRMED'
+                put(db,'outbox',key,item)
+        return r
+
+    def _refresh_ready(self,db):
+        a=get(db,'account','account')
+        clear=not a['quarantined'] and all(not p['checkpoint']['state']['faults'] and
+            not p['checkpoint']['state']['recovery_pending_action_ids'] for _,p in rows(db,'positions'))
+        for _,p in rows(db,'positions'):
+            state=p['checkpoint']['state']
+            if D(state['remaining_quantity'])>0 and (state['protection_status']!='ACTIVE' or
+                D(state['protection_covered_quantity'])<D(state['remaining_quantity'])):
+                clear=False  # An emitted/accepted command is not confirmed coverage.
+        for pid,r in rows(db,'reservations'):
+            pending,faults=audit_entry(db,pid,r)
+            clear=clear and not pending and not faults
+        clear=clear and not any(not e['consumed'] for _,e in rows(db,'broker_events'))
+        clear=clear and not any(o.get('entry_reconciliation') and not o['target_confirmed'] for _,o in rows(db,'outbox'))
+        a['reconciliation_clear']=bool(clear);put(db,'account','account',a)
+        self.ready=bool(clear)
 
     def _crash(self,point,fault):
         if point==fault:
@@ -35,7 +101,8 @@ class OfflinePaper:
         state=cp.state;pid=state.position_id
         r=get(db,'reservations',pid)
         if state.entry_sealed: r['entry_sealed']=True
-        r['released']=state.entry_sealed and state.remaining_quantity==0 and not state.faults
+        r['released']=(state.entry_sealed and state.remaining_quantity==0 and not state.faults and
+                       not r.get('entry_faults') and not r.get('entry_reconciliation_required'))
         if r['released'] and position.get('closed_at') is None:
             position['closed_at']=get(db,'account','account')['now']
         if state.remaining_quantity: position['closed_at']=None
@@ -85,7 +152,7 @@ class OfflinePaper:
         # Confirmed adverse fills are kept. Cancel unfinished entry if its actual
         # stop risk exceeds the frozen reservation; never roll back a real fact.
         if isinstance(event,EntryFill):
-            r=get(db,'reservations',pid)
+            r=self._update_entry(db,pid)
             exit_notional=state.remaining_quantity*state.original_stop
             stop_risk=abs(state.remaining_entry_cost-exit_notional)+state.entry_fees+exit_notional*(
                 cp.policy.expected_exit_fee_rate+cp.policy.expected_exit_slippage_bps/10000)
@@ -100,7 +167,9 @@ class OfflinePaper:
     def _seal(self,db,pid):
         r=get(db,'reservations',pid);p=get(db,'positions',pid)
         if not r or r['entry_sealed'] or r['entry_terminal'] is None: return
-        details=sum((D(f['quantity']) for _,f in rows(db,'fills') if f['position_id']==pid and f['kind']=='ENTRY_FILL'),D(0))
+        pending,faults=audit_entry(db,pid,r)
+        if pending or faults: return
+        details=detail_quantity(db,pid)
         if details!=D(r['entry_high_water']) or details!=D(r['entry_terminal_quantity']): return
         if details==0:
             r['entry_sealed']=True;r['released']=True;put(db,'reservations',pid,r);return
@@ -129,14 +198,10 @@ class OfflinePaper:
                     return 'DUPLICATE'
                 account=get(db,'account','account');pid=body['position_id']
                 if body['kind']=='ENTRY_STATUS':
-                    r=get(db,'reservations',pid);quantity=D(body['cumulative_filled_quantity'])
-                    known=max(D(r['entry_high_water']),quantity)
-                    if body['status'] in ('FILLED','CANCELED','REJECTED'):
-                        if quantity<D(r['entry_high_water']) or (r['entry_terminal'] is not None and
-                            (body['status']!=r['entry_terminal'] or quantity!=D(r['entry_terminal_quantity']))):
-                            raise OfflineError('ENTRY_TERMINAL_CUMULATIVE_CONTRADICTION')
-                        r['entry_terminal']=body['status'];r['entry_terminal_quantity']=str(quantity)
-                    r['entry_high_water']=str(known);put(db,'reservations',pid,r)
+                    r=get(db,'reservations',pid)
+                    if r is None or body['action_id']!=r['entry_action_id']:
+                        raise OfflineError('Opening receipt order/position binding mismatch')
+                    self._update_entry(db,pid,status=body['status'],cumulative=body['cumulative_filled_quantity'])
                 else:
                     # Adapter owns receive time. Historical execution time is retained.
                     body.update(event_id=delivery_id,received_at=account['now'])
@@ -145,9 +210,14 @@ class OfflinePaper:
                     position=get(db,'positions',pid)
                     reducer_ids=set() if position is None else {a['action_id'] for a in position['checkpoint']['state']['actions']}
                     synthetic_control=(body['kind']=='RECEIPT' and target_action is not None and
-                        body['action_id'] not in reducer_ids and target_action['action']['kind']=='CANCEL' and
+                        body['action_id'] not in reducer_ids and target_action['action']['kind'] in ('CANCEL','RECONCILE') and
                         target_action['action']['target_action_id']==get(db,'reservations',pid)['entry_action_id'])
                     if not synthetic_control: self._event(db,EVENTS.validate_python(body))
+                    elif target_action.get('entry_reconciliation') and body['status']!='ACCEPTED':
+                        r=get(db,'reservations',pid)
+                        r['entry_faults']=list(dict.fromkeys([*r.get('entry_faults',()),'ENTRY_RECONCILE_CONTROL_FAILED']))
+                        put(db,'reservations',pid,r)
+                        self._update_entry(db,pid)
                 self._seal(db,pid)
                 put(db,'inbox',delivery_id,{'digest':digest(record['payload']),'kind':record['payload']['kind']})
                 record['consumed']=True;put(db,'broker_events',delivery_id,record)
@@ -155,6 +225,7 @@ class OfflinePaper:
                 item=get(db,'outbox',action_id) if action_id else None
                 if item is not None:
                     item['status']='CONFIRMED';put(db,'outbox',action_id,item)
+                    if item.get('entry_reconciliation'): self._update_entry(db,pid)
                 self._cash(db)
             self._crash('after_receipt_commit',fault)
             return 'CONSUMED'
@@ -168,7 +239,10 @@ class OfflinePaper:
                 action=next(((key,item) for key,item in rows(db,'outbox') if item['status'] in ('PENDING','INFLIGHT')),None)
             if pending is not None:
                 self.deliver(pending,fault=fault);continue
-            if action is None: return
+            if action is None:
+                if self._recovered:
+                    with self.store.transaction() as db: self._refresh_ready(db)
+                return
             key,item=action
             with self.store.transaction() as db:
                 current=get(db,'outbox',key);current['status']='INFLIGHT';current['attempts']+=1;put(db,'outbox',key,current)
@@ -184,6 +258,7 @@ class OfflinePaper:
         raise OfflineError('Bounded pump exhausted; inspect pending reconciliation')
 
     def fixture_entry(self,fixture,*,fault=None):
+        if self.store.failed: raise OfflineError('STORE_FAILED_REOPEN_AND_RECOVER_REQUIRED')
         if not self.ready: raise OfflineError('Startup recovery required')
         if type(fixture) is not FixtureEntry: raise OfflineError('Explicit typed fixture required')
         with self.store.transaction() as db:
@@ -218,6 +293,7 @@ class OfflinePaper:
         Descriptive calculations/admission are retained as rejection diagnostics,
         never as permission overriding the earlier configuration/plan check.
         """
+        if self.store.failed: raise OfflineError('STORE_FAILED_REOPEN_AND_RECOVER_REQUIRED')
         if not self.ready: raise OfflineError('Startup recovery required')
         if type(setup) is not TradeSetup or type(request) is not AdmissionRequest:
             raise OfflineError('No Signal/dict fallback or external account snapshot')
@@ -276,7 +352,7 @@ class OfflinePaper:
             put(db,'inbox',key,{'digest':digest(quote),'kind':'MARKET'});self._cash(db)
 
     def recover(self):
-        self.ready=False
+        self.ready=False;self._recovered=False
         try:
             with self.store.transaction() as db:
                 a=get(db,'account','account');self.store.bundle(db)
@@ -310,18 +386,33 @@ class OfflinePaper:
                         raise OfflineError('Executed command lacks matching durable intent')
                 if D(a['cash'])!=expected: raise OfflineError('Cash/checkpoint conservation mismatch')
                 a['recovery_count']+=1;a['reconciliation_clear']=False;put(db,'account','account',a)
+                # ENTRY outbox CONFIRMED is only a receipt delivery. Even with no
+                # position, query every accepted original opening leg and replay
+                # its durable facts. Released legs are audited too, never skipped.
+                reservations=dict(rows(db,'reservations'))
+                for key,o in rows(db,'broker_orders'):
+                    if o['action']['kind']=='ENTRY' and (o['action']['position_id'] not in reservations or
+                        reservations[o['action']['position_id']]['entry_action_id']!=key):
+                        raise OfflineError('Orphan Broker entry order; recovery cannot claim ready')
+                for _,f in rows(db,'broker_fills'):
+                    if f['kind']=='ENTRY_FILL' and (f['position_id'] not in reservations or
+                        reservations[f['position_id']]['entry_action_id']!=f['action_id']):
+                        raise OfflineError('Orphan Broker entry fill; recovery cannot claim ready')
+                for pid,r in reservations.items():
+                    item=get(db,'outbox',r['entry_action_id'])
+                    pending,faults=audit_entry(db,pid,r)
+                    if (faults or get(db,'broker_commands',r['entry_action_id']) is not None or item is None or
+                        item['status'] not in ('PENDING','INFLIGHT')):
+                        self._entry_query(db,pid,r,'recovery:'+str(a['recovery_count']))
+                        self._update_entry(db,pid)
                 for pid,p in rows(db,'positions'):
                     self._event(db,RecoveryRequired(event_id='recovery:'+str(a['recovery_count'])+':'+pid,
                         position_id=pid,received_at=a['now']))
                 self._cash(db)
             self.pump()
             with self.store.transaction() as db:
-                a=get(db,'account','account')
-                clear=not a['quarantined'] and all(not p['checkpoint']['state']['faults'] and
-                    not p['checkpoint']['state']['recovery_pending_action_ids'] for _,p in rows(db,'positions'))
-                clear=clear and not any(not e['consumed'] for _,e in rows(db,'broker_events'))
-                a['reconciliation_clear']=clear;put(db,'account','account',a)
-                self.ready=clear
+                self._refresh_ready(db)
+            self._recovered=True
         except (ValueError,ArithmeticError,KeyError,TypeError) as error:
             self.store.quarantine('RECOVERY_FAILED: '+str(error));raise
         return self.summary()
@@ -336,5 +427,7 @@ class OfflinePaper:
                 fees_usdt=str(sum((D(f['fee_usdt']) for _,f in rows(db,'fills')),D(0))),
                 pending_actions=[k for k,o in rows(db,'outbox') if o['status']!='CONFIRMED'],
                 pending_reconciliation=[action for s in positions.values() for action in s['actions']
-                    if action['kind']=='RECONCILE' and not action['target_confirmed']],
+                    if action['kind']=='RECONCILE' and not action['target_confirmed']]+[
+                    dict(item['action'],target_confirmed=False,scope='OPENING_LEG',status=item['status'])
+                    for _,item in rows(db,'outbox') if item.get('entry_reconciliation') and not item['target_confirmed']],
                 requests={k:r for k,r in rows(db,'requests')},reservations={k:r for k,r in rows(db,'reservations')})
