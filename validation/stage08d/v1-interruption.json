@@ -1,0 +1,14 @@
+{
+  "scope": "READ_ONLY_ATTRIBUTION_FAILURE_RECORD_NOT_COMPLETED_VALIDATION",
+  "code_commit": "3fa243db8661785d0e232f4ad8c35a7346eae6f4",
+  "run_manifest": "baseline-manifest.json",
+  "last_reported_candidates": 2000,
+  "last_reported_at_ms": 1785817530000,
+  "exit_code": 2,
+  "error": "EXECUTION_QUOTE_STALE_OR_FUTURE",
+  "completed_full_attribution": false,
+  "exact_failing_candidate_index_known": false,
+  "orders_created": 0,
+  "source_database_modified": false,
+  "follow_up": "Preserve original result; classify stale descriptors as non-authorizing past data; new gate still REJECTS. New code and manifests required."
+}

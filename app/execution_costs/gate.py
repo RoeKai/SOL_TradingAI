@@ -99,6 +99,9 @@ def _quantify(candidate,bundle,model,settings,account,venue,request,pc,qp,*,now,
         reasons.append('PLAN_STRATEGY_SCOPE_UNSUPPORTED')
     if s.entry.order_type!=main['execution']['entry_order_type']: reasons.append('PLAN_ENTRY_METHOD_CONFLICT')
     if pc.original_setup_digest!=fingerprint(s) or pc.model_digest!=digest(model): reasons.append('PRICE_MODEL_BINDING_MISMATCH')
+    if not old_prices:
+        reasons.extend(check_quote(pc,dict(at=pc.quote_at,bid=str(pc.market_trade_price*(1-model.spread_bps/20000)),
+            ask=str(pc.market_trade_price*(1+model.spread_bps/20000)),event_id=pc.source_event_id),now=now,expires_at=s.valid_until))
     rr_reasons=[]
     limits=_check_account(account,venue,request,s,policy,now,rr_reasons)
     _check_structure(s,request,policy,now,rr_reasons)

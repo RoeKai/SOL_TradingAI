@@ -24,7 +24,7 @@ from app.historical_replay.provider import describe
 from app.historical_replay.replay import quote_from
 from .evidence import VERIFIER
 from .funding import exchange_snapshot,RISK_SOURCE
-from .prices import prices
+from .prices import describe_prices
 from .models import QuantificationPolicy
 from .gate import quantify
 
@@ -54,7 +54,8 @@ def compact(result):
 def compare(candidate,bundle,model,settings,qp):
     now=candidate.setup.created_at;account=readonly_account(settings,now);v=exchange_snapshot(now)
     req=request_for(candidate,settings);s=candidate.setup
-    raw=candidate.evidence['window'][-1]['last']['SOLUSDT'];pc=prices(candidate,model,quote_from(raw,model),v.price_tick,now=now)
+    raw=candidate.evidence['window'][-1]['last']['SOLUSDT']
+    pc=describe_prices(candidate,model,quote_from(raw,model),v.price_tick,now=now)
     probe=(max(v.min_quantity,v.min_notional_usdt/D(str(s.entry.reference_price)))/v.quantity_step).to_integral_value(rounding=ROUND_CEILING)*v.quantity_step
     rr=calculate_rr(s,quantity=number(probe));card=score_trade_setup(s,rr,evaluated_at=now,max_data_age_seconds=float(bundle.manifest.score_context_max_age_seconds))
     decision=admit_trade(s,rr,card,account=account,exchange=v,request=req,policy=policy_from(bundle,'admission'),evaluated_at=now)
@@ -65,7 +66,12 @@ def compare(candidate,bundle,model,settings,qp):
         diagnostic_quantity=str(probe),diagnostic_net_rr=str(rr.reference.net_rr),search_status='LEGACY_DIAGNOSTIC_PATH',
         legacy_validation=legacy.model_dump(mode='json'))}
     for name,old_prices,old_fixed in (('B',False,True),('C',True,False),('D',False,False)):
-        res=quantify(candidate,bundle,model,settings,account,v,req,pc,qp,now=now,old_prices=old_prices,old_fixed=old_fixed)
+        try:
+            res=quantify(candidate,bundle,model,settings,account,v,req,pc,qp,now=now,old_prices=old_prices,old_fixed=old_fixed)
+        except HistoricalError as error:
+            # A declared unsupported mapping is an explicit diagnostic result,
+            # never PASS. Unexpected programming exceptions still propagate.
+            res=dict(result='UNSUPPORTED',reason_codes=[str(error)],search_status='UNSUPPORTED_INPUT_MAPPING',quantity='0')
         results[name]=compact(res)
         if res.get('lineage'):
             results[name]['evaluated_funding_usdt']=res['lineage']['materialization']['funding_budget_usdt']

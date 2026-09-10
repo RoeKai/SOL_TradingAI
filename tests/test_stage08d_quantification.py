@@ -162,3 +162,21 @@ def test_new_runtime_identity_and_live_fence(tmp_path,field,value):
     with p.store.transaction() as db:settings=p.store.settings(db)
     raw=settings.model_dump();raw[field]=value
     with pytest.raises(ValueError):type(settings).model_validate(raw)
+
+
+@pytest.mark.parametrize('side',['LONG','SHORT'])
+def test_readonly_attribution_records_stale_quote_rejection_without_aborting(tmp_path,side):
+    p,r,args,now=inputs(tmp_path,side);c,b,m,settings,*_=args
+    obj=c.model_dump(mode='json');raw=obj['evidence']['window'][-1]['last']['SOLUSDT']
+    raw['event_time_ms']=int((now-6)*1000);raw['available_at_ms']=raw['event_time_ms']+250
+    obj['setup']['market_state']['observed_at']=now-6
+    stale=HistoricalCandidate.model_validate(obj)
+    with pytest.raises(ValueError,match='STALE_OR_FUTURE'):
+        from app.historical_replay.replay import quote_from
+        prices(stale,m,quote_from(raw,m),D('.01'),now=now)
+    out=compare(stale,b,m,settings,QuantificationPolicy())
+    for group in ('B','D'):
+        assert out['groups'][group]['result']=='REJECT'
+        assert 'EXECUTION_QUOTE_STALE_OR_FUTURE' in out['groups'][group]['reason_codes']
+    # Old price semantics remain old in C; this is not an 8D permission.
+    assert 'EXECUTABLE_QUOTE_OUTSIDE_PLAN' in out['groups']['C']['reason_codes']

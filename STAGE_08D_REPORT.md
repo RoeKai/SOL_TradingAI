@@ -132,6 +132,8 @@ domain/试算轨迹、risk_ceiling、精确q/leverage/margin/fee_reserve、
 `cli.py`、`attribution.py`。
 新增测试 `tests/test_stage08d_contracts.py`、`test_stage08d_quantification.py`、
 `test_stage08d_execution.py`、`test_stage08d_boundaries.py`、`test_stage08d_cli.py`。
+另新增 `scripts/attribute_8d_parallel.py` 及
+`tests/test_stage08d_attribution_driver.py`，仅用于有界只读验证。
 新增本报告、`docs/STAGE_08D_CONTRACT.md`；实验脱敏汇总在`validation/stage08d/`。
 修改README、.gitignore、`app/admission/engine.py`（默认兼容提取），
 `scripts/verify_isolation.py`以及五处精确静态导入白名单测试
@@ -182,3 +184,48 @@ Pbudget不是无限未来价格保证；参数不是已核实的真实历史交�
 实际历史是否成交必须看独立连续实验结果，不看纯计算通过数。
 
 本轮结束后暂停，不部署、不进入下一阶段。
+
+## 10. 首轮代码冻结与真实验证发现
+
+首轮代码：`3fa243db8661785d0e232f4ad8c35a7346eae6f4`，app/config内容摘要
+`5d698a043124a831854376e094ea74fa00dceafdb625fccbbf62d3ad6032cd3e`。
+
+* 全量实际执行：**2183 passed，2 warnings，213.81s**。
+  其中新增105项；不能再把专项106（含1项旧隔离测试）叠加到总数。
+* Bridge mock：**27 passed，0 failed，863.233291ms**；类型检查和构建/import退出0。
+  隔离检查116个Python源文件通过。
+* 首小时：41,901条，15候选，0订单／成交，现金500，1.517545s。
+  两次新进程恢复0.054783s、0.034875s，输入摘要、数量、费用和现金不变。
+* 首小时A/B/C/D均15 REJECT。A/C有15个旧单点价冲突；B/D无此冲突，
+  但15个在数量一致的线性净RR上有整域不达标证明。
+* 首轮全月归因在已报告2000个候选后遇到
+  `EXECUTION_QUOTE_STALE_OR_FUTURE`退出2，没有生成完整归因结果，
+  精确失败序号未记录；仅保留可证实的最后进度，不伪造完成数。
+  `validation/stage08d/v1-interruption.json`保留此事实。
+
+新增多空复现先执行 **2 failed，24 deselected**，根因是只读比较在
+生成价格描述时调用了可执行新鲜度入口，导致合法历史拒绝样本中断批处理。
+修复把“已可见历史价格描述”和“可用于新审批的价格”分开：
+`describe_prices`可描述过期但已可见的快照，不能引用未来；
+`prices`和新准入仍拒绝过期。B/D先作数量无关时效拒绝，C仍保留
+旧价格检查。未知映射明确UNSUPPORTED，不过滤成PASS；程序错误仍抛出。
+原断言保留，专项复验 **2 passed，24 deselected，0.74s**。
+
+为控制整月只读归因资源，增加独立验证脚本
+`scripts/attribute_8d_parallel.py`：最多4个进程，每批128个相同候选，
+每个仍调用原 `compare`，主进程按原顺序归集。Worker无数据库、
+Broker或可变账户输入。不是新准入算法；工作进程数量不改变样本。
+新增 `tests/test_stage08d_attribution_driver.py`验证串／并行结果等价。
+所有新实验使用v2名称重新冻结；v1首小时／中断记录不得改标。
+
+串／并行驱动实际测试：**2 passed，7.47s**（1／2个worker）；
+8D专项在加入该驱动前：**107 passed，41.03s**。
+以上均为专项，不叠加到随后全量回归。
+再次隔离检查116文件通过；Bridge mock **27 passed，0 failed，652.07625ms**，
+类型检查、构建／独立import均退出0。测试中的交易回执为mock，非联网下单。
+
+第二轮代码冻结前，全量实际执行：
+`python -m pytest -q` → **2187 passed，2 warnings，229.07s**。
+为原2078项加本轮109项，不把专项或此前全量重复累计。
+两个warning为既有Starlette/httpx、anyio弃用提示，没有跳过测试。
+同一源树下Bridge27项单独列示。新版本历史实验结果在下节追加。

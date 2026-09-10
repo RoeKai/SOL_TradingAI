@@ -17,25 +17,37 @@ python scripts/verify_isolation.py
 # <CODE_SHA> 必须替换为报告记录的40位代码冻结提交。
 python -m app.execution_costs.cli freeze --workspace . \
   --dataset historical-data/august-2026-v1 --kind engineering \
-  --run-id august-8d-engineering-v1 --code-commit <CODE_SHA> \
-  --manifest validation/stage08d/engineering-manifest.json
+  --run-id review-8d-engineering --code-commit <CODE_SHA> \
+  --manifest validation/stage08d/review-engineering-manifest.json
 # 四组只读归因：同一原8C候选、同一空账本反事实快照，不创建订单。
 python -m app.execution_costs.cli attribute --workspace . \
   --dataset historical-data/august-2026-v1 --source-run august-baseline-v2 \
-  --manifest validation/stage08d/engineering-manifest.json
+  --manifest validation/stage08d/review-engineering-manifest.json
 python -m app.execution_costs.cli init --workspace . \
-  --dataset historical-data/august-2026-v1 --run-id august-8d-engineering-v1 \
-  --manifest validation/stage08d/engineering-manifest.json
+  --dataset historical-data/august-2026-v1 --run-id review-8d-engineering \
+  --manifest validation/stage08d/review-engineering-manifest.json
 python -m app.execution_costs.cli run --workspace . \
-  --dataset historical-data/august-2026-v1 --run-id august-8d-engineering-v1
+  --dataset historical-data/august-2026-v1 --run-id review-8d-engineering
 python -m app.execution_costs.cli recover --workspace . \
-  --dataset historical-data/august-2026-v1 --run-id august-8d-engineering-v1
+  --dataset historical-data/august-2026-v1 --run-id review-8d-engineering
 ```
 
 结果可用 `--output 新文件.json` 独占保存；不会覆盖旧实验。先创建输出父目录。
 整月基准／压力分别用新run ID及 `--kind baseline` / `--kind stress` 冻结；
 日期固定为八月，原压力参数保持20bps滑点、3000ms接受延迟。
 `--max-events` 可分段，结果中的 `finished=false` 必须按未完成解释。
+整月四组只读归因可用有界并行验证工具；每项仍执行同一 `compare`：
+
+```sh
+python -m scripts.attribute_8d_parallel --workspace . \
+  --source-run august-baseline-v2 --workers 4 \
+  --manifest validation/stage08d/review-baseline-manifest.json \
+  --output validation/stage08d/review-baseline-attribution.json
+```
+
+先用 `freeze --kind baseline` 生成上述新的基准manifest。
+本地原8C候选数据库只读使用，不上传；归因工具不创建交易。
+已存在的run ID和输出文件不能重新初始化或覆盖，重复实验请用新名称。
 只读归因不是四份独立统计样本；受控多空正常开仓测试也不是历史盈利证明。
 具体已运行范围、限制及报告见 [STAGE_08D_REPORT.md](STAGE_08D_REPORT.md)，
 逐腿公式见 [8D契约](docs/STAGE_08D_CONTRACT.md)。

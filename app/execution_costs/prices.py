@@ -17,7 +17,12 @@ def fill_from_mid(mid,side,model,tick,*,entry=True):
     return quote,fill
 
 
-def prices(candidate,model,quote,tick,*,now):
+def describe_prices(candidate,model,quote,tick,*,now):
+    """Non-authorizing historical description, including stale past quotes.
+
+    Visibility and same-snapshot identity are mandatory. A stale descriptor
+    remains useful for A/B/C/D attribution but never passes the new gate.
+    """
     s=candidate.setup;market=s.market_state
     if not quote or any(k not in quote for k in ('event_id','at','bid','ask')):
         raise HistoricalError('EXECUTION_QUOTE_MISSING')
@@ -27,7 +32,7 @@ def prices(candidate,model,quote,tick,*,now):
         quote['event_id']!=raw['event_id'] or D(quote['ask'])!=mid*(1+model.spread_bps/20000) or
         D(quote['bid'])!=mid*(1-model.spread_bps/20000) or quote['at']!=raw['event_time_ms']/1000):
         raise HistoricalError('SIGNAL_EXECUTION_SNAPSHOT_MISMATCH')
-    if raw['available_at_ms']/1000>now or now-quote['at']>=5 or now<quote['at']:
+    if raw['available_at_ms']/1000>now or now<quote['at']:
         raise HistoricalError('EXECUTION_QUOTE_STALE_OR_FUTURE')
     value=PriceContract(contract_id='0'*64,original_setup_digest=fingerprint(s),side=s.side,
         signal_reference_price=D(str(s.entry.reference_price)),market_trade_price=mid,
@@ -36,6 +41,13 @@ def prices(candidate,model,quote,tick,*,now):
         spread_bps=model.spread_bps,slippage_bps=model.slippage_bps,price_tick=tick,fee_rate=model.fee_rate,
         source_digest=digest(raw),model_digest=digest(model))
     return value.model_copy(update={'contract_id':digest(value)})
+
+
+def prices(candidate,model,quote,tick,*,now):
+    value=describe_prices(candidate,model,quote,tick,now=now)
+    if now-value.quote_at>=5:
+        raise HistoricalError('EXECUTION_QUOTE_STALE_OR_FUTURE')
+    return value
 
 
 def check_quote(contract,quote,*,now,expires_at):
