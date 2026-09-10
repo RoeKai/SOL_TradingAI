@@ -45,6 +45,10 @@ def describe(bundle,model,run,side,window,level,*,now,budget_notional='500'):
     stops=[e for e in swings if e['kind']==stop_kind and (entry-D(str(e['price'])))*sign>0]
     targets=sorted((e for e in swings if e['kind']!=stop_kind and (D(str(e['price']))-entry)*sign>0),key=lambda e:abs(D(str(e['price']))-entry))
     if not stops or len(targets)<2: raise HistoricalError('STRUCTURE_STOP_OR_TWO_TARGETS_MISSING')
+    if targets[0]['price']==targets[1]['price']:
+        # Keep the accepted nearest-two rule; DO NOT skip a nearby target and
+        # choose a farther one to improve RR. Explain the existing invalid pair.
+        raise HistoricalError('NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE')
     stop=min(stops,key=lambda e:abs(D(str(e['price']))-entry))
     checks=(('four_samples_direction',all((price(b)-price(a))*sign>0 for a,b in zip(recent,recent[1:]))),
         ('btc_direction',(price(recent[-1],'BTCUSDT')-price(recent[0],'BTCUSDT'))*sign>0),

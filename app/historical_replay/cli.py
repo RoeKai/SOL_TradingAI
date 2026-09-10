@@ -36,7 +36,7 @@ def main(argv=None):
     p.add_argument('--code-commit')
     p.add_argument('--kind',choices=('engineering','baseline','stress','missing_restart'),default='baseline')
     p.add_argument('--max-events',type=int)
-    p.add_argument('--fault',choices=('before_market_cursor_commit','after_market_cursor_commit','before_funding_cursor_commit'))
+    p.add_argument('--fault',choices=('before_market_cursor_commit','after_market_cursor_commit','before_funding_cursor_commit','scheduled_restart'))
     args=p.parse_args(argv)
     try:
         if args.command=='index':

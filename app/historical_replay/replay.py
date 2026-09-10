@@ -190,7 +190,7 @@ class Replay:
                 approval=self.paper.prepare(c.candidate_id,request_id)
                 result=self.paper.submit(approval['approval_id'])
                 reason=result['reason_codes'];outcome=result['result']
-            category='ACCEPTED' if outcome!='REJECT' else reason[0]
+            category='ACCEPTED' if outcome!='REJECT' else ('EXECUTABLE_QUOTE_OUTSIDE_PLAN' if 'EXECUTABLE_QUOTE_OUTSIDE_PLAN' in reason else reason[0])
             _counts(stats,at,category,side)
             if outcome!='REJECT': daily['accepted']+=1
             hput(db,'history_signals',c.candidate_id,dict(at_ms=at,side=side,result=outcome,reason_codes=reason,
@@ -226,6 +226,7 @@ class Replay:
         stream=iter(merged_events(root,index,self.model,cursor));current=next(stream,None)
         processed=0;end=self.run['evaluation_range_ms'][1];done=False
         while not done:
+            scheduled_death=False
             with self.store.transaction() as db:
                 if get(db,'identity','identity')['bundle_digest']!=self.bundle.bundle_digest:
                     raise HistoricalError('CONFIG_CHANGED_DURING_REPLAY')
@@ -245,12 +246,20 @@ class Replay:
                         current=next(stream,None)
                     else:
                         self.sample(db,cursor,sample_at);active=self._active(db)
+                    missing=self.run['missing_data']
+                    if (fault=='scheduled_restart' and missing and
+                        cursor['at_ms']>=missing['restart_after_ms'] and
+                        hget(db,'history_meta','scheduled_restart') is None):
+                        hput(db,'history_meta','scheduled_restart',dict(at_ms=cursor['at_ms'],
+                            requested_at_ms=missing['restart_after_ms'],event_count=cursor['event_count']))
+                        scheduled_death=True;break
                     if active and hget(db,'history_meta','model_limit') is not None:
                         cursor['invalid_after_ms']=cursor['at_ms'];done=True;break
                     if max_events is not None and processed>=max_events: done=True;break
                 saved_cursor(db,cursor)
                 self.paper._crash('before_market_cursor_commit',fault)
             self.paper._crash('after_market_cursor_commit',fault)
+            if scheduled_death: self.paper._crash('scheduled_restart',fault)
             if processed and processed%500000<5000:
                 print(json.dumps({'progress_events':cursor['event_count'],'at_ms':cursor['at_ms'],'seconds':round(time.perf_counter()-start,3)}),flush=True)
         elapsed=time.perf_counter()-start

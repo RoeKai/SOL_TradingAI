@@ -1,5 +1,5 @@
 """Historical-instance eligibility; no legacy result is promoted to PASS."""
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_CEILING
 from app.admission.engine import admit_trade
 from app.admission.contract import require_paper_admission
 from app.setups.rr import calculate_rr
@@ -29,6 +29,10 @@ def evaluate(store,db,candidate_id,request_id,risk_budget):
     policy=policy_from(b,'admission');account=snapshot(store,db);venue=exchange_snapshot(now)
     req=admission_request(store,db,candidate_id,request_id,risk_budget,settings.leverage,now)
     probe=max(venue.min_quantity,venue.min_notional_usdt/D(str(s.entry.reference_price)))
+    # A diagnostic order quantity must be expressible on the already-declared
+    # quantity lattice. Do not pass repeating 5/price decimals through Stage 3's
+    # strict legacy Number boundary. This changes no RR/score/risk algorithm.
+    probe=(probe/venue.quantity_step).to_integral_value(rounding=ROUND_CEILING)*venue.quantity_step
     rr=calculate_rr(s,quantity=number(probe));card=score_trade_setup(s,rr,evaluated_at=now,max_data_age_seconds=float(b.manifest.score_context_max_age_seconds))
     d=admit_trade(s,rr,card,account=account,exchange=venue,request=req,policy=policy,evaluated_at=now)
     if d.result!='REJECT':

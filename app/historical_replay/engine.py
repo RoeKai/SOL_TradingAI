@@ -266,7 +266,13 @@ class HistoricalPaper(OfflinePaper):
     def recover(self):
         try:
             with self.store.transaction() as db:
-                net_funding(db);self.store.run(db)
+                net_funding(db);run=self.store.run(db)
+                from .data import verify_seal
+                cursor=hget(db,'history_cursor','cursor')
+                if cursor['event_count']:
+                    verify_seal(cursor)
+                if cursor['run_digest']!=run['content_digest'] or cursor['dataset_digest']!=run['dataset_digest']:
+                    raise HistoricalError('RECOVERY_CURSOR_BINDING_INVALID')
                 for pid,r in rows(db,'reservations'):
                     if r['origin']!=ORIGIN: raise HistoricalError('MIXED_INSTANCE_ORIGIN')
                     b,plan=grant(self.store,db,r['approval_id']);c=hget(db,'history_consumptions',r['approval_id']);item=get(db,'outbox',r['entry_action_id'])

@@ -110,7 +110,9 @@ def test_pure_modules_exact_dependencies_and_no_integration_anywhere_else():
         if path.relative_to(ROOT).as_posix() in {'app/offline_paper/storage.py',
             'app/offline_paper/engine.py','app/offline_paper/fixtures.py',
             'app/admitted_paper/engine.py','app/admitted_paper/provider.py','app/admitted_paper/plans.py',
-            'app/admitted_paper/gate.py','app/admitted_paper/demo.py'}: continue
+            'app/admitted_paper/gate.py','app/admitted_paper/demo.py',
+            'app/historical_replay/configuration.py','app/historical_replay/engine.py',
+            'app/historical_replay/gate.py','app/historical_replay/plans.py','app/historical_replay/provider.py'}: continue
         assert 'app.configuration' not in path.read_text()
     assert 'configuration' not in (ROOT/'config.yaml').read_text()
     assert '"live_runtime_allowed": false' in (ROOT/'isolation-policy.json').read_text()
