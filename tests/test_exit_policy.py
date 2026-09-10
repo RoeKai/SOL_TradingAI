@@ -402,7 +402,9 @@ def test_no_live_mode_no_upstream_mutation_and_no_runtime_wiring():
             'app/configuration/contracts.py','app/configuration/inputs.py','app/configuration/compiler.py',
             'app/offline_paper/models.py','app/offline_paper/engine.py','app/offline_paper/broker.py',
             'app/admitted_paper/models.py','app/admitted_paper/scenarios.py',
-            'app/admitted_paper/engine.py','app/admitted_paper/gate.py'}: continue
+            'app/admitted_paper/engine.py','app/admitted_paper/gate.py',
+            'app/historical_replay/scenarios.py','app/historical_replay/gate.py',
+            'app/historical_replay/engine.py','app/historical_replay/replay.py'}: continue
         assert 'app.exits' not in path.read_text()
     assert 'exit-policy' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

@@ -408,7 +408,10 @@ def test_rr_has_no_execution_dependencies_and_is_not_imported_by_runtime():
             # 8A independent offline composition only; old runtime remains forbidden.
             'app/offline_paper/models.py','app/offline_paper/engine.py',
             'app/admitted_paper/models.py','app/admitted_paper/provider.py',
-            'app/admitted_paper/scenarios.py','app/admitted_paper/gate.py'}: continue
+            'app/admitted_paper/scenarios.py','app/admitted_paper/gate.py',
+            # 8C exact offline descriptors/calculators, never old runtime.
+            'app/historical_replay/models.py','app/historical_replay/provider.py',
+            'app/historical_replay/scenarios.py','app/historical_replay/gate.py'}: continue
         tree=ast.parse(file.read_text())
         for node in ast.walk(tree):
             if isinstance(node,ast.ImportFrom): assert not (node.module or '').startswith('app.setups')

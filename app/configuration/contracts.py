@@ -61,7 +61,7 @@ def declare_plan_binding(bundle, inputs, *, declared_at):
 
 
 def _plan_checks(bundle, inputs, now, *, exit_usage='legacy_full_policy'):
-    if exit_usage not in ('legacy_full_policy','conditional_paper_8b'):
+    if exit_usage not in ('legacy_full_policy','conditional_paper_8b','conditional_historical_8c'):
         raise ConfigurationError('Unknown exit valuation purpose')
     setup,rr,card,decision=inputs.setup,inputs.rr,inputs.scorecard,inputs.admission
     policy,ex=policy_from(bundle,'admission'),policy_from(bundle,'exit')
@@ -289,6 +289,23 @@ def validate_paper_context_8b(bundle, inputs, *, evaluated_at):
     inputs=PlanInputs.model_validate(inputs.model_dump())
     with localcontext(Context(prec=50,rounding=ROUND_HALF_EVEN)):
         p,_=_plan_checks(bundle,inputs,_time(evaluated_at),exit_usage='conditional_paper_8b')
+        r,_=_runtime_checks(bundle,inputs,_time(evaluated_at))
+    return tuple(p+r)
+
+
+def validate_historical_context_8c(bundle, inputs, *, evaluated_at):
+    """Explicit 8C dispatch: shared checks only, never whole-policy valuation.
+
+    The historical composer additionally requires its instance prefix review,
+    cost/funding contract and versioned conditional scenario gate. Legacy and
+    8B callers retain their original dispatch and unsupported valuation result.
+    """
+    checked=verify_bundle(bundle)
+    if checked.parsing!='PASS' or checked.consistency!='PASS': return checked.issues
+    if type(inputs) is not PlanInputs: raise ConfigurationError('Explicit PlanInputs required')
+    inputs=PlanInputs.model_validate(inputs.model_dump())
+    with localcontext(Context(prec=50,rounding=ROUND_HALF_EVEN)):
+        p,_=_plan_checks(bundle,inputs,_time(evaluated_at),exit_usage='conditional_historical_8c')
         r,_=_runtime_checks(bundle,inputs,_time(evaluated_at))
     return tuple(p+r)
 

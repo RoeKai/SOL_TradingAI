@@ -25,12 +25,18 @@ STDLIB_ALLOWLIST = frozenset({
 })
 EXTERNAL_ALLOWLIST = frozenset({"yaml", "dotenv", "pydantic", "httpx", "websockets", "fastapi", "starlette", "uvicorn"})
 IMPORT_LOCATION_ALLOWLIST = {
-    "httpx": {"app/data/service.py", "app/alerts/telegram.py", "app/execution/bridge_client.py"},
+    "httpx": {"app/data/service.py", "app/alerts/telegram.py", "app/execution/bridge_client.py", "app/historical_download/client.py"},
     "websockets": {"app/data/service.py"},
     "fastapi": {"app/dashboard/server.py"},
     "starlette": {"app/dashboard/server.py"},
     "uvicorn": {"main.py"},
     "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py", "app/offline_paper/storage.py", "app/offline_paper/cli.py"},
+}
+HISTORICAL_IMPORTS = {
+    'csv': {'app/historical_replay/data.py'},
+    'zipfile': {'app/historical_replay/data.py','app/historical_replay/index.py'},
+    'heapq': {'app/historical_replay/index.py'},
+    'resource': {'app/historical_replay/cli.py'},
 }
 FORBIDDEN_NAMES = frozenset({
     "__import__", "__builtins__", "__loader__", "__spec__", "eval", "exec", "compile",
@@ -160,7 +166,7 @@ def verify(root: str | Path) -> dict:
                 if top == "app":
                     if name not in modules:
                         fail(path, node.lineno, f"unresolved local dependency: {name}")
-                elif top not in STDLIB_ALLOWLIST | EXTERNAL_ALLOWLIST:
+                elif top not in STDLIB_ALLOWLIST | EXTERNAL_ALLOWLIST and relative not in HISTORICAL_IMPORTS.get(top,set()):
                     fail(path, node.lineno, f"dependency not allowlisted: {name}")
                 if top in IMPORT_LOCATION_ALLOWLIST and relative not in IMPORT_LOCATION_ALLOWLIST[top]:
                     fail(path, node.lineno, f"{top} capability not permitted in this module")
@@ -198,7 +204,8 @@ def verify(root: str | Path) -> dict:
                     fail(path, getattr(node, "lineno", 0), "malformed network endpoint")
                     continue
                 endpoint = (parsed.scheme, parsed.hostname, port)
-                if parsed.username or endpoint not in PRIVATE_NETWORK_ENDPOINTS | PUBLIC_NETWORK_ENDPOINTS:
+                historical_archive=(relative=='app/historical_download/client.py' and endpoint==('https','data.binance.vision',443))
+                if parsed.username or endpoint not in PRIVATE_NETWORK_ENDPOINTS | PUBLIC_NETWORK_ENDPOINTS and not historical_archive:
                     fail(path, getattr(node, "lineno", 0), "network endpoint not allowlisted")
         imports[relative] = sorted(dependencies)
 

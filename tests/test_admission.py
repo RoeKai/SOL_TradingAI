@@ -602,7 +602,11 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
             'app/offline_paper/models.py','app/offline_paper/engine.py','app/offline_paper/risk.py',
             'app/offline_paper/fixtures.py','app/offline_paper/cli.py',
             'app/admitted_paper/engine.py','app/admitted_paper/gate.py',
-            'app/admitted_paper/provider.py','app/admitted_paper/plans.py','app/admitted_paper/demo.py'}: continue
+            'app/admitted_paper/provider.py','app/admitted_paper/plans.py','app/admitted_paper/demo.py',
+            # Explicit 8C offline boundary; no main/old runtime blanket exception.
+            'app/historical_replay/engine.py','app/historical_replay/evidence.py',
+            'app/historical_replay/plans.py','app/historical_replay/provider.py',
+            'app/historical_replay/configuration.py','app/historical_replay/gate.py','app/historical_replay/cli.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

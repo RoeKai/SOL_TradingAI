@@ -295,3 +295,5 @@ node_modules/
 offline-runs/
 # Stage 8B explicitly separate instance databases, receipts and local recaps.
 offline-admitted-runs/
+historical-data/
+historical-runs/

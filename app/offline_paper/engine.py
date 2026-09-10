@@ -176,13 +176,19 @@ class OfflinePaper:
         self._event(db,EntrySealed(event_id='seal:'+r['entry_action_id'],position_id=pid,
             received_at=get(db,'account','account')['now'],entry_action_id=r['entry_action_id'],total_filled_quantity=details))
 
+    def _cash_origin(self,db):
+        # Default 8A/8B behavior is unchanged. The separately identified 8C
+        # simulator overrides this for audited, idempotent funding cash events.
+        # Funding must never masquerade as an ExitFill or reset initial capital.
+        return self.store.settings(db).initial_balance
+
     def _cash(self,db):
         account=get(db,'account','account')
-        account['cash']=str(self.store.settings(db).initial_balance+sum((D(p['checkpoint']['state']['realized_net_pnl']) for _,p in rows(db,'positions')),D(0)))
+        account['cash']=str(self._cash_origin(db)+sum((D(p['checkpoint']['state']['realized_net_pnl']) for _,p in rows(db,'positions')),D(0)))
         account['version']+=1;put(db,'account','account',account)
 
     def _assert_cash(self,db):
-        expected=self.store.settings(db).initial_balance+sum((D(p['checkpoint']['state']['realized_net_pnl']) for _,p in rows(db,'positions')),D(0))
+        expected=self._cash_origin(db)+sum((D(p['checkpoint']['state']['realized_net_pnl']) for _,p in rows(db,'positions')),D(0))
         if D(get(db,'account','account')['cash'])!=expected:
             raise OfflineError('Cash/checkpoint conservation mismatch; never top up on error')
 
@@ -356,7 +362,7 @@ class OfflinePaper:
         try:
             with self.store.transaction() as db:
                 a=get(db,'account','account');self.store.bundle(db)
-                expected=self.store.settings(db).initial_balance
+                expected=self._cash_origin(db)
                 for _,p in rows(db,'positions'):
                     saved=ExitCheckpoint.model_validate(p['checkpoint'])
                     if checkpoint(saved.seed,saved.policy,saved.journal)!=saved: raise OfflineError('Checkpoint replay mismatch')
