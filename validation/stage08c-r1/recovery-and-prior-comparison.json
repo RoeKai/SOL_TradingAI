@@ -1,0 +1,72 @@
+{
+  "scope": "OFFLINE_R1_FIXED_FIRST_HOUR_NOT_FULL_MONTH",
+  "code_commit": "677d22d26b6c2f597aa1a2af5ee2606526e00886",
+  "code_content_digest": "a608be9d42caa2df4296f8adbe7a16c61ab492e43b013ee21e9b0636e7c79066",
+  "run_id": "august-engineering-r1-v3",
+  "run_digest": "28ea1d804fdc5d70414912004bda130fab33da641f79290419e531705711149a",
+  "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "recoveries": [
+    {
+      "attempt": 1,
+      "exit_code": 0,
+      "internal_recovery_seconds": 0.040420375065878034,
+      "equals_initial_result": {
+        "counts": true,
+        "metrics": true,
+        "statistics": true,
+        "sides": true,
+        "positions": true,
+        "consumed_market_records": true,
+        "consumed_by_symbol": true,
+        "market_prefix_digest": true,
+        "reason_occurrences_not_independent_trades": true,
+        "completed_through_ms": true,
+        "reconciliation_clear": true
+      }
+    },
+    {
+      "attempt": 2,
+      "exit_code": 0,
+      "internal_recovery_seconds": 0.03919845912605524,
+      "equals_initial_result": {
+        "counts": true,
+        "metrics": true,
+        "statistics": true,
+        "sides": true,
+        "positions": true,
+        "consumed_market_records": true,
+        "consumed_by_symbol": true,
+        "market_prefix_digest": true,
+        "reason_occurrences_not_independent_trades": true,
+        "completed_through_ms": true,
+        "reconciliation_clear": true
+      }
+    }
+  ],
+  "prior_code_commit": "88901b3288ab21540917506f32f4759fdf72a1e5",
+  "prior_run_id": "august-engineering-v2",
+  "prior_result_file": "validation/stage08c/august-engineering-v2.json",
+  "new_result_equals_prior_on": {
+    "counts": true,
+    "metrics": true,
+    "statistics": true,
+    "sides": true,
+    "positions": true,
+    "consumed_market_records": true,
+    "consumed_by_symbol": true,
+    "market_prefix_digest": true,
+    "reason_occurrences_not_independent_trades": true,
+    "completed_through_ms": true,
+    "reconciliation_clear": true
+  },
+  "not_rerun": [
+    "full_month_baseline",
+    "full_month_stress",
+    "historical_missing_restart"
+  ],
+  "normal_historical_orders": 0,
+  "normal_historical_fills": 0,
+  "active_position_history_success_claimed": false,
+  "thresholds_changed": false,
+  "live_allowed": false
+}

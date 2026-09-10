@@ -1,0 +1,98 @@
+{
+  "schema": "stage08c-r1-validation/v1",
+  "baseline": "e47a22719ae70c16dabd4390c53ce9b8192a5757",
+  "code_commit": "677d22d26b6c2f597aa1a2af5ee2606526e00886",
+  "code_content_digest": "a608be9d42caa2df4296f8adbe7a16c61ab492e43b013ee21e9b0636e7c79066",
+  "network": "Python: OS-denied network and original trading paths; Bridge mocks: loopback only",
+  "reviewer_results": {
+    "failed": 6,
+    "passed": 8,
+    "scope": "reviewer_component_results_not_independently_rerun"
+  },
+  "original_review_test": {
+    "name": "test_stage08c_active_execution_review.py",
+    "available": false,
+    "executed": false
+  },
+  "author_reproduction": {
+    "test": "tests/test_stage08c_active_integration.py",
+    "initial_case_count": 6,
+    "failed_before_fix": 6,
+    "before_seconds": 1.11,
+    "failures": [
+      "No remaining reducible quantity (LONG/SHORT)",
+      "Order is not executable (LONG/SHORT)",
+      "missing pre-fill MODEL_LIMIT_EXCEEDED (LONG/SHORT)"
+    ],
+    "passed_after_fix": 6,
+    "after_seconds": 1.23
+  },
+  "actual_runs": [
+    {
+      "command": "python -m pytest -q tests/test_stage08c_active_integration.py tests/test_stage08c_active_cli.py",
+      "passed": 41,
+      "failed": 0,
+      "seconds": 14.74
+    },
+    {
+      "command": "python -m pytest -q tests/test_stage08c_*.py",
+      "passed": 117,
+      "failed": 0,
+      "seconds": 29.2
+    },
+    {
+      "command": "python -m pytest -q",
+      "passed": 2078,
+      "failed": 0,
+      "warnings": 2,
+      "seconds": 189.48
+    },
+    {
+      "command": "python scripts/verify_isolation.py",
+      "exit_code": 0,
+      "result": "ISOLATION_SOURCE_PASS: 101 Python files"
+    },
+    {
+      "cwd": "bridge",
+      "command": "node --import tsx --test tests/*.test.ts",
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "milliseconds": 700.403667
+    },
+    {
+      "cwd": "bridge",
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit_code": 0
+    },
+    {
+      "cwd": "bridge",
+      "command": "node scripts/build.mjs",
+      "exit_code": 0,
+      "vendor_snapshots": 6,
+      "bundle_inputs": 82,
+      "standalone_import_passed": true
+    }
+  ],
+  "counting_rule": "41 is included in 117, which is included in 2078. Do not add these or reviewer counts together.",
+  "initial_additional_test_setup_findings": [
+    "Initial component restart helper used the entry adapter without a historical grant: 6 failed / 32 passed. Kept production authority closed; recovery now explicitly verifies exit checkpoints and queries original exit orders. Full HistoricalPaper/CLI rejects unadmitted component seeds.",
+    "Initial CLI JSON reader did not handle progress records; corrected the test reader without changing output or success assertions.",
+    "Latched invalid CLI before performance segment: real TypeError reproduced, fixed None guard, preserves missing timing.",
+    "An initial Bridge invocation named nonexistent files and ran no tests; corrected to the actual full test glob."
+  ],
+  "recovery_scope": {
+    "process_crash_cases": 8,
+    "dimensions": "LONG/SHORT x before/after market commit x ordinary/model-invalid",
+    "active_tests": "component-initialized position; real HistoricalPaper/HistoricalBroker/Replay/receipts/ExitPolicy/SQLite",
+    "active_restart": "real subprocess + persisted cursor + ExitCheckpoint replay + original stop reconciliation; not full historical entry-grant recovery",
+    "cli": "3 real subprocess tests using tiny synthetic archive-format data: empty replay/recovery, invalid-run recovery, reject unadmitted initialization",
+    "ordinary_historical_positive_recovery": false
+  },
+  "preexisting_test_files_changed": [],
+  "original_artifacts_changed": [],
+  "live_allowed": false,
+  "realtime_connected": false,
+  "deployed": false,
+  "requested_scope_only": true
+}

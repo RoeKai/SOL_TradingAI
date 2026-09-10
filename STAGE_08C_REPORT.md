@@ -294,3 +294,122 @@ node scripts/build.mjs
 - 新实例不接受fixture；没有自动迁移、热更新、实时连接、交易所测试网、私人账户、私有Bridge、Telegram、服务器部署或实盘。
 
 完成本轮文档与实验交付后暂停，等待8C验收；不自动进入下一阶段。
+
+## 10. R1：带仓竞争退出与模型边界补修（2026-09-10）
+
+**本节是追加的修复记录，不替换第1–9节原实验。** 审查基线为 `e47a22719ae70c16dabd4390c53ce9b8192a5757`；仍在 `phase-08c-historical-replay` 追加历史，不修改/合并main、不force push。修复源码/测试提交为 `677d22d26b6c2f597aa1a2af5ee2606526e00886`，app及配置模板内容摘要 `a608be9d42caa2df4296f8adbe7a16c61ab492e43b013ee21e9b0636e7c79066`。最终补验文档提交是其后代，不再改变这份源码。
+
+### 10.1 证据来源与先复现后修复
+
+审查方给出的 **6 failed / 8 passed** 是组件审查记录；本轮没有收到可读取的 `test_stage08c_active_execution_review.py` 原件，未声称运行了它，也没有重新生成同名“原件”。按授权自行新增 `test_stage08c_active_integration.py`，在项目自己的Python依赖环境及操作系统禁网沙箱执行：
+
+| 自行编写的初始复现（LONG/SHORT各一项） | 修复前实际结果 | 原因 |
+|---|---|---|
+| 止损清仓后TP仍活动 | 2 failed | `No remaining reducible quantity` 逃出市场事务 |
+| 止损成交后事件处理已取消后续TP | 2 failed | `Order is not executable` 逃出市场事务 |
+| 新报价越过保证金边界、同事件止损清仓 | 2 failed | `model_limit is None`，清仓掩盖原暴露 |
+| **合计** | **6 failed，1.11秒** | 与审查方统计分开，不是其14项原件 |
+
+修复后相同六项断言 **6 passed，1.23秒**。没有删除或放宽这些断言，也没有修改任何既有测试文件。
+
+初始化边界明确：测试显式构造“已成交的合成组件仓位”，计划快照为 `admission_result=REJECT`，没有历史审批/消费授权。随后使用真正的 `HistoricalStore.initialize`、SQLite、`HistoricalPaper`、`HistoricalBroker.fill`、`Replay.trade/_fills/run_stream`、事件收件箱/账本及原Exit reducer；**没有替换状态消费者或把Broker.fill改成固定成功**。其中已取消分支在真实 `_fills → pump` 边界安排到期撤单，未把历史接受延迟改为零。双仓共享额度测试也是显式已有仓位组件，不是越过最大新开仓数量。
+
+### 10.2 问题一：竞争退出不再回滚有效止损
+
+根因：`_fills` 只在循环开始读取订单列表；第一笔成交及回执消费后，候选的状态、累计成交、持仓可减数量已经改变，后续仍使用旧快照。Broker的reduce-only检查正确抛错，但市场/游标大事务因而全部回滚。
+
+修复：
+
+1. 只冻结候选ID及确定性优先顺序；每一候选成交前重新读取最新订单、累计量和本实例Broker成交事实计算的可减数量。
+2. 已撤/已完成/已拒绝、零订单余量或零可减数量正常跳过；缺失订单等异常仍抛错。没有包住所有 `ValueError`，没有放宽原Broker的reduce-only。
+3. 数量取当前订单余量、当前可减仓量、共享剩余参与量的最小值，再沿用0.001步长。保护/全退仍优先，不为TP选择有利K线内路径。
+4. 参与量先扣本市场事件已经持久化的使用量；同订单/事件已有fill ID不重复消费。保留原Broker的第二道共享流动性检查与唯一成交ID。
+5. 游标、模拟成交、费用、仓位、回执、后续动作仍在同一SQLite事务；真实SQL写入失败仍回滚全部。测试在有效止损/账务处理后让游标写入失败，确认原仓位、订单、余额和游标全部保留。
+
+新增覆盖包括部分止损、0.001尾差、TP已部分成交、取消未完成/已完成、多退出单共用一次参与量、重复行情/重复消费、提交前后真实子进程死亡及原止损ID重查。没有拆事务或重新分配一份市场成交量。
+
+### 10.3 问题二：模型失效先锁存，清仓不能恢复有效性
+
+根因有两层：`trade` 先成交再检查模型，零仓被跳过；`run_stream` 又将模型失效判断附着于成交后的 `active`，平仓后的运行可能继续。
+
+修复保留原模型公式，不新增强平系统：
+
+`剩余成本 / 杠杆 + 新可见报价下的浮盈亏 + min(0, 已归属资金费现金) <= 0`
+
+- 新报价写入后，先以**事件前账本持仓**检查，再消费待到回执；成交前再检查回执新揭示的暴露。后续检查仍保留。
+- 首次失效记录包含 `reason_code / at_ms / position_id / detection_phase / side / remaining_quantity / remaining_entry_cost / quote / leverage / allocated_margin_usdt / floating_pnl_usdt / adverse_funding_usdt / model_margin_balance_usdt`。首次时点和证据不被以后清仓、反弹或再次越界覆盖。
+- 同一事务将首次时点绑定到游标 `invalid_after_ms`。调度器检查这一**运行级标记**，不依赖成交后是否还有仓；重启读回记录也停止，不读取下一段行情。游标与失效记录矛盾则拒绝，不清空历史。
+- 同事件必要退出和账务仍可作为诊断事实提交；失效后不再消费普通ENTRY。若还有余仓/待撤动作，它们是需要核对的诊断状态，不能声称已完成真实清算。
+- 新报告明确版本为 `historical-report/v2`：越界时 `result_usage=DIAGNOSTIC_ONLY_MODEL_LIMIT_EXCEEDED`、`model_supported_metrics_available=false`、`metrics=null`；原账务计算保留在 `diagnostic_metrics`。方向汇总/仓位/最好最差记录也只作诊断，不是受模型支持的收益。没有越界的原指标算法不变。
+- 完整CLI补验另复现了“已有失效记录但尚无性能段”时的空值错误；修复只跳过不存在的性能记录更新，`performance=null`，不补造运行耗时。
+
+多空原例的记录取新模型双边报价而非理想成交价：LONG价格70对应bid69.993，0.5仓浮亏−15.0035、模型余额−5.0035；SHORT价格130对应ask130.013，浮亏−15.0065、模型余额−5.0065。保护随后清仓也保留原失效时点。此条件是当前简化模型的边界，**不是Binance真实强平线**，也不保证正余额就满足真实维持保证金。
+
+### 10.4 本轮文件和行为边界
+
+| 新增/修改文件 | 内容 |
+|---|---|
+| 修改 `app/historical_replay/replay.py` | 最新候选重查、共享剩余额度、预成交模型检查和运行级停止 |
+| 修改 `app/historical_replay/report.py` | v2输出、诊断指标与受模型支持指标分离 |
+| 修改 `app/historical_replay/engine.py` | summary增加同一诊断用途标记，不改变审批/账务/恢复算法 |
+| 修改 `app/historical_replay/cli.py` | 已失效运行缺失计时段时仍能给出明确结果 |
+| 新增 `tests/test_stage08c_active_integration.py` | 38项带仓、事件、数量、模型边界及进程故障测试 |
+| 新增 `tests/test_stage08c_active_cli.py` | 3项真实CLI子进程：空账本回放/恢复、失效恢复、拒绝无审批注入 |
+| 修改 `STAGE_08C_REPORT.md`、`README.md` | 追加R1边界、测试及独立版本命令 |
+| 新增 `validation/stage08c-r1/` | 本轮脱敏测试结果、新首小时清单/汇总/恢复对照、文件摘要 |
+
+未修改：原main、8A/B代码、原Broker、Exit状态机/R1/R2/R3、RR、Scorecard、Admission、策略/供应器、所有风险/成本配置、Bridge、隔离白名单。旧测试文件逐字不变。旧 `validation/stage08c/` **所有文件保持原字节**；其文件清单仍是e47提交的历史快照，不代表R1新报告的文件摘要。
+
+### 10.5 实际测试与恢复范围（不重复累计）
+
+| 检查 | 本轮实际结果 |
+|---|---|
+| 新增带仓与CLI测试 | **41 passed，14.74秒** |
+| 全部8C专项（含上述41项） | **117 passed，29.20秒** |
+| Python全量（含上述117项） | **2078 passed，2 warnings，189.48秒** |
+| 静态隔离 | **ISOLATION_SOURCE_PASS: 101 Python files** |
+| Bridge mock | **27 passed，0 failed，700.403667ms**，仅回环网络 |
+| Bridge TypeScript检查 | 退出码0 |
+| Bridge构建/import | 退出码0；6个vendor快照、82个输入，独立import通过 |
+
+```bash
+python -m pytest -q tests/test_stage08c_active_integration.py tests/test_stage08c_active_cli.py
+python -m pytest -q tests/test_stage08c_*.py
+python -m pytest -q
+python scripts/verify_isolation.py
+# 以下在 bridge/ 执行，mock只允许本机回环，构建/类型检查禁外网
+node --import tsx --test tests/*.test.ts
+node node_modules/typescript/bin/tsc --noEmit
+node scripts/build.mjs
+```
+
+两条warning与原版本相同，为Starlette/httpx及anyio弃用提示。一次Bridge命令指定了不存在的文件名，未执行测试；改为仓库实际 `tests/*.test.ts` 后取得上表结果，不把启动失败算通过。
+
+真实子进程测试覆盖LONG/SHORT × 提交前/后 × 正常模型/已越界，进程以91退出。提交前仓位仍0.5、无退出/费用/失效写入；提交后仓位0、仅一笔退出、游标与失效标记同存。重新打开数据库、重放真实ExitCheckpoint、按原止损ID对账并消费真实回执，再继续该组件输入，确认不重平、不重复扣费；同事件有效止损不会被竞争TP撤回。
+
+必须区分测试层次：**带仓恢复正例是显式已有仓位的退出组件恢复，不是完整历史准入恢复正例。** 初版新测试错误地用缺少审批的注入仓位调用入场回执适配，出现6失败/32通过；没有为此补造APPROVE或修改生产权限。改为明确的退出检查点/原退出订单恢复边界，保留全部经济/去重断言；另用真正 `HistoricalPaper.recover` 和CLI断言无审批注入被拒绝/隔离。真实CLI的正常初始化、空仓回放、两次恢复及失效停机也运行通过。CLI测试使用微型合成归档**格式**文件，校验字段不是官方来源认证，绝不算真实历史行情结果。
+
+本轮没有运行审查方未交付的原件；没有重跑整月/整月压力或再下载数据；没有普通历史成交成功的新证据。完整回归中旧8A/B的合法审批及恢复正例继续保留，但不能把它们改标为8C历史成交。
+
+### 10.6 新版本首小时复核与未完成项
+
+新运行使用 `august-engineering-r1-v3`，只读取已保存的原数据集，固定首小时+原预热、原参数，代码先冻结再运行。其清单/结果放在 `validation/stage08c-r1/`，不覆盖v1/v2。结果与恢复对照记录见该目录；两份整月v2报告仍只属于 `88901b3288ab21540917506f32f4759fdf72a1e5`。
+
+实际CLI `freeze/init/run/recover/recover` 全部退出码0。新清单摘要 `28ea1d804fdc5d70414912004bda130fab33da641f79290419e531705711149a`；数据集仍为第2节原摘要。新首小时结果：
+
+| 项目 | R1新运行实际值 |
+|---|---|
+| 消费记录（含原预热） | 41,901：SOL7,370 / BTC18,480 / ETH16,051 |
+| 最后游标 / 前缀 | `1785545999960` / `6725398b0b14727a22a963d66a2889302a7aca63091db4b936ac79ffa8ab1c9c` |
+| 15秒样本 / 候选 | 240个全参考覆盖样本；15候选（LONG11 / SHORT4），全部原规则拒绝 |
+| 审批消费 / 模拟订单 / 成交 / 持仓 | 0 / 0 / 0 / 0 |
+| 现金 / 权益 / 手续费 / 资金费现金 | 500 / 500 / 0 / 0 USDT |
+| 主循环墙钟 / 峰值RSS（macOS字节） | 2.254308秒 / 52,346,880 |
+| 结果时数据库及sidecar | 3,010,560字节 |
+| 两次内部账本恢复 | 0.040420秒 / 0.039198秒，不含CLI的数据哈希与汇总成本 |
+
+两次恢复前后，以及与旧engineering-v2的相同语义字段相比：记录数、逐标的数量、游标/前缀、指标、候选/订单/成交数、逐日/多空拒绝统计和对账状态逐项相同。`EXECUTABLE_QUOTE_OUTSIDE_PLAN` 仍15次，附加诊断数量下 `NET_RR_BELOW_HARD_FLOOR` 仍15次；下游情景准入未执行。耗时不是独占硬件基准，不因比旧首小时更快就宣称优化收益。**没有带仓真实历史样本，修复的带仓行为证据来自前述明确合成集成测试。** 本轮不重跑整月或压力组，也未重新下载历史数据。
+
+未解决项继续保持：精确入场点与非零价差冲突；固定资金费预算在诊断数量/最终数量下的净RR契约；完整历史普通开仓正例；真实盘口/流动性/历史规则能力；Runner统计期望；维持保证金、强平、ADL；实时/测试网/账户/私有Bridge和实盘。**不放宽、不寻优、不为凑成交改日期或策略。** 模型越界修复只是防止无效结果被包装成支持的收益，不是新增强平模型。
+
+R1提交并推送后暂停，等待复验，不进入下一阶段。

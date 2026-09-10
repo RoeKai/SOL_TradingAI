@@ -317,6 +317,8 @@ python -m pytest -q tests/test_admitted_paper.py tests/test_admitted_recovery.py
 新入口与 `main.py`、8A/8B 实例、真实 `.env`、私有 Bridge 完全分开。只执行 SOL；BTC/ETH 是参考。
 固定评估 2026-08-01 至 2026-09-01（UTC，右端不含），预热 300 秒。官方历史 aggTrades **不是真实盘口**；价差、滑点、延迟、参与率、规则和账户均为明确的模型假设。不得以模拟结果宣传实盘收益。
 
+版本提示：本节原 `baseline-v2` 命令记录旧代码 `88901b3…` 的实验流程，只能用该冻结代码重现；R1修复代码必须用下文独立的新run-id，不能接管或覆盖旧v2运行。
+
 首次运行先准备本项目依赖环境。下列命令不需要 API Key：
 
 ```bash
@@ -347,3 +349,23 @@ offline python scripts/verify_isolation.py
 **当前重要限制：原8B精确单点入场区间与本轮非零价差存在冲突。** 原 Admission 拒绝区间外可成交价；不扩大区间、不回退 fixture、不伪造通过。固定资金费预算也会影响诊断数量下的静态净RR。零成交不是策略安全或有效性的证据；没有发生的完整历史成交链路不能列为验证通过。
 
 完整证据、实际范围、性能、故障对照、拒绝分布和限制见 [STAGE_08C_REPORT.md](STAGE_08C_REPORT.md)；可重取的公开来源及实验摘要在 [validation/stage08c](validation/stage08c)。实盘、实时行情、测试网、账户、Telegram 和服务器部署继续关闭。8C交付后暂停验收。
+
+### 8C R1：竞争退出和模型越界
+
+修复代码 `677d22d26b6c2f597aa1a2af5ee2606526e00886` 只修带仓调度与模型失效。每次模拟成交后重查后续订单、累计量、可减仓量；仍共享同一市场参与量。新可见报价先检查原有暴露，首次 `MODEL_LIMIT_EXCEEDED` 在同事务锁存，清仓和重启不能使其恢复为有效回放。
+
+报告升级 `historical-report/v2`。若模型越界，`metrics=null`、`model_supported_metrics_available=false`；账务数字放入 `diagnostic_metrics`，其他方向/持仓汇总也仅供诊断，不代表模型支持的收益。`run` 返回 `model_invalid=true` 后不再推进普通回放；待保护/待核对状态保留，不删除账本来解锁。缺失性能计时保持null，不生成假计时。
+
+已有归档只读复用，以下不用下载器、真实Key或旧服务。首次在新检出副本执行时应使用自己的新run-id；若这里的ID已存在，应直接查看该次报告，不能覆盖初始化。
+
+```bash
+offline() { sandbox-exec -f examples/historical-replay/offline.sb "$@"; }
+offline python -m app.historical_replay.cli freeze --dataset historical-data/august-2026-v1 --manifest historical-data/august-2026-v1/engineering-r1-v3.json --run-id august-engineering-r1-v3 --kind engineering --code-commit 677d22d26b6c2f597aa1a2af5ee2606526e00886
+offline python -m app.historical_replay.cli init --dataset historical-data/august-2026-v1 --manifest historical-data/august-2026-v1/engineering-r1-v3.json --run-id august-engineering-r1-v3
+offline python -m app.historical_replay.cli run --dataset historical-data/august-2026-v1 --run-id august-engineering-r1-v3
+offline python -m app.historical_replay.cli recover --dataset historical-data/august-2026-v1 --run-id august-engineering-r1-v3
+offline python -m app.historical_replay.cli report --dataset historical-data/august-2026-v1 --run-id august-engineering-r1-v3
+offline python -m pytest -q tests/test_stage08c_active_integration.py tests/test_stage08c_active_cli.py
+```
+
+新增测试的仓位是明确注入的合成组件状态，使用真实历史模拟Broker/退出消费者/SQLite，但没有普通历史审批。完整HistoricalPaper/CLI恢复必须拒绝将其伪装为正常入场。真实数据首小时仍零订单；原整月v2结果不改标为R1。本轮记录与限制见报告第10节和 [validation/stage08c-r1](validation/stage08c-r1)，不放宽精确入场/价差及诊断数量净RR契约。

@@ -1,0 +1,105 @@
+{
+  "version": "stage08c-r1-file-manifest/v1",
+  "comparison_baseline": "e47a22719ae70c16dabd4390c53ce9b8192a5757",
+  "code_test_commit": "677d22d26b6c2f597aa1a2af5ee2606526e00886",
+  "code_content_digest": "a608be9d42caa2df4296f8adbe7a16c61ab492e43b013ee21e9b0636e7c79066",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 38628,
+      "sha256": "4dcbc8eda99d4e76e4ee788829ee61f384f524e558a63b7b7f3f04e23ea35612",
+      "status": "modified"
+    },
+    {
+      "path": "STAGE_08C_REPORT.md",
+      "bytes": 42921,
+      "sha256": "1992e45db96db15d255507925cf0808676fac896f8ad0536d2e18648fa51157c",
+      "status": "modified"
+    },
+    {
+      "path": "app/historical_replay/cli.py",
+      "bytes": 5630,
+      "sha256": "44066d913aa516157c7be3cf111918d3577d4e0cda02e3634a472549a32f7fd5",
+      "status": "modified"
+    },
+    {
+      "path": "app/historical_replay/engine.py",
+      "bytes": 21005,
+      "sha256": "59e5e3a03bd3d10a1f4c47ed2a607b07d0edc199857ea79fc759cf0b9fe44833",
+      "status": "modified"
+    },
+    {
+      "path": "app/historical_replay/replay.py",
+      "bytes": 20852,
+      "sha256": "7ea01cd5e099fa6188a06fabbebbe984e015bd1f5996e6cfc5d1692dafe9e8a6",
+      "status": "modified"
+    },
+    {
+      "path": "app/historical_replay/report.py",
+      "bytes": 7448,
+      "sha256": "aca4244325b3fd49756260a2a42908e4663097394cd12a3c539d80ebd6b01980",
+      "status": "modified"
+    },
+    {
+      "path": "tests/test_stage08c_active_cli.py",
+      "bytes": 5591,
+      "sha256": "a6caaecf268218a94ddd044191dcb839533c922303d316f388be4aeec0cfb486",
+      "status": "added"
+    },
+    {
+      "path": "tests/test_stage08c_active_integration.py",
+      "bytes": 23811,
+      "sha256": "4bf64fca56462d13df6f55c3efac0f10458e112e45167eb08281eee6520afe6c",
+      "status": "added"
+    },
+    {
+      "path": "validation/stage08c-r1/engineering-r1-v3.json",
+      "bytes": 4764,
+      "sha256": "4fe61a11a57bdcf5d8ebc8584672a05f2c9238395ec6bfbb3623b0b16d641c1c",
+      "status": "added"
+    },
+    {
+      "path": "validation/stage08c-r1/recovery-and-prior-comparison.json",
+      "bytes": 2339,
+      "sha256": "a7cb647642da2f01f6492ce9cfc0b5da6885f4d70577f1d58f1ffd6b96b1069e",
+      "status": "added"
+    },
+    {
+      "path": "validation/stage08c-r1/run-engineering-r1-v3.json",
+      "bytes": 3564,
+      "sha256": "175458de956b4e7648067a0903225975ccd78a361fb8d48a0bb213984e7174fa",
+      "status": "added"
+    },
+    {
+      "path": "validation/stage08c-r1/test-results.json",
+      "bytes": 3840,
+      "sha256": "d9a1e3d0305ddc0fce89318dfb23c11f093fae96716795336f44e4e963d26910",
+      "status": "added"
+    }
+  ],
+  "self": "validation/stage08c-r1/file-manifest.json (added, not recursively hashed)",
+  "original_validation_stage08c_unchanged": true,
+  "original_report_sections_1_through_9_byte_prefix_unchanged": true,
+  "existing_test_files_changed": [],
+  "protected_modules_unchanged": [
+    "main.py",
+    "config.yaml",
+    "admission.yaml",
+    "exit-policy.yaml",
+    "app/offline_paper",
+    "app/admitted_paper",
+    "app/exits",
+    "app/admission",
+    "app/setups",
+    "bridge",
+    "scripts/verify_isolation.py"
+  ],
+  "excluded": [
+    "historical-data",
+    "historical-runs",
+    "databases",
+    "logs",
+    "real_credentials",
+    "host_runtime_state"
+  ]
+}
