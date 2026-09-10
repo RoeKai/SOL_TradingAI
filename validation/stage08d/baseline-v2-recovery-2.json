@@ -1,0 +1,567 @@
+{
+  "recovery_seconds": 0.12506216717883945,
+  "result": {
+    "version": "quantified-historical-report/v1",
+    "scope": "REAL_HISTORICAL_OBSERVATIONS_ASSUMED_EXECUTION_RULES_SIMULATED_ACCOUNT",
+    "experiment_id": "august-8d-baseline-v2",
+    "run_digest": "4814773e5b96237582512da461358ae837100362d4ba16d7aa7906e725bdf8bc",
+    "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+    "finished": true,
+    "completed_through_ms": 1788220799967,
+    "evaluation_range_ms": [
+      1785542400000,
+      1788220800000
+    ],
+    "warmup_range_ms": [
+      1785542100000,
+      1785542400000
+    ],
+    "consumed_market_records": 76496930,
+    "consumed_by_symbol": {
+      "BTCUSDT": 35677521,
+      "ETHUSDT": 33011157,
+      "SOLUSDT": 7808252
+    },
+    "dropped_records": 0,
+    "market_prefix_digest": "098ed3de25806dc4661c965cc18d36f447f54a5f56222e2fbbd2624e17b75f73",
+    "result_usage": "WITHIN_DECLARED_SIMULATION_BOUNDARY_NOT_MARKET_VALIDATION",
+    "model_supported_metrics_available": true,
+    "counts": {
+      "simulated_orders": 0,
+      "confirmed_fills": 0,
+      "candidates": 37141,
+      "approval_records": 37141,
+      "consumed_approvals": 0
+    },
+    "metrics": {
+      "cash_usdt": "500",
+      "equity_usdt": "500",
+      "unrealized_pnl_usdt": "0",
+      "net_return": "0",
+      "maximum_equity_drawdown": "0",
+      "equity_points": 178560,
+      "missing_equity_points": 0,
+      "completed_positions": 0,
+      "win_rate": null,
+      "average_win_loss_ratio": null,
+      "profit_factor": null,
+      "gross_realized_pnl": "0",
+      "trade_fees_usdt": "0",
+      "funding_net_cash_usdt": "0",
+      "modeled_spread_cost_usdt": "0",
+      "modeled_slippage_and_rounding_cost_usdt": "0",
+      "average_holding_seconds": null,
+      "maximum_holding_seconds": null,
+      "max_consecutive_losses": 0
+    },
+    "diagnostic_metrics": null,
+    "sides": {
+      "LONG": {
+        "completed": 0,
+        "net_realized": "0"
+      },
+      "SHORT": {
+        "completed": 0,
+        "net_realized": "0"
+      }
+    },
+    "statistics": {
+      "by_side": {
+        "LONG": {
+          "BTC_CRASH_LONG_BLOCK": 6,
+          "EXACT_PAST_RECLAIM_LEVEL_MISSING": 4286,
+          "EXECUTION_QUOTE_STALE_OR_FUTURE": 16,
+          "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 4647,
+          "NET_RR_BELOW_HARD_FLOOR": 18633,
+          "RECLAIM_DIRECTION_MISSING": 109326,
+          "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 41646
+        },
+        "SHORT": {
+          "EXACT_PAST_RECLAIM_LEVEL_MISSING": 4286,
+          "EXECUTION_QUOTE_STALE_OR_FUTURE": 11,
+          "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 4704,
+          "NET_RR_BELOW_HARD_FLOOR": 18474,
+          "QUANTIFICATION_UNRESOLVED": 1,
+          "RECLAIM_DIRECTION_MISSING": 110717,
+          "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 40367
+        }
+      },
+      "candidates": 37141,
+      "categories": {
+        "BTC_CRASH_LONG_BLOCK": 6,
+        "EXACT_PAST_RECLAIM_LEVEL_MISSING": 8572,
+        "EXECUTION_QUOTE_STALE_OR_FUTURE": 27,
+        "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 9351,
+        "NET_RR_BELOW_HARD_FLOOR": 37107,
+        "QUANTIFICATION_UNRESOLVED": 1,
+        "RECLAIM_DIRECTION_MISSING": 220043,
+        "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 82013
+      },
+      "days": {
+        "2026-08-01": {
+          "accepted": 0,
+          "candidates": 385,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 600,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 228,
+            "NET_RR_BELOW_HARD_FLOOR": 385,
+            "RECLAIM_DIRECTION_MISSING": 7800,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2507
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-02": {
+          "accepted": 0,
+          "candidates": 577,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 362,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 297,
+            "NET_RR_BELOW_HARD_FLOOR": 577,
+            "RECLAIM_DIRECTION_MISSING": 7655,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2629
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-03": {
+          "accepted": 0,
+          "candidates": 862,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 26,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 345,
+            "NET_RR_BELOW_HARD_FLOOR": 862,
+            "RECLAIM_DIRECTION_MISSING": 7529,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2758
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-04": {
+          "accepted": 0,
+          "candidates": 927,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 48,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 340,
+            "NET_RR_BELOW_HARD_FLOOR": 926,
+            "RECLAIM_DIRECTION_MISSING": 7400,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2805
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-05": {
+          "accepted": 0,
+          "candidates": 996,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 78,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 4,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 346,
+            "NET_RR_BELOW_HARD_FLOOR": 992,
+            "RECLAIM_DIRECTION_MISSING": 7350,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2750
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-06": {
+          "accepted": 0,
+          "candidates": 799,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 370,
+            "NET_RR_BELOW_HARD_FLOOR": 798,
+            "RECLAIM_DIRECTION_MISSING": 7494,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2857
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-07": {
+          "accepted": 0,
+          "candidates": 896,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 348,
+            "NET_RR_BELOW_HARD_FLOOR": 895,
+            "RECLAIM_DIRECTION_MISSING": 7486,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2790
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-08": {
+          "accepted": 0,
+          "candidates": 474,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 552,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 2,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 341,
+            "NET_RR_BELOW_HARD_FLOOR": 472,
+            "RECLAIM_DIRECTION_MISSING": 7565,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2588
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-09": {
+          "accepted": 0,
+          "candidates": 529,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 256,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 283,
+            "NET_RR_BELOW_HARD_FLOOR": 528,
+            "RECLAIM_DIRECTION_MISSING": 7743,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2709
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-10": {
+          "accepted": 0,
+          "candidates": 932,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 2,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 290,
+            "NET_RR_BELOW_HARD_FLOOR": 932,
+            "RECLAIM_DIRECTION_MISSING": 7429,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2867
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-11": {
+          "accepted": 0,
+          "candidates": 771,
+          "categories": {
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 283,
+            "NET_RR_BELOW_HARD_FLOOR": 771,
+            "RECLAIM_DIRECTION_MISSING": 7673,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2793
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-12": {
+          "accepted": 0,
+          "candidates": 811,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 3,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 343,
+            "NET_RR_BELOW_HARD_FLOOR": 808,
+            "RECLAIM_DIRECTION_MISSING": 7546,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2820
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-13": {
+          "accepted": 0,
+          "candidates": 746,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 2,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 308,
+            "NET_RR_BELOW_HARD_FLOOR": 744,
+            "RECLAIM_DIRECTION_MISSING": 7660,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2806
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-14": {
+          "accepted": 0,
+          "candidates": 678,
+          "categories": {
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 321,
+            "NET_RR_BELOW_HARD_FLOOR": 678,
+            "RECLAIM_DIRECTION_MISSING": 7724,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2797
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-15": {
+          "accepted": 0,
+          "candidates": 260,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 253,
+            "NET_RR_BELOW_HARD_FLOOR": 259,
+            "RECLAIM_DIRECTION_MISSING": 8368,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2639
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-16": {
+          "accepted": 0,
+          "candidates": 256,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 279,
+            "NET_RR_BELOW_HARD_FLOOR": 255,
+            "RECLAIM_DIRECTION_MISSING": 8331,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2654
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-17": {
+          "accepted": 0,
+          "candidates": 576,
+          "categories": {
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 293,
+            "NET_RR_BELOW_HARD_FLOOR": 576,
+            "RECLAIM_DIRECTION_MISSING": 7821,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2830
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-18": {
+          "accepted": 0,
+          "candidates": 691,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 2,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 284,
+            "NET_RR_BELOW_HARD_FLOOR": 689,
+            "RECLAIM_DIRECTION_MISSING": 7772,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2773
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-19": {
+          "accepted": 0,
+          "candidates": 1103,
+          "categories": {
+            "BTC_CRASH_LONG_BLOCK": 1,
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 1258,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 272,
+            "NET_RR_BELOW_HARD_FLOOR": 1101,
+            "RECLAIM_DIRECTION_MISSING": 6473,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2414
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-20": {
+          "accepted": 0,
+          "candidates": 1878,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 460,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 342,
+            "NET_RR_BELOW_HARD_FLOOR": 1878,
+            "RECLAIM_DIRECTION_MISSING": 6369,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2471
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-21": {
+          "accepted": 0,
+          "candidates": 2030,
+          "categories": {
+            "BTC_CRASH_LONG_BLOCK": 3,
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 1412,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 336,
+            "NET_RR_BELOW_HARD_FLOOR": 2027,
+            "RECLAIM_DIRECTION_MISSING": 5540,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2202
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-22": {
+          "accepted": 0,
+          "candidates": 2207,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 858,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 3,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 239,
+            "NET_RR_BELOW_HARD_FLOOR": 2203,
+            "QUANTIFICATION_UNRESOLVED": 1,
+            "RECLAIM_DIRECTION_MISSING": 5883,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2333
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-23": {
+          "accepted": 0,
+          "candidates": 2128,
+          "categories": {
+            "BTC_CRASH_LONG_BLOCK": 1,
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 118,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 337,
+            "NET_RR_BELOW_HARD_FLOOR": 2126,
+            "RECLAIM_DIRECTION_MISSING": 6353,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2584
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-24": {
+          "accepted": 0,
+          "candidates": 2300,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 260,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 291,
+            "NET_RR_BELOW_HARD_FLOOR": 2300,
+            "RECLAIM_DIRECTION_MISSING": 6187,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2482
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-25": {
+          "accepted": 0,
+          "candidates": 2280,
+          "categories": {
+            "BTC_CRASH_LONG_BLOCK": 1,
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 612,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 272,
+            "NET_RR_BELOW_HARD_FLOOR": 2279,
+            "RECLAIM_DIRECTION_MISSING": 5984,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2372
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-26": {
+          "accepted": 0,
+          "candidates": 2045,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 8,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 292,
+            "NET_RR_BELOW_HARD_FLOOR": 2044,
+            "RECLAIM_DIRECTION_MISSING": 6472,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2703
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-27": {
+          "accepted": 0,
+          "candidates": 2047,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 1440,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 195,
+            "NET_RR_BELOW_HARD_FLOOR": 2047,
+            "RECLAIM_DIRECTION_MISSING": 5551,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2287
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-28": {
+          "accepted": 0,
+          "candidates": 2154,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 206,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 270,
+            "NET_RR_BELOW_HARD_FLOOR": 2154,
+            "RECLAIM_DIRECTION_MISSING": 6307,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2583
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-29": {
+          "accepted": 0,
+          "candidates": 1264,
+          "categories": {
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 308,
+            "NET_RR_BELOW_HARD_FLOOR": 1263,
+            "RECLAIM_DIRECTION_MISSING": 7117,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2831
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-30": {
+          "accepted": 0,
+          "candidates": 1535,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 6,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 312,
+            "NET_RR_BELOW_HARD_FLOOR": 1535,
+            "RECLAIM_DIRECTION_MISSING": 6910,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2757
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        },
+        "2026-08-31": {
+          "accepted": 0,
+          "candidates": 2004,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 10,
+            "EXECUTION_QUOTE_STALE_OR_FUTURE": 1,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 333,
+            "NET_RR_BELOW_HARD_FLOOR": 2003,
+            "RECLAIM_DIRECTION_MISSING": 6551,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2622
+          },
+          "complete_samples": 5760,
+          "samples": 5760
+        }
+      }
+    },
+    "reason_occurrences_not_independent_trades": {
+      "NET_RR_BELOW_CONTEXT_FLOOR": 37107,
+      "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP": 37067,
+      "NET_RR_BELOW_HARD_FLOOR": 37107,
+      "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality": 37107,
+      "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence": 18765,
+      "FINAL_RISK_OUT_OF_BOUNDS": 7676,
+      "EXECUTION_QUOTE_STALE_OR_FUTURE": 27,
+      "BTC_CRASH_LONG_BLOCK": 6,
+      "SCENARIO_EXPECTED_ACTION_MISSING:TP2": 1,
+      "QUANTIFICATION_UNRESOLVED": 1
+    },
+    "positions": [],
+    "best": [],
+    "worst": [],
+    "performance": {
+      "active_seconds": 3389.611274873838,
+      "peak_rss_platform_units": 51675136,
+      "segments": [
+        {
+          "end_at_ms": 1785627867270,
+          "events": 1000000,
+          "seconds": 36.30748104094528
+        },
+        {
+          "end_at_ms": 1788220799967,
+          "events": 75496930,
+          "seconds": 3353.3037938328926
+        }
+      ]
+    },
+    "database_and_sidecar_bytes": 4968062976,
+    "model_limit": null,
+    "invalid_after_ms": null,
+    "reconciliation_clear": true,
+    "funding_budget_breaches": [],
+    "limitations": [
+      "Sample metrics with zero denominator are null (NA), not favorable ratios",
+      "Zero trades or zero drawdown does not prove strategy safety",
+      "Observed aggregate trades, not actual book liquidity or historical account execution",
+      "Tick/step/minimum/fee/rule capabilities are explicit assumptions, not dated exchange snapshots",
+      "Original Broker requires >=5 USDT per entry partial fill; stricter than order-only minimum interpretation",
+      "Funding budget is conservative ex ante; actual funding cash differs and never rewrites approval",
+      "After the first model-limit breach all outcome metrics/sides/positions are diagnostic; metrics is null and no supported return is asserted",
+      "No liquidation, maintenance-margin schedule, ADL, probabilities or statistical expectation"
+    ],
+    "strategy_effectiveness_verified": false,
+    "real_runtime_connected": false,
+    "live_allowed": false
+  }
+}

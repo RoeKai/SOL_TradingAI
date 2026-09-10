@@ -1,0 +1,444 @@
+{
+  "version": "stage08d-delivery-file-manifest/v1",
+  "baseline_commit": "efd9acc207519240af7d737a5faf9007bc7c01fc",
+  "experimental_code_commit": "b488b0e282ef49cfbcceeb4bf84ca5aeb2d7e806",
+  "excluded_self": "validation/stage08d/file-manifest.json",
+  "listed_files": 61,
+  "added_excluding_self": 52,
+  "modified": 9,
+  "files_including_this_manifest": 62,
+  "files": [
+    {
+      "path": ".gitignore",
+      "change": "modified",
+      "bytes": 6022,
+      "sha256": "c40b7c89800e241b2ddb870e625c350ad20ec921e00df56977b9449ea69661a3",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "README.md",
+      "change": "modified",
+      "bytes": 41642,
+      "sha256": "4a6320180f3443c67413121d79a51f52301f4c8039e0ae3814f215d6c8ba85c0",
+      "category": "documentation"
+    },
+    {
+      "path": "STAGE_08D_REPORT.md",
+      "change": "added",
+      "bytes": 33153,
+      "sha256": "5f6a94d2595c6ed0cb70da948e93cc318250f191581982fa3a75d00d782051e5",
+      "category": "documentation"
+    },
+    {
+      "path": "app/admission/engine.py",
+      "change": "modified",
+      "bytes": 35526,
+      "sha256": "995672e3f359d468c35d488b1cd93ad394b4085158b23630e129ae26654b0257",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/__init__.py",
+      "change": "added",
+      "bytes": 71,
+      "sha256": "d718a52d440e42abc8fb4d9b4b6a5112afa0c8bf6395762c9204664526f5464e",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/attribution.py",
+      "change": "added",
+      "bytes": 8679,
+      "sha256": "64d870870ba2f19cf2a55574058df73f682cc0c14a23390e17ba04816119f80b",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/cli.py",
+      "change": "added",
+      "bytes": 6481,
+      "sha256": "142aaa7059db19d4a42af22a80889bfc6900585e90d902f7ac6a6110d373ed92",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/configuration.py",
+      "change": "added",
+      "bytes": 5614,
+      "sha256": "834735aa120584831eeace64a78d3b53ede40118415026f6eea28c09c600a692",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/engine.py",
+      "change": "added",
+      "bytes": 22661,
+      "sha256": "fe5a749bb0633da67f0e305fe61f0ee58d8cfb72e29b4712856768d3764b0876",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/evidence.py",
+      "change": "added",
+      "bytes": 3674,
+      "sha256": "99f8d01ff62a50352116dbed29ad80b5b8322287a71c36314797b00b0790ed8f",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/funding.py",
+      "change": "added",
+      "bytes": 4915,
+      "sha256": "c7158caa642b11025976eada60243eed97df16a5ec34e8c087c8db41508610dc",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/gate.py",
+      "change": "added",
+      "bytes": 18515,
+      "sha256": "e9a26b012d6a26bf602c14a7ca1860678fd882bfab8a2817a6685be04500751a",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/models.py",
+      "change": "added",
+      "bytes": 3139,
+      "sha256": "7960bcf54b1baed0a9d9a5e47905e7837c60666bf765ef273747d370e37edd10",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/plans.py",
+      "change": "added",
+      "bytes": 4137,
+      "sha256": "791ebddb287bd6558c89b0acaee58438a2601474d3fd31f7f2d898735724b485",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/prices.py",
+      "change": "added",
+      "bytes": 7711,
+      "sha256": "d025d87d0a31e761419263478df0f20a3024158af2d8118fd8ceffd11f9ffe26",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/replay.py",
+      "change": "added",
+      "bytes": 20990,
+      "sha256": "9e31c487d06df6782e6ca2b16fbd2c9eed3af345ca8c03ae3141907388fef9e5",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/report.py",
+      "change": "added",
+      "bytes": 7645,
+      "sha256": "cbeb4c3e292e5840e529f3bb20b5129f0eaf08319c0273ea19bd6ed7b61ef609",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/scenarios.py",
+      "change": "added",
+      "bytes": 1173,
+      "sha256": "e8a1b49c9b70b8f18a11d5840fe43c59a5c3d1afdab760af3308d9e281421b03",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "app/execution_costs/storage.py",
+      "change": "added",
+      "bytes": 4335,
+      "sha256": "8850657f634218ea62b0f3f23f98a617a781f409f79b59189053135b5ffd98e2",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "docs/STAGE_08D_CONTRACT.md",
+      "change": "added",
+      "bytes": 5432,
+      "sha256": "9e9b073fc30f81ba4e7a0284f98a65cf97adc7e8024f9d4ca524ece33f11c633",
+      "category": "documentation"
+    },
+    {
+      "path": "scripts/attribute_8d_parallel.py",
+      "change": "added",
+      "bytes": 6635,
+      "sha256": "a1408f9e847e66999541d1febe12d16e40934f8a85bffc6c12eb8e9407335363",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "scripts/verify_isolation.py",
+      "change": "modified",
+      "bytes": 13968,
+      "sha256": "156e964e6ad82a525803bc184cc6942db5244689757c29e579e537c23e9eaeed",
+      "category": "source_or_isolation"
+    },
+    {
+      "path": "tests/test_admission.py",
+      "change": "modified",
+      "bytes": 33492,
+      "sha256": "6d044937f14b2965aa77276070c7887a1f9755e94a4a2c552a218223e2ad19ce",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_config_cli_isolation.py",
+      "change": "modified",
+      "bytes": 6541,
+      "sha256": "fbff16799e6e273a073ed6feef2ef5f6b354462bcf31299c4ef9df3a1b5272e9",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_dynamic_rr.py",
+      "change": "modified",
+      "bytes": 21960,
+      "sha256": "b6e665507aa91eaaf1fbda178c207f7550b07d627e83ae56e92bdc4f40a70861",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_exit_policy.py",
+      "change": "modified",
+      "bytes": 22283,
+      "sha256": "cbbbffd3e8cf4779c5bf58c2feca7262e1439763985790feb7041d7214e67c80",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_scorecard.py",
+      "change": "modified",
+      "bytes": 25306,
+      "sha256": "399136c98323f748733e8bd36d1848ce8b631ebc6f28f288ee4a08ed296bf9f7",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_stage08d_attribution_driver.py",
+      "change": "added",
+      "bytes": 921,
+      "sha256": "d78835ba6b1e9ae74b9e50e9cf768304ee5f31e79bea3d6cc5c302034d431d99",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_stage08d_boundaries.py",
+      "change": "added",
+      "bytes": 9453,
+      "sha256": "c3960a77bff70b7c10861a8ff4eb8b74a5af2d29f14c965b5b5ea7780635d459",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_stage08d_cli.py",
+      "change": "added",
+      "bytes": 1517,
+      "sha256": "e025b5c726a53416bace1229dade9b2b48e73e9d618f8b65c2d8899d5e691faf",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_stage08d_contracts.py",
+      "change": "added",
+      "bytes": 4167,
+      "sha256": "764679e6cdb58880317f09a93ead81066b1c68899c1919bae57a6f04b272647d",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_stage08d_execution.py",
+      "change": "added",
+      "bytes": 10421,
+      "sha256": "fae5d809bb88627c264d4d82acc017cd5acfd598dc0b0f77f7bd3e086738a449",
+      "category": "test"
+    },
+    {
+      "path": "tests/test_stage08d_quantification.py",
+      "change": "added",
+      "bytes": 10660,
+      "sha256": "6cb8fc9ec46d332a05637e8d949a7ab34788871b0900ebb9914eb1c9c4e01ad3",
+      "category": "test"
+    },
+    {
+      "path": "validation/stage08d/baseline-manifest.json",
+      "change": "added",
+      "bytes": 4100,
+      "sha256": "97566fd4b87650bac5efe489661f6564024cf68d12e8e7895f4a695619be55b0",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/baseline-v2-attribution.json",
+      "change": "added",
+      "bytes": 69086,
+      "sha256": "2bd80fcc2b7b1bff725a1abc98e7abfcf120cac01b802eb2d864da812b2c7167",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/baseline-v2-manifest.json",
+      "change": "added",
+      "bytes": 4100,
+      "sha256": "11fccba69a99930b280728e0d8650cc360534e98e0d2d7025910ff296554cee3",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/baseline-v2-recovery-1.json",
+      "change": "added",
+      "bytes": 20222,
+      "sha256": "defd0300d39f30229f3f4da6028e5e6d388926a0429328ca44dccc9f6d30bf6e",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/baseline-v2-recovery-2.json",
+      "change": "added",
+      "bytes": 20222,
+      "sha256": "08a06f1d41d6000677995f8b8bfa19d1f834d794ba5a93402a6e3aa2bd917572",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/baseline-v2-result.json",
+      "change": "added",
+      "bytes": 20398,
+      "sha256": "b7ad7ba585ab734fc524ee2b471b5df230c268a59020b6df59acd462ef508caa",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/baseline-v2-segment-1.json",
+      "change": "added",
+      "bytes": 5469,
+      "sha256": "22fea71c41b2077fc9eada48b50d6531cf132cd3a4970dbb00fdd07fae4496a9",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/compatibility-verification.json",
+      "change": "added",
+      "bytes": 2884,
+      "sha256": "fa07ac2ee5ddbcc1c616fbda6e0bbc31b11dbb95b45d5d98ab1723eadeaec3fc",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/completion-conservation.json",
+      "change": "added",
+      "bytes": 3049,
+      "sha256": "50686ae1b07a83f7baf52a79598b787b58665b0322873da38006316fbd017d87",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-attribution.json",
+      "change": "added",
+      "bytes": 67665,
+      "sha256": "47983a8c76766c8ec24f786859eea118c59cf1dad44dec64aeb121960319a3e8",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-manifest.json",
+      "change": "added",
+      "bytes": 4106,
+      "sha256": "d370b2b327cf0e5e97d060d4734e419157274cae2fc40a964abe2bad5bade1eb",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-recovery-1.json",
+      "change": "added",
+      "bytes": 5249,
+      "sha256": "de6903337aa71343bf0f3f027070af9b2f9d7ba1d02b2e944ea4e0f5e98731b7",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-recovery-2.json",
+      "change": "added",
+      "bytes": 5250,
+      "sha256": "bd82b741156ee5f73a8734d3e07857cba19d85a0f76d3deaadc509a28f1a7c6e",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-result.json",
+      "change": "added",
+      "bytes": 5419,
+      "sha256": "feaf7c6854b3c001cc1a9b4e408432c71ff9adb14fbec7d14e955ead2932bbee",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-v2-attribution.json",
+      "change": "added",
+      "bytes": 67665,
+      "sha256": "4f5323b76caebac9e81df946b0c30e50ebc5064ef065ccb4da773de97818e4b1",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-v2-manifest.json",
+      "change": "added",
+      "bytes": 4106,
+      "sha256": "f4d0306a9a181427be1f89165eab88fd876eafbfa236b9772ff018c8fc571128",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-v2-recovery-1.json",
+      "change": "added",
+      "bytes": 5250,
+      "sha256": "4c6c9b59daa789e5a10b2c0d7fb759b2785b505e042b3c35902a28503e0bbe34",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-v2-recovery-2.json",
+      "change": "added",
+      "bytes": 5249,
+      "sha256": "0fdbc2a4dec00dc46d7f9f89962a9f73eb2050d330407cd7dc47fd16134bbb45",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/engineering-v2-result.json",
+      "change": "added",
+      "bytes": 5419,
+      "sha256": "17376c01df3a561f68a6c64bd8cd731f4cf6a6d5bef0a9f8fd18cb5a59d3904c",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/stress-manifest.json",
+      "change": "added",
+      "bytes": 4096,
+      "sha256": "d92d2f0437717d4b450a70fcf2302e2a992dfa32a54e8d9ed0fcbd7ac20464bd",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/stress-v2-manifest.json",
+      "change": "added",
+      "bytes": 4096,
+      "sha256": "2f183fb719a4bd04a2b5cd18d6d21802bd32263d890631a093f024183c7704d0",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/stress-v2-recovery-1.json",
+      "change": "added",
+      "bytes": 20221,
+      "sha256": "f6e5eef6cb07a3a009dff9b2ba63a83fd9fbf2954fe096012e278e5fc7864a13",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/stress-v2-recovery-2.json",
+      "change": "added",
+      "bytes": 20220,
+      "sha256": "231542c49f6708383ef333de68199aede2c6060330d1dd37194a6232d3c99287",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/stress-v2-result.json",
+      "change": "added",
+      "bytes": 20396,
+      "sha256": "49afb46965975b1de2046a2b6665d96df8b94b7818b301fddab4b551b2ae2222",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/stress-v2-segment-1.json",
+      "change": "added",
+      "bytes": 5468,
+      "sha256": "20de3f13a12fcba8bcb8862069d4b181198c7594b1197e1b98d2b65159579bbb",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/unresolved-diagnostic.json",
+      "change": "added",
+      "bytes": 59034,
+      "sha256": "c9381505e408cd7126f95e7628a4c4d981039cd1508936408b154938190cd6f3",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/v1-interruption.json",
+      "change": "added",
+      "bytes": 629,
+      "sha256": "658cf4d77daba59dd6f8cdd35e7d1f5f70c852c9330635962343bc5820bb83cd",
+      "category": "sanitized_validation"
+    },
+    {
+      "path": "validation/stage08d/verification-summary.json",
+      "change": "added",
+      "bytes": 2048,
+      "sha256": "05472329d8270b0af0e89ab529d41d6983871ce530483969c2793d846aa741b6",
+      "category": "sanitized_validation"
+    }
+  ],
+  "notes": [
+    "Raw historical data, databases, WAL, logs, credentials and actual account identifiers are excluded",
+    "Final documentation/result commit preserves the experimental code commit and original frozen run manifests",
+    "The manifest intentionally excludes its own hash to avoid a circular definition"
+  ]
+}

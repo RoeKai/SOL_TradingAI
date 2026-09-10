@@ -1,0 +1,76 @@
+{
+  "version": "stage08d-completion-conservation-check/v1",
+  "scope": "ACTUAL_DEVELOPER_RUN_NOT_INDEPENDENT_REVIEW",
+  "code_commit": "b488b0e282ef49cfbcceeb4bf84ca5aeb2d7e806",
+  "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "market_prefix_digest": "098ed3de25806dc4661c965cc18d36f447f54a5f56222e2fbbd2624e17b75f73",
+  "baseline_and_stress_are_same_sample_not_independent_evidence": true,
+  "completed_through_ms": 1788220799967,
+  "summaries": {
+    "baseline": {
+      "finished": true,
+      "records": 76496930,
+      "candidates": 37141,
+      "orders": 0,
+      "fills": 0,
+      "completed_positions": 0,
+      "cash_usdt": "500",
+      "recovery_seconds": [
+        0.21392983314581215,
+        0.12506216717883945
+      ],
+      "full_result_equal_after_each_recovery": true,
+      "active_seconds": 3389.611274873838,
+      "peak_rss_bytes": 51675136,
+      "database_and_sidecar_bytes": 4968062976,
+      "output_sha256": {
+        "result": "b7ad7ba585ab734fc524ee2b471b5df230c268a59020b6df59acd462ef508caa",
+        "recovery-1": "defd0300d39f30229f3f4da6028e5e6d388926a0429328ca44dccc9f6d30bf6e",
+        "recovery-2": "08a06f1d41d6000677995f8b8bfa19d1f834d794ba5a93402a6e3aa2bd917572"
+      }
+    },
+    "stress": {
+      "finished": true,
+      "records": 76496930,
+      "candidates": 37141,
+      "orders": 0,
+      "fills": 0,
+      "completed_positions": 0,
+      "cash_usdt": "500",
+      "recovery_seconds": [
+        0.11111566703766584,
+        0.2409992499742657
+      ],
+      "full_result_equal_after_each_recovery": true,
+      "active_seconds": 3387.0887817498296,
+      "peak_rss_bytes": 50626560,
+      "database_and_sidecar_bytes": 4971622400,
+      "output_sha256": {
+        "result": "49afb46965975b1de2046a2b6665d96df8b94b7818b301fddab4b551b2ae2222",
+        "recovery-1": "f6e5eef6cb07a3a009dff9b2ba63a83fd9fbf2954fe096012e278e5fc7864a13",
+        "recovery-2": "231542c49f6708383ef333de68199aede2c6060330d1dd37194a6232d3c99287"
+      }
+    }
+  },
+  "checks": [
+    "Entire result object, including all counts, cash, fees, funding, positions, reasons, cursor, performance and model-boundary fields, is deeply equal before and after each recovery",
+    "Both independent runs consumed the identical ordered market prefix, all 76,496,930 records, 31 days and 178,560 samples; zero explicitly dropped records",
+    "93 persisted funding facts per run, no duplicated cash, no reserved risk or unresolved outbox; actual history with zero inventory does not verify funded-position behavior"
+  ],
+  "live_allowed": false,
+  "final_read_only_ledger_checks": {
+    "schema_version": 4,
+    "per_run": {
+      "history_funding_records": 93,
+      "net_funding_cash_usdt": "0",
+      "reservations": 0,
+      "outbox": 0,
+      "broker_orders": 0,
+      "broker_fills": 0,
+      "fills": 0,
+      "positions": 0,
+      "reconciliation_clear": true
+    },
+    "method": "Explicit sqlite URI mode=ro with PRAGMA query_only=ON; only the two new schema-4 simulation instances"
+  }
+}

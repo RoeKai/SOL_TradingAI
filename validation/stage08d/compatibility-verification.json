@@ -1,0 +1,88 @@
+{
+  "version": "stage08d-compatibility-verification/v1",
+  "baseline_commit": "efd9acc207519240af7d737a5faf9007bc7c01fc",
+  "experimental_code_commit": "b488b0e282ef49cfbcceeb4bf84ca5aeb2d7e806",
+  "method": "Compare Git file mode and blob ID for every pre-existing path except the explicit nine-file scope",
+  "baseline_tracked_file_count": 237,
+  "byte_identical_preexisting_paths": 228,
+  "permitted_modified_paths": [
+    {
+      "status": "M",
+      "path": ".gitignore"
+    },
+    {
+      "status": "M",
+      "path": "README.md"
+    },
+    {
+      "status": "M",
+      "path": "app/admission/engine.py"
+    },
+    {
+      "status": "M",
+      "path": "scripts/verify_isolation.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_admission.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_config_cli_isolation.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_dynamic_rr.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_exit_policy.py"
+    },
+    {
+      "status": "M",
+      "path": "tests/test_scorecard.py"
+    }
+  ],
+  "added_paths_in_code_freeze": [
+    "STAGE_08D_REPORT.md",
+    "app/execution_costs/__init__.py",
+    "app/execution_costs/attribution.py",
+    "app/execution_costs/cli.py",
+    "app/execution_costs/configuration.py",
+    "app/execution_costs/engine.py",
+    "app/execution_costs/evidence.py",
+    "app/execution_costs/funding.py",
+    "app/execution_costs/gate.py",
+    "app/execution_costs/models.py",
+    "app/execution_costs/plans.py",
+    "app/execution_costs/prices.py",
+    "app/execution_costs/replay.py",
+    "app/execution_costs/report.py",
+    "app/execution_costs/scenarios.py",
+    "app/execution_costs/storage.py",
+    "docs/STAGE_08D_CONTRACT.md",
+    "scripts/attribute_8d_parallel.py",
+    "tests/test_stage08d_attribution_driver.py",
+    "tests/test_stage08d_boundaries.py",
+    "tests/test_stage08d_cli.py",
+    "tests/test_stage08d_contracts.py",
+    "tests/test_stage08d_execution.py",
+    "tests/test_stage08d_quantification.py",
+    "validation/stage08d/baseline-manifest.json",
+    "validation/stage08d/engineering-attribution.json",
+    "validation/stage08d/engineering-manifest.json",
+    "validation/stage08d/engineering-recovery-1.json",
+    "validation/stage08d/engineering-recovery-2.json",
+    "validation/stage08d/engineering-result.json",
+    "validation/stage08d/stress-manifest.json",
+    "validation/stage08d/v1-interruption.json"
+  ],
+  "original_files_removed": 0,
+  "main_modified": false,
+  "live_allowed": false,
+  "notes": [
+    "The nine-file list is an explicit source/document/import-whitelist scope, not permission to change business thresholds",
+    "New result JSON and report-only finalization do not relabel previous experiment code versions",
+    "Passing source identity does not by itself prove model profitability or real exchange safety"
+  ]
+}

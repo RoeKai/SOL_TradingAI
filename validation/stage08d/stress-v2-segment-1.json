@@ -1,0 +1,158 @@
+{
+  "segment": {
+    "event_count": 1000000,
+    "new_events": 1000000,
+    "at_ms": 1785627867270,
+    "finished": false,
+    "seconds": 36.07996229082346,
+    "model_invalid": false,
+    "invalid_after_ms": null
+  },
+  "result": {
+    "version": "quantified-historical-report/v1",
+    "scope": "REAL_HISTORICAL_OBSERVATIONS_ASSUMED_EXECUTION_RULES_SIMULATED_ACCOUNT",
+    "experiment_id": "august-8d-stress-v2",
+    "run_digest": "b57ee97c7727dc996a200aa2261a9f5b86b5ed2be77c32ab309652dc33c8d772",
+    "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+    "finished": false,
+    "completed_through_ms": 1785627867270,
+    "evaluation_range_ms": [
+      1785542400000,
+      1788220800000
+    ],
+    "warmup_range_ms": [
+      1785542100000,
+      1785542400000
+    ],
+    "consumed_market_records": 1000000,
+    "consumed_by_symbol": {
+      "BTCUSDT": 397389,
+      "ETHUSDT": 429030,
+      "SOLUSDT": 173581
+    },
+    "dropped_records": 0,
+    "market_prefix_digest": "be95275c9ca2fbb984916d8c98526398d2d52a3744170334f2c3cb213d5437c5",
+    "result_usage": "WITHIN_DECLARED_SIMULATION_BOUNDARY_NOT_MARKET_VALIDATION",
+    "model_supported_metrics_available": true,
+    "counts": {
+      "simulated_orders": 0,
+      "confirmed_fills": 0,
+      "candidates": 384,
+      "approval_records": 384,
+      "consumed_approvals": 0
+    },
+    "metrics": {
+      "cash_usdt": "500",
+      "equity_usdt": "500",
+      "unrealized_pnl_usdt": "0",
+      "net_return": "0",
+      "maximum_equity_drawdown": "0",
+      "equity_points": 5698,
+      "missing_equity_points": 0,
+      "completed_positions": 0,
+      "win_rate": null,
+      "average_win_loss_ratio": null,
+      "profit_factor": null,
+      "gross_realized_pnl": "0",
+      "trade_fees_usdt": "0",
+      "funding_net_cash_usdt": "0",
+      "modeled_spread_cost_usdt": "0",
+      "modeled_slippage_and_rounding_cost_usdt": "0",
+      "average_holding_seconds": null,
+      "maximum_holding_seconds": null,
+      "max_consecutive_losses": 0
+    },
+    "diagnostic_metrics": null,
+    "sides": {
+      "LONG": {
+        "completed": 0,
+        "net_realized": "0"
+      },
+      "SHORT": {
+        "completed": 0,
+        "net_realized": "0"
+      }
+    },
+    "statistics": {
+      "by_side": {
+        "LONG": {
+          "EXACT_PAST_RECLAIM_LEVEL_MISSING": 300,
+          "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 125,
+          "NET_RR_BELOW_HARD_FLOOR": 185,
+          "RECLAIM_DIRECTION_MISSING": 3853,
+          "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 1235
+        },
+        "SHORT": {
+          "EXACT_PAST_RECLAIM_LEVEL_MISSING": 300,
+          "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 102,
+          "NET_RR_BELOW_HARD_FLOOR": 199,
+          "RECLAIM_DIRECTION_MISSING": 3856,
+          "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 1241
+        }
+      },
+      "candidates": 384,
+      "categories": {
+        "EXACT_PAST_RECLAIM_LEVEL_MISSING": 600,
+        "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 227,
+        "NET_RR_BELOW_HARD_FLOOR": 384,
+        "RECLAIM_DIRECTION_MISSING": 7709,
+        "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2476
+      },
+      "days": {
+        "2026-08-01": {
+          "accepted": 0,
+          "candidates": 384,
+          "categories": {
+            "EXACT_PAST_RECLAIM_LEVEL_MISSING": 600,
+            "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 227,
+            "NET_RR_BELOW_HARD_FLOOR": 384,
+            "RECLAIM_DIRECTION_MISSING": 7709,
+            "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 2476
+          },
+          "complete_samples": 5698,
+          "samples": 5698
+        }
+      }
+    },
+    "reason_occurrences_not_independent_trades": {
+      "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP": 384,
+      "NET_RR_BELOW_CONTEXT_FLOOR": 384,
+      "FINAL_RISK_OUT_OF_BOUNDS": 384,
+      "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality": 384,
+      "NET_RR_BELOW_HARD_FLOOR": 384,
+      "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence": 208
+    },
+    "positions": [],
+    "best": [],
+    "worst": [],
+    "performance": {
+      "active_seconds": 36.07996229082346,
+      "peak_rss_platform_units": 51380224,
+      "segments": [
+        {
+          "end_at_ms": 1785627867270,
+          "events": 1000000,
+          "seconds": 36.07996229082346
+        }
+      ]
+    },
+    "database_and_sidecar_bytes": 59998208,
+    "model_limit": null,
+    "invalid_after_ms": null,
+    "reconciliation_clear": true,
+    "funding_budget_breaches": [],
+    "limitations": [
+      "Sample metrics with zero denominator are null (NA), not favorable ratios",
+      "Zero trades or zero drawdown does not prove strategy safety",
+      "Observed aggregate trades, not actual book liquidity or historical account execution",
+      "Tick/step/minimum/fee/rule capabilities are explicit assumptions, not dated exchange snapshots",
+      "Original Broker requires >=5 USDT per entry partial fill; stricter than order-only minimum interpretation",
+      "Funding budget is conservative ex ante; actual funding cash differs and never rewrites approval",
+      "After the first model-limit breach all outcome metrics/sides/positions are diagnostic; metrics is null and no supported return is asserted",
+      "No liquidation, maintenance-margin schedule, ADL, probabilities or statistical expectation"
+    ],
+    "strategy_effectiveness_verified": false,
+    "real_runtime_connected": false,
+    "live_allowed": false
+  }
+}

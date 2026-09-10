@@ -1,0 +1,57 @@
+{
+  "version": "stage08d-developer-verification-record/v1",
+  "code_commit": "b488b0e282ef49cfbcceeb4bf84ca5aeb2d7e806",
+  "code_content_digest": "c14f4fe322af622c9e04bd658bf0feff5aec38659a5ab6b83f2943c0a3b710b4",
+  "scope": "DEVELOPER_ACTUAL_EXECUTION_NOT_INDEPENDENT_REVIEW",
+  "python_version": "3.12.13",
+  "node_version": "v24.18.0",
+  "python": {
+    "command": "python -m pytest -q",
+    "passed": 2187,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 2,
+    "seconds": 229.07,
+    "existing_tests": 2078,
+    "new_tests": 109,
+    "new_test_files": {
+      "test_stage08d_contracts": 20,
+      "test_stage08d_quantification": 26,
+      "test_stage08d_execution": 20,
+      "test_stage08d_boundaries": 40,
+      "test_stage08d_cli": 1,
+      "test_stage08d_attribution_driver": 2
+    }
+  },
+  "bridge": {
+    "mock_command": "node --import tsx --test tests/*.test.ts",
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 652.07625,
+    "type_command": "node node_modules/typescript/bin/tsc --noEmit",
+    "type_exit_code": 0,
+    "build_command": "node scripts/build.mjs",
+    "build_exit_code": 0,
+    "vendor_snapshots": 6,
+    "build_inputs": 82,
+    "standalone_import": "PASS"
+  },
+  "isolation": {
+    "command": "python scripts/verify_isolation.py",
+    "source_files": 116,
+    "result": "PASS",
+    "python_external_network": "DENIED_BY_OS_SANDBOX",
+    "bridge_mock_external_network": "DENIED_LOOPBACK_ONLY",
+    "original_trading_system_paths": "DENIED_BY_OS_SANDBOX"
+  },
+  "scope_notes": [
+    "Specialized reruns and diagnostic calculations are not added again to the full suite count",
+    "Bridge writes/fills in tests use mock transport only",
+    "All new ordinary-entry positives run with allow_fixtures=false",
+    "Real subprocess crash regressions use synthetic observations and confirmed synthetic fills",
+    "Historical experiments have separate frozen manifests and output records",
+    "No real accounts, private Bridge, realtime data, Telegram or deployment"
+  ],
+  "live_allowed": false
+}

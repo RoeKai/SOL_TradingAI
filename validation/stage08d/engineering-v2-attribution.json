@@ -1,0 +1,1795 @@
+{
+  "version": "same-candidate-attribution/v1",
+  "source_run_digest": "083439c3487dcc52999b7fbf114f0f9dffea989428c22e31525759f75c971181",
+  "source_code": "88901b3288ab21540917506f32f4759fdf72a1e5",
+  "new_run_digest": "86b48ab9228fd751bf0938f600bca3d64cfbac56e4fcb9fe16b40372d9da170e",
+  "data_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "candidates": 15,
+  "comparison_digest": "b23b7deb7fdd561b09934d0ac3764eea8ce713911e7b90d1646f17e11269665e",
+  "groups": {
+    "A": {
+      "results": {
+        "REJECT": 15
+      },
+      "reasons": {
+        "NET_RR_BELOW_HARD_FLOOR": 15,
+        "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 15
+      },
+      "search": {
+        "LEGACY_DIAGNOSTIC_PATH": 15
+      },
+      "samples": [
+        {
+          "candidate_id": "5ca7251d3bbca96ca701fc2490a29b28c6d5b7df4b27a5570011c28c4beb30b9",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+            "NET_RR_BELOW_HARD_FLOOR"
+          ],
+          "quantity": "0",
+          "diagnostic_quantity": "0.069",
+          "diagnostic_net_rr": "-0.99763124693337082553948365934939752235966243725821",
+          "search_status": "LEGACY_DIAGNOSTIC_PATH",
+          "legacy_validation": {
+            "schema_version": "config-contract-result/v1",
+            "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+            "config_parsing": "PASS",
+            "config_consistency": "PASS",
+            "plan_consistency": "FAIL",
+            "runtime_metadata": "INCOMPLETE",
+            "runtime_trust": "INCOMPLETE",
+            "execution": "NOT_INTEGRATED",
+            "issues": [
+              {
+                "reason_code": "DISTINCT_DAILY_ACCOUNTING_NOT_MERGED",
+                "severity": "WARNING",
+                "field_path": "main.risk + admission",
+                "source": "original models",
+                "actual": "[\"20\",\"20\"]",
+                "expected": "net cash day vs cumulative losing outcomes",
+                "suggestion": "Future provider must supply both metrics, matching risk-day boundaries and pending-entry accounting"
+              },
+              {
+                "reason_code": "ADMISSION_REJECT_IS_NOT_ELIGIBILITY",
+                "severity": "PREREQUISITE",
+                "field_path": "admission.result",
+                "source": "plan + declared configuration",
+                "actual": "\"REJECT\"",
+                "expected": "new entry requires its own valid decision",
+                "suggestion": "Existing position protection still continues under its original policy"
+              },
+              {
+                "reason_code": "EXIT_ALLOCATION_MISMATCH",
+                "severity": "ERROR",
+                "field_path": "setup.targets.fraction",
+                "source": "plan + declared configuration",
+                "actual": "[\"0.5\",\"0.5\"]",
+                "expected": "(Decimal('0.3'), Decimal('0.4'), Decimal('0.3'))",
+                "suggestion": "Do not normalize, top up or silently replace original structure allocation"
+              },
+              {
+                "reason_code": "STRUCTURE_TARGET_DIFFERS_FROM_EXIT_TRIGGER",
+                "severity": "ERROR",
+                "field_path": "setup.targets.0",
+                "source": "plan + declared configuration",
+                "actual": "72.92",
+                "expected": "72.91",
+                "suggestion": "Reference R trigger is not a structural target; original RR describes a different exit scene"
+              },
+              {
+                "reason_code": "STRUCTURE_TARGET_DIFFERS_FROM_EXIT_TRIGGER",
+                "severity": "ERROR",
+                "field_path": "setup.targets.1",
+                "source": "plan + declared configuration",
+                "actual": "72.93",
+                "expected": "72.92",
+                "suggestion": "Reference R trigger is not a structural target; original RR describes a different exit scene"
+              },
+              {
+                "reason_code": "RUNNER_FULL_POLICY_VALUATION_UNSUPPORTED",
+                "severity": "UNSUPPORTED",
+                "field_path": "exit.runner_strategy",
+                "source": "plan + declared configuration",
+                "actual": "\"fixed_r\"",
+                "expected": "path-dependent tail execution is not a fixed 3R fill",
+                "suggestion": "Keep runner_exit_price and full_policy_net_rr unknown"
+              },
+              {
+                "reason_code": "STATIC_RR_NOT_EXIT_POLICY_RETURN",
+                "severity": "WARNING",
+                "field_path": "rr",
+                "source": "plan + declared configuration",
+                "actual": "\"all supplied static targets reached\"",
+                "expected": "not guaranteed return or statistical expectation",
+                "suggestion": "TP partial fills, stop moves, time/trend exits and funding path need later explicit modeling"
+              },
+              {
+                "reason_code": "ACTUAL_FILL_R_RECHECK_REQUIRED",
+                "severity": "PREREQUISITE",
+                "field_path": "setup.entry",
+                "source": "plan + declared configuration",
+                "actual": "72.9",
+                "expected": "first confirmed entry freezes its own R anchor",
+                "suggestion": "Future fill adapter must check price, stop geometry, quantity, costs and target assumptions without rewriting history"
+              },
+              {
+                "reason_code": "FUNDING_PATH_NOT_MODELED",
+                "severity": "UNSUPPORTED",
+                "field_path": "setup.cost_assumptions",
+                "source": "plan + declared configuration",
+                "actual": "\"fixed total allocated pro rata\"",
+                "expected": "funding for actual partial-exit/time path",
+                "suggestion": "Static cost budget is not confirmed funding or full-policy valuation"
+              },
+              {
+                "reason_code": "VALIDITY_MISSING_OR_EXPIRED",
+                "severity": "PREREQUISITE",
+                "field_path": "admission.valid_until",
+                "source": "declared validity",
+                "actual": "null",
+                "expected": "strictly later than evaluated_at",
+                "suggestion": "A stale result is not new eligibility"
+              },
+              {
+                "reason_code": "TRUSTED_RUNTIME_NOT_CONNECTED",
+                "severity": "PREREQUISITE",
+                "field_path": "runtime_trust",
+                "source": "Stage 7 boundary",
+                "actual": "\"not connected\"",
+                "expected": "trusted suppliers, locked recheck, atomic reservation and reconciliation",
+                "suggestion": "Hashes/verified flags/metadata checks do not authenticate inputs"
+              }
+            ],
+            "freshness": [
+              {
+                "field_path": "setup.data_as_of",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "setup.market_state",
+                "status": "PASS",
+                "observed_at": "1785542609.247",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542624.247",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.reclaim:1785542535000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542595000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542550000",
+                "status": "PASS",
+                "observed_at": "1785542565.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542865.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542580000",
+                "status": "PASS",
+                "observed_at": "1785542595.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542895.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.market_price",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.trend",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.volume",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.volatility",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.btc_reference",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.eth_reference",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.structure",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.funding_rate",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "costs",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "net_rr_applicability",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "scorecard",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "30.0",
+                "expires_at": "1785542640.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "admission",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "5.0",
+                "expires_at": "1785542615.0",
+                "invalidates": [
+                  "eligibility"
+                ]
+              },
+              {
+                "field_path": "account",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "5.0",
+                "expires_at": "1785542615.0",
+                "invalidates": [
+                  "admission",
+                  "reservation"
+                ]
+              },
+              {
+                "field_path": "exchange",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "3600.0",
+                "expires_at": "1785546210.0",
+                "invalidates": [
+                  "rules",
+                  "sizing"
+                ]
+              },
+              {
+                "field_path": "confirmation.reclaim:1785542535000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542550000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542580000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542595000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "invalidation_review",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542625.0",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              }
+            ],
+            "exit_comparison": {
+              "reference_entry": "72.9",
+              "initial_stop": "72.89",
+              "reference_initial_r": "0.01",
+              "tp_trigger_prices": [
+                "72.91",
+                "72.92"
+              ],
+              "original_targets": [
+                [
+                  "structure-1",
+                  "72.92",
+                  "0.5"
+                ],
+                [
+                  "structure-2",
+                  "72.93",
+                  "0.5"
+                ]
+              ],
+              "proposed_allocations": [
+                "0.3",
+                "0.4",
+                "0.3"
+              ],
+              "runner_activation_price": "72.93",
+              "runner_exit_price": null,
+              "full_policy_net_rr": null,
+              "valuation": "UNSUPPORTED",
+              "interpretation": "reference_geometry_not_actual_fills_or_expected_return"
+            },
+            "evaluated_at": "1785542610.0",
+            "execution_authority": "none",
+            "admission_replacement": false,
+            "live_allowed": false,
+            "existing_position_rule": "continue_original_bound_policy_independent_of_new_config"
+          }
+        },
+        {
+          "candidate_id": "b8e79c84d49d2b6272de3331967425f8d1206667d44a15bdca92b4a91f616396",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+            "NET_RR_BELOW_HARD_FLOOR"
+          ],
+          "quantity": "0",
+          "diagnostic_quantity": "0.069",
+          "diagnostic_net_rr": "-0.99763285444199257939222602943045320514009574888063",
+          "search_status": "LEGACY_DIAGNOSTIC_PATH",
+          "legacy_validation": {
+            "schema_version": "config-contract-result/v1",
+            "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+            "config_parsing": "PASS",
+            "config_consistency": "PASS",
+            "plan_consistency": "FAIL",
+            "runtime_metadata": "INCOMPLETE",
+            "runtime_trust": "INCOMPLETE",
+            "execution": "NOT_INTEGRATED",
+            "issues": [
+              {
+                "reason_code": "DISTINCT_DAILY_ACCOUNTING_NOT_MERGED",
+                "severity": "WARNING",
+                "field_path": "main.risk + admission",
+                "source": "original models",
+                "actual": "[\"20\",\"20\"]",
+                "expected": "net cash day vs cumulative losing outcomes",
+                "suggestion": "Future provider must supply both metrics, matching risk-day boundaries and pending-entry accounting"
+              },
+              {
+                "reason_code": "ADMISSION_REJECT_IS_NOT_ELIGIBILITY",
+                "severity": "PREREQUISITE",
+                "field_path": "admission.result",
+                "source": "plan + declared configuration",
+                "actual": "\"REJECT\"",
+                "expected": "new entry requires its own valid decision",
+                "suggestion": "Existing position protection still continues under its original policy"
+              },
+              {
+                "reason_code": "EXIT_ALLOCATION_MISMATCH",
+                "severity": "ERROR",
+                "field_path": "setup.targets.fraction",
+                "source": "plan + declared configuration",
+                "actual": "[\"0.5\",\"0.5\"]",
+                "expected": "(Decimal('0.3'), Decimal('0.4'), Decimal('0.3'))",
+                "suggestion": "Do not normalize, top up or silently replace original structure allocation"
+              },
+              {
+                "reason_code": "STRUCTURE_TARGET_DIFFERS_FROM_EXIT_TRIGGER",
+                "severity": "ERROR",
+                "field_path": "setup.targets.0",
+                "source": "plan + declared configuration",
+                "actual": "72.92",
+                "expected": "72.93",
+                "suggestion": "Reference R trigger is not a structural target; original RR describes a different exit scene"
+              },
+              {
+                "reason_code": "STRUCTURE_TARGET_DIFFERS_FROM_EXIT_TRIGGER",
+                "severity": "ERROR",
+                "field_path": "setup.targets.1",
+                "source": "plan + declared configuration",
+                "actual": "72.93",
+                "expected": "72.95",
+                "suggestion": "Reference R trigger is not a structural target; original RR describes a different exit scene"
+              },
+              {
+                "reason_code": "RUNNER_FULL_POLICY_VALUATION_UNSUPPORTED",
+                "severity": "UNSUPPORTED",
+                "field_path": "exit.runner_strategy",
+                "source": "plan + declared configuration",
+                "actual": "\"fixed_r\"",
+                "expected": "path-dependent tail execution is not a fixed 3R fill",
+                "suggestion": "Keep runner_exit_price and full_policy_net_rr unknown"
+              },
+              {
+                "reason_code": "STATIC_RR_NOT_EXIT_POLICY_RETURN",
+                "severity": "WARNING",
+                "field_path": "rr",
+                "source": "plan + declared configuration",
+                "actual": "\"all supplied static targets reached\"",
+                "expected": "not guaranteed return or statistical expectation",
+                "suggestion": "TP partial fills, stop moves, time/trend exits and funding path need later explicit modeling"
+              },
+              {
+                "reason_code": "ACTUAL_FILL_R_RECHECK_REQUIRED",
+                "severity": "PREREQUISITE",
+                "field_path": "setup.entry",
+                "source": "plan + declared configuration",
+                "actual": "72.91",
+                "expected": "first confirmed entry freezes its own R anchor",
+                "suggestion": "Future fill adapter must check price, stop geometry, quantity, costs and target assumptions without rewriting history"
+              },
+              {
+                "reason_code": "FUNDING_PATH_NOT_MODELED",
+                "severity": "UNSUPPORTED",
+                "field_path": "setup.cost_assumptions",
+                "source": "plan + declared configuration",
+                "actual": "\"fixed total allocated pro rata\"",
+                "expected": "funding for actual partial-exit/time path",
+                "suggestion": "Static cost budget is not confirmed funding or full-policy valuation"
+              },
+              {
+                "reason_code": "VALIDITY_MISSING_OR_EXPIRED",
+                "severity": "PREREQUISITE",
+                "field_path": "admission.valid_until",
+                "source": "declared validity",
+                "actual": "null",
+                "expected": "strictly later than evaluated_at",
+                "suggestion": "A stale result is not new eligibility"
+              },
+              {
+                "reason_code": "TRUSTED_RUNTIME_NOT_CONNECTED",
+                "severity": "PREREQUISITE",
+                "field_path": "runtime_trust",
+                "source": "Stage 7 boundary",
+                "actual": "\"not connected\"",
+                "expected": "trusted suppliers, locked recheck, atomic reservation and reconciliation",
+                "suggestion": "Hashes/verified flags/metadata checks do not authenticate inputs"
+              }
+            ],
+            "freshness": [
+              {
+                "field_path": "setup.data_as_of",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "setup.market_state",
+                "status": "PASS",
+                "observed_at": "1785542669.571",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542684.571",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.reclaim:1785542565000",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542595000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542550000",
+                "status": "PASS",
+                "observed_at": "1785542565.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542865.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542580000",
+                "status": "PASS",
+                "observed_at": "1785542595.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542895.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.market_price",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.trend",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.volume",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.volatility",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.btc_reference",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.eth_reference",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.structure",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.funding_rate",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "costs",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "net_rr_applicability",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "scorecard",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "30.0",
+                "expires_at": "1785542700.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "admission",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "5.0",
+                "expires_at": "1785542675.0",
+                "invalidates": [
+                  "eligibility"
+                ]
+              },
+              {
+                "field_path": "account",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "5.0",
+                "expires_at": "1785542675.0",
+                "invalidates": [
+                  "admission",
+                  "reservation"
+                ]
+              },
+              {
+                "field_path": "exchange",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "3600.0",
+                "expires_at": "1785546270.0",
+                "invalidates": [
+                  "rules",
+                  "sizing"
+                ]
+              },
+              {
+                "field_path": "confirmation.reclaim:1785542565000",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542550000",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542580000",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542595000",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542970.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "invalidation_review",
+                "status": "PASS",
+                "observed_at": "1785542670.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542685.0",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              }
+            ],
+            "exit_comparison": {
+              "reference_entry": "72.91",
+              "initial_stop": "72.89",
+              "reference_initial_r": "0.02",
+              "tp_trigger_prices": [
+                "72.93",
+                "72.95"
+              ],
+              "original_targets": [
+                [
+                  "structure-1",
+                  "72.92",
+                  "0.5"
+                ],
+                [
+                  "structure-2",
+                  "72.93",
+                  "0.5"
+                ]
+              ],
+              "proposed_allocations": [
+                "0.3",
+                "0.4",
+                "0.3"
+              ],
+              "runner_activation_price": "72.97",
+              "runner_exit_price": null,
+              "full_policy_net_rr": null,
+              "valuation": "UNSUPPORTED",
+              "interpretation": "reference_geometry_not_actual_fills_or_expected_return"
+            },
+            "evaluated_at": "1785542670.0",
+            "execution_authority": "none",
+            "admission_replacement": false,
+            "live_allowed": false,
+            "existing_position_rule": "continue_original_bound_policy_independent_of_new_config"
+          }
+        },
+        {
+          "candidate_id": "2dd5397c6a31fcd40eba1c27b235bdb83368721a0f656ee28fcf3044d33053df",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+            "NET_RR_BELOW_HARD_FLOOR"
+          ],
+          "quantity": "0",
+          "diagnostic_quantity": "0.069",
+          "diagnostic_net_rr": "-0.99830803352383630395677404239242680168547316947015",
+          "search_status": "LEGACY_DIAGNOSTIC_PATH",
+          "legacy_validation": {
+            "schema_version": "config-contract-result/v1",
+            "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+            "config_parsing": "PASS",
+            "config_consistency": "PASS",
+            "plan_consistency": "FAIL",
+            "runtime_metadata": "INCOMPLETE",
+            "runtime_trust": "INCOMPLETE",
+            "execution": "NOT_INTEGRATED",
+            "issues": [
+              {
+                "reason_code": "DISTINCT_DAILY_ACCOUNTING_NOT_MERGED",
+                "severity": "WARNING",
+                "field_path": "main.risk + admission",
+                "source": "original models",
+                "actual": "[\"20\",\"20\"]",
+                "expected": "net cash day vs cumulative losing outcomes",
+                "suggestion": "Future provider must supply both metrics, matching risk-day boundaries and pending-entry accounting"
+              },
+              {
+                "reason_code": "ADMISSION_REJECT_IS_NOT_ELIGIBILITY",
+                "severity": "PREREQUISITE",
+                "field_path": "admission.result",
+                "source": "plan + declared configuration",
+                "actual": "\"REJECT\"",
+                "expected": "new entry requires its own valid decision",
+                "suggestion": "Existing position protection still continues under its original policy"
+              },
+              {
+                "reason_code": "EXIT_ALLOCATION_MISMATCH",
+                "severity": "ERROR",
+                "field_path": "setup.targets.fraction",
+                "source": "plan + declared configuration",
+                "actual": "[\"0.5\",\"0.5\"]",
+                "expected": "(Decimal('0.3'), Decimal('0.4'), Decimal('0.3'))",
+                "suggestion": "Do not normalize, top up or silently replace original structure allocation"
+              },
+              {
+                "reason_code": "RUNNER_FULL_POLICY_VALUATION_UNSUPPORTED",
+                "severity": "UNSUPPORTED",
+                "field_path": "exit.runner_strategy",
+                "source": "plan + declared configuration",
+                "actual": "\"fixed_r\"",
+                "expected": "path-dependent tail execution is not a fixed 3R fill",
+                "suggestion": "Keep runner_exit_price and full_policy_net_rr unknown"
+              },
+              {
+                "reason_code": "STATIC_RR_NOT_EXIT_POLICY_RETURN",
+                "severity": "WARNING",
+                "field_path": "rr",
+                "source": "plan + declared configuration",
+                "actual": "\"all supplied static targets reached\"",
+                "expected": "not guaranteed return or statistical expectation",
+                "suggestion": "TP partial fills, stop moves, time/trend exits and funding path need later explicit modeling"
+              },
+              {
+                "reason_code": "ACTUAL_FILL_R_RECHECK_REQUIRED",
+                "severity": "PREREQUISITE",
+                "field_path": "setup.entry",
+                "source": "plan + declared configuration",
+                "actual": "72.9",
+                "expected": "first confirmed entry freezes its own R anchor",
+                "suggestion": "Future fill adapter must check price, stop geometry, quantity, costs and target assumptions without rewriting history"
+              },
+              {
+                "reason_code": "FUNDING_PATH_NOT_MODELED",
+                "severity": "UNSUPPORTED",
+                "field_path": "setup.cost_assumptions",
+                "source": "plan + declared configuration",
+                "actual": "\"fixed total allocated pro rata\"",
+                "expected": "funding for actual partial-exit/time path",
+                "suggestion": "Static cost budget is not confirmed funding or full-policy valuation"
+              },
+              {
+                "reason_code": "VALIDITY_MISSING_OR_EXPIRED",
+                "severity": "PREREQUISITE",
+                "field_path": "admission.valid_until",
+                "source": "declared validity",
+                "actual": "null",
+                "expected": "strictly later than evaluated_at",
+                "suggestion": "A stale result is not new eligibility"
+              },
+              {
+                "reason_code": "TRUSTED_RUNTIME_NOT_CONNECTED",
+                "severity": "PREREQUISITE",
+                "field_path": "runtime_trust",
+                "source": "Stage 7 boundary",
+                "actual": "\"not connected\"",
+                "expected": "trusted suppliers, locked recheck, atomic reservation and reconciliation",
+                "suggestion": "Hashes/verified flags/metadata checks do not authenticate inputs"
+              }
+            ],
+            "freshness": [
+              {
+                "field_path": "setup.data_as_of",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "setup.market_state",
+                "status": "PASS",
+                "observed_at": "1785542744.109",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542759.109",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.reclaim:1785542685000",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542595000",
+                "status": "PASS",
+                "observed_at": "1785542610.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542910.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542670000",
+                "status": "PASS",
+                "observed_at": "1785542685.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542985.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542550000",
+                "status": "PASS",
+                "observed_at": "1785542565.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542865.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "structure.swing:1785542580000",
+                "status": "PASS",
+                "observed_at": "1785542595.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785542895.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.market_price",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.trend",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.volume",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.volatility",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.btc_reference",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.eth_reference",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.structure",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "coverage.funding_rate",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "costs",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "net_rr_applicability",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "scorecard",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "30.0",
+                "expires_at": "1785542775.0",
+                "invalidates": [
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "admission",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "5.0",
+                "expires_at": "1785542750.0",
+                "invalidates": [
+                  "eligibility"
+                ]
+              },
+              {
+                "field_path": "account",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "5.0",
+                "expires_at": "1785542750.0",
+                "invalidates": [
+                  "admission",
+                  "reservation"
+                ]
+              },
+              {
+                "field_path": "exchange",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "3600.0",
+                "expires_at": "1785546345.0",
+                "invalidates": [
+                  "rules",
+                  "sizing"
+                ]
+              },
+              {
+                "field_path": "confirmation.reclaim:1785542685000",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542550000",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542595000",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "confirmation.swing:1785542670000",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "300.0",
+                "expires_at": "1785543045.0",
+                "invalidates": [
+                  "structure",
+                  "admission"
+                ]
+              },
+              {
+                "field_path": "invalidation_review",
+                "status": "PASS",
+                "observed_at": "1785542745.0",
+                "ttl_seconds": "15.0",
+                "expires_at": "1785542760.0",
+                "invalidates": [
+                  "plan",
+                  "admission"
+                ]
+              }
+            ],
+            "exit_comparison": {
+              "reference_entry": "72.9",
+              "initial_stop": "72.89",
+              "reference_initial_r": "0.01",
+              "tp_trigger_prices": [
+                "72.91",
+                "72.92"
+              ],
+              "original_targets": [
+                [
+                  "structure-1",
+                  "72.91",
+                  "0.5"
+                ],
+                [
+                  "structure-2",
+                  "72.92",
+                  "0.5"
+                ]
+              ],
+              "proposed_allocations": [
+                "0.3",
+                "0.4",
+                "0.3"
+              ],
+              "runner_activation_price": "72.93",
+              "runner_exit_price": null,
+              "full_policy_net_rr": null,
+              "valuation": "UNSUPPORTED",
+              "interpretation": "reference_geometry_not_actual_fills_or_expected_return"
+            },
+            "evaluated_at": "1785542745.0",
+            "execution_authority": "none",
+            "admission_replacement": false,
+            "live_allowed": false,
+            "existing_position_rule": "continue_original_bound_policy_independent_of_new_config"
+          }
+        }
+      ]
+    },
+    "B": {
+      "results": {
+        "REJECT": 15
+      },
+      "reasons": {
+        "NET_RR_BELOW_HARD_FLOOR": 15,
+        "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP": 15,
+        "NET_RR_BELOW_CONTEXT_FLOOR": 15,
+        "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality": 15,
+        "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence": 8,
+        "FINAL_RISK_OUT_OF_BOUNDS": 2
+      },
+      "search": {
+        "PROVEN_STATIC_RR_DOMAIN_REJECT": 15
+      },
+      "samples": [
+        {
+          "candidate_id": "5ca7251d3bbca96ca701fc2490a29b28c6d5b7df4b27a5570011c28c4beb30b9",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.832",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.832",
+            "rr_at_max": "-0.91657667707587393222592632575736079012018433602686",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "1.0",
+            "quantity_linear_cost": "0"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.832",
+            "step": "0.001",
+            "size": 6764,
+            "linear_risk_per_unit": "0.27242200650"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.832",
+              "grade": "A",
+              "funding": "1.000",
+              "static_net_rr": "-0.91657667707587393222592632575736079012018433602686",
+              "reason_codes": [
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "1.000"
+        },
+        {
+          "candidate_id": "b8e79c84d49d2b6272de3331967425f8d1206667d44a15bdca92b4a91f616396",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.831",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.831",
+            "rr_at_max": "-0.91852971224322011970737747931677979477779014454833",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "1.0",
+            "quantity_linear_cost": "0"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.831",
+            "step": "0.001",
+            "size": 6763,
+            "linear_risk_per_unit": "0.28244001300"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.831",
+              "grade": "A",
+              "funding": "1.000",
+              "static_net_rr": "-0.91852971224322011970737747931677979477779014454833",
+              "reason_codes": [
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "1.000"
+        },
+        {
+          "candidate_id": "2dd5397c6a31fcd40eba1c27b235bdb83368721a0f656ee28fcf3044d33053df",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.832",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.832",
+            "rr_at_max": "-0.94041191219705280873280451839811485008584595430490",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "1.0",
+            "quantity_linear_cost": "0"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.832",
+            "step": "0.001",
+            "size": 6764,
+            "linear_risk_per_unit": "0.27242200650"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.832",
+              "grade": "A",
+              "funding": "1.000",
+              "static_net_rr": "-0.94041191219705280873280451839811485008584595430490",
+              "reason_codes": [
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "1.000"
+        }
+      ]
+    },
+    "C": {
+      "results": {
+        "REJECT": 15
+      },
+      "reasons": {
+        "NET_RR_BELOW_CONTEXT_FLOOR": 15,
+        "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 15,
+        "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP": 15,
+        "NET_RR_BELOW_HARD_FLOOR": 15,
+        "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality": 15,
+        "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence": 8,
+        "FINAL_RISK_OUT_OF_BOUNDS": 2
+      },
+      "search": {
+        "PROVEN_STATIC_RR_DOMAIN_REJECT": 15
+      },
+      "samples": [
+        {
+          "candidate_id": "5ca7251d3bbca96ca701fc2490a29b28c6d5b7df4b27a5570011c28c4beb30b9",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.833",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.833",
+            "rr_at_max": "-0.91348850909562656865042744581335516751105888322521",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "0",
+            "quantity_linear_cost": "0.14604"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.833",
+            "step": "0.001",
+            "size": 6765,
+            "linear_risk_per_unit": "0.40388300600"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.833",
+              "grade": "A",
+              "funding": "0.99789132",
+              "static_net_rr": "-0.91348850909562656865042744581335516751105888322521",
+              "reason_codes": [
+                "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "0.99789132"
+        },
+        {
+          "candidate_id": "b8e79c84d49d2b6272de3331967425f8d1206667d44a15bdca92b4a91f616396",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.832",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.832",
+            "rr_at_max": "-0.91558221795847640613259996716308382228314600773677",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "0",
+            "quantity_linear_cost": "0.14604"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.832",
+            "step": "0.001",
+            "size": 6764,
+            "linear_risk_per_unit": "0.41390001200"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.832",
+              "grade": "A",
+              "funding": "0.99774528",
+              "static_net_rr": "-0.91558221795847640613259996716308382228314600773677",
+              "reason_codes": [
+                "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "0.99774528"
+        },
+        {
+          "candidate_id": "2dd5397c6a31fcd40eba1c27b235bdb83368721a0f656ee28fcf3044d33053df",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.833",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.833",
+            "rr_at_max": "-0.93820607792544754903601960415239654822218491658943",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "0",
+            "quantity_linear_cost": "0.14604"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.833",
+            "step": "0.001",
+            "size": 6765,
+            "linear_risk_per_unit": "0.40388300600"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.833",
+              "grade": "A",
+              "funding": "0.99789132",
+              "static_net_rr": "-0.93820607792544754903601960415239654822218491658943",
+              "reason_codes": [
+                "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "0.99789132"
+        }
+      ]
+    },
+    "D": {
+      "results": {
+        "REJECT": 15
+      },
+      "reasons": {
+        "NET_RR_BELOW_HARD_FLOOR": 15,
+        "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP": 15,
+        "NET_RR_BELOW_CONTEXT_FLOOR": 15,
+        "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality": 15,
+        "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence": 8,
+        "FINAL_RISK_OUT_OF_BOUNDS": 2
+      },
+      "search": {
+        "PROVEN_STATIC_RR_DOMAIN_REJECT": 15
+      },
+      "samples": [
+        {
+          "candidate_id": "5ca7251d3bbca96ca701fc2490a29b28c6d5b7df4b27a5570011c28c4beb30b9",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.832",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.832",
+            "rr_at_max": "-0.91651088460285342535631129035366798586528308872887",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "0",
+            "quantity_linear_cost": "0.14604"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.832",
+            "step": "0.001",
+            "size": 6764,
+            "linear_risk_per_unit": "0.41846200650"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.832",
+              "grade": "A",
+              "funding": "0.99774528",
+              "static_net_rr": "-0.91651088460285342535631129035366798586528308872887",
+              "reason_codes": [
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "0.99774528"
+        },
+        {
+          "candidate_id": "b8e79c84d49d2b6272de3331967425f8d1206667d44a15bdca92b4a91f616396",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.831",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.831",
+            "rr_at_max": "-0.91846288813942880458230381915153648018583307875320",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "0",
+            "quantity_linear_cost": "0.14604"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.831",
+            "step": "0.001",
+            "size": 6763,
+            "linear_risk_per_unit": "0.42848001300"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.831",
+              "grade": "A",
+              "funding": "0.99759924",
+              "static_net_rr": "-0.91846288813942880458230381915153648018583307875320",
+              "reason_codes": [
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "0.99759924"
+        },
+        {
+          "candidate_id": "2dd5397c6a31fcd40eba1c27b235bdb83368721a0f656ee28fcf3044d33053df",
+          "side": "LONG",
+          "result": "REJECT",
+          "reason_codes": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "quantity": "0",
+          "evaluated_quantity": "6.832",
+          "search_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+          "proof": {
+            "kind": "NONNEGATIVE_FIXED_COST_LINEAR_STATIC_RR",
+            "maximum_quantity": "6.832",
+            "rr_at_max": "-0.94036491757346673239736520739547713276091649194919",
+            "global_floor": "2",
+            "derivative_sign": "f0*(g+l)/(l*q+f0)^2; if g+l<=0 all rewards nonpositive",
+            "fixed_usdt": "0",
+            "quantity_linear_cost": "0.14604"
+          },
+          "domain": {
+            "low": "0.069",
+            "high": "6.832",
+            "step": "0.001",
+            "size": 6764,
+            "linear_risk_per_unit": "0.41846200650"
+          },
+          "tier": "A",
+          "required_net_rr": "2",
+          "risk": "0",
+          "risk_ceiling": null,
+          "evaluated_quantities": [
+            {
+              "q": "6.832",
+              "grade": "A",
+              "funding": "0.99774528",
+              "static_net_rr": "-0.94036491757346673239736520739547713276091649194919",
+              "reason_codes": [
+                "NET_RR_BELOW_HARD_FLOOR",
+                "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+                "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+                "NET_RR_BELOW_CONTEXT_FLOOR",
+                "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+              ]
+            }
+          ],
+          "evaluated_funding_usdt": "0.99774528"
+        }
+      ]
+    }
+  },
+  "transitions": {
+    "REJECT/REJECT/REJECT/REJECT": 15
+  },
+  "independent_samples": 15,
+  "counts_must_not_be_summed_across_groups": true,
+  "source_read_only": true,
+  "snapshot": "Explicit empty 500-USDT read-only counterfactual, SAME for each group; not D continuous state",
+  "configured_range_ms": [
+    1785542400000,
+    1785546000000
+  ],
+  "limit": null,
+  "live_allowed": false,
+  "orders_created": 0,
+  "content_digest": "7346e7c7721ee2be80d9d3920deffeafd8e161c36e89207af6b13234a6a91d39"
+}
