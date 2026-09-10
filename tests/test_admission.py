@@ -600,7 +600,9 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
             'app/configuration/models.py','app/configuration/inputs.py','app/configuration/compiler.py',
             'app/configuration/contracts.py','app/configuration/check.py',
             'app/offline_paper/models.py','app/offline_paper/engine.py','app/offline_paper/risk.py',
-            'app/offline_paper/fixtures.py','app/offline_paper/cli.py'}: continue
+            'app/offline_paper/fixtures.py','app/offline_paper/cli.py',
+            'app/admitted_paper/engine.py','app/admitted_paper/gate.py',
+            'app/admitted_paper/provider.py','app/admitted_paper/plans.py','app/admitted_paper/demo.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

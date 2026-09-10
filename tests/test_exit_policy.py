@@ -400,7 +400,9 @@ def test_no_live_mode_no_upstream_mutation_and_no_runtime_wiring():
         # Stage 7 exact offline content checks; no Paper/Live wiring permitted.
         if path.relative_to(ROOT).as_posix() in {
             'app/configuration/contracts.py','app/configuration/inputs.py','app/configuration/compiler.py',
-            'app/offline_paper/models.py','app/offline_paper/engine.py','app/offline_paper/broker.py'}: continue
+            'app/offline_paper/models.py','app/offline_paper/engine.py','app/offline_paper/broker.py',
+            'app/admitted_paper/models.py','app/admitted_paper/scenarios.py',
+            'app/admitted_paper/engine.py','app/admitted_paper/gate.py'}: continue
         assert 'app.exits' not in path.read_text()
     assert 'exit-policy' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

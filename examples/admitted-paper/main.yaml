@@ -1,0 +1,24 @@
+# Synthetic offline 8B template; no real venue/account configuration.
+instance_id: admitted-paper-demo
+dry_run: true
+symbols: [SOLUSDT, BTCUSDT, ETHUSDT]
+trade_symbol: SOLUSDT
+paper:
+  initial_balance: 500
+live:
+  enabled: false
+  dedicated_account_confirmed: false
+risk:
+  max_loss_per_trade: 5
+  daily_loss_limit: 20
+  max_trades_per_day: 3
+  max_consecutive_losses: 2
+  max_positions: 1
+  max_margin_ratio: 0.20
+  max_leverage: 5
+  taker_fee_rate: 0.0005
+  slippage_bps: 10
+execution:
+  leverage: 5
+alerts:
+  enabled: false

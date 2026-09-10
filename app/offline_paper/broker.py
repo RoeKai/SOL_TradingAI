@@ -8,6 +8,7 @@ from decimal import Decimal as D, ROUND_FLOOR, ROUND_CEILING
 from app.exits.models import ExitVenueRules
 from .models import OfflineError, amount
 from .storage import get, put, rows, digest
+from .pricing import execution_price
 
 TERMINAL=('FILLED','CANCELED','REJECTED')
 
@@ -35,6 +36,12 @@ def inventory(db,position_id):
 
 class Broker:
     def __init__(self,store): self.store=store
+
+    def _authorize_entry(self,db,item):
+        # The default 8A Broker still cannot consume ordinary entry permissions.
+        if item['origin']!='FIXTURE_EXISTING_POSITION' or not self.store.settings(db).allow_fixtures:
+            raise OfflineError('NORMAL_ENTRY_CONTRACT_NOT_SUPPORTED_8A')
+        return None
 
     def _snapshot(self,db,order,cause):
         action=order['action'];kind=action['kind'];key=cause+':'+action['action_id']+':receipt'
@@ -88,17 +95,16 @@ class Broker:
                 if exact: raise OfflineError('Off-grid exact remainder capability is not implemented')
                 if quantity%rules.quantity_step:
                     raise OfflineError('Quantity precision unsupported')
-                if kind=='ENTRY' and (item['origin']!='FIXTURE_EXISTING_POSITION' or not self.store.settings(db).allow_fixtures):
-                    # Stage 7 cannot yet supply a compatible full Runner plan.
-                    raise OfflineError('NORMAL_ENTRY_CONTRACT_NOT_SUPPORTED_8A')
+                denial=self._authorize_entry(db,item) if kind=='ENTRY' else None
                 order=dict(action=action,status='ACCEPTED',cumulative='0',created_at=now);replaced=None
                 if kind=='ENTRY':
                     reservation=get(db,'reservations',action['position_id'])
                     if reservation is None: raise OfflineError('Entry has no atomic reservation')
                     identity=get(db,'identity','identity')
-                    if (now>=reservation['expires_at'] or account['paused'] or account['quarantined'] or
+                    if (denial or now>=reservation['expires_at'] or account['paused'] or account['quarantined'] or
                         identity['bundle_digest']!=reservation['bundle_digest']):
                         order['status']='REJECTED'
+                        if denial: order['reason_code']=denial
                 if kind in ('ARM_STOP','MOVE_STOP'):
                     if action.get('protection_mode')!='fixed_quantity': raise OfflineError('Dynamic stops unsupported')
                     stop=amount(action['stop_price'])
@@ -161,10 +167,9 @@ class Broker:
             # Adverse slippage; entry/exit costs are explicit frozen assumptions.
             context=get(db,'reservations',action['position_id'])
             policy=context['exit_policy']
-            slippage=D(policy['expected_exit_slippage_bps'] if exit_order else str(context['entry_costs']['slippage_bps']))/10000
-            price=quoted*(1+slippage if side=='BUY' else 1-slippage)
+            slippage=D(policy['expected_exit_slippage_bps'] if exit_order else str(context['entry_costs']['slippage_bps']))
             tick=synthetic_rules().price_tick
-            price=(price/tick).to_integral_value(rounding=ROUND_CEILING if side=='BUY' else ROUND_FLOOR)*tick
+            price=execution_price(quoted,side,slippage,tick)
             if not exit_order and quantity*price<5: raise OfflineError('Entry minimum notional')
             fee=quantity*price*D(policy['expected_exit_fee_rate'] if exit_order else str(context['entry_costs']['fee_rate']))
             fact=dict(kind='EXIT_FILL' if exit_order else 'ENTRY_FILL',fill_id=key,action_id=action_id,

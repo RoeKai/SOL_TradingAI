@@ -293,3 +293,5 @@ node_modules/
 .git-credentials
 # Stage 8A state, WAL, generated reviews and run outputs are never source artifacts.
 offline-runs/
+# Stage 8B explicitly separate instance databases, receipts and local recaps.
+offline-admitted-runs/

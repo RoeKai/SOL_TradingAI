@@ -60,7 +60,9 @@ def declare_plan_binding(bundle, inputs, *, declared_at):
         exit_policy_digest=fingerprint(policy_from(bundle,'exit')),declared_at=now)
 
 
-def _plan_checks(bundle, inputs, now):
+def _plan_checks(bundle, inputs, now, *, exit_usage='legacy_full_policy'):
+    if exit_usage not in ('legacy_full_policy','conditional_paper_8b'):
+        raise ConfigurationError('Unknown exit valuation purpose')
     setup,rr,card,decision=inputs.setup,inputs.rr,inputs.scorecard,inputs.admission
     policy,ex=policy_from(bundle,'admission'),policy_from(bundle,'exit')
     main=main_values(bundle)
@@ -203,12 +205,12 @@ def _plan_checks(bundle, inputs, now):
         add('EXIT_TRIGGER_PRICE_NONPOSITIVE','exit.reference_geometry',comparison.tp_trigger_prices,
             'positive linear-contract prices','A reference R rule cannot invent an impossible price')
     fractions=tuple(_d(t.fraction) for t in setup.targets)
-    if fractions!=comparison.proposed_allocations:
+    if exit_usage=='legacy_full_policy' and fractions!=comparison.proposed_allocations:
         add('EXIT_ALLOCATION_MISMATCH','setup.targets.fraction',fractions,str(comparison.proposed_allocations),
             'Do not normalize, top up or silently replace original structure allocation')
     if sum(fractions,D(0))!=1:
         add('PLAN_FRACTIONS_NOT_EXACTLY_ONE','setup.targets.fraction',fractions,'Decimal sum exactly 1','No tolerance-based normalization')
-    for index,trigger in enumerate(comparison.tp_trigger_prices):
+    for index,trigger in enumerate(comparison.tp_trigger_prices if exit_usage=='legacy_full_policy' else ()):
         if index>=len(setup.targets) or _d(setup.targets[index].price)!=trigger:
             add('STRUCTURE_TARGET_DIFFERS_FROM_EXIT_TRIGGER','setup.targets.'+str(index),
                 None if index>=len(setup.targets) else setup.targets[index].price,str(trigger),
@@ -227,12 +229,13 @@ def _plan_checks(bundle, inputs, now):
             add('STOP_MOVEMENT_PATH_UNSUPPORTED','setup.stop_movement.rules',rule.model_dump(mode='json'),
                 'an explicit supported mapping of fill trigger, buffer and path-dependent tail protection',
                 'No fixed-price/trailing rule is silently converted into the Stage 6 Runner policy',severity='UNSUPPORTED')
-    add('RUNNER_FULL_POLICY_VALUATION_UNSUPPORTED','exit.runner_strategy',ex.runner_strategy,
-        'path-dependent tail execution is not a fixed 3R fill','Keep runner_exit_price and full_policy_net_rr unknown',severity='UNSUPPORTED')
-    add('STATIC_RR_NOT_EXIT_POLICY_RETURN','rr','all supplied static targets reached',
-        'not guaranteed return or statistical expectation','TP partial fills, stop moves, time/trend exits and funding path need later explicit modeling',severity='WARNING')
-    add('ACTUAL_FILL_R_RECHECK_REQUIRED','setup.entry',setup.entry.reference_price,
-        'first confirmed entry freezes its own R anchor','Future fill adapter must check price, stop geometry, quantity, costs and target assumptions without rewriting history',severity='PREREQUISITE')
+    if exit_usage=='legacy_full_policy':
+        add('RUNNER_FULL_POLICY_VALUATION_UNSUPPORTED','exit.runner_strategy',ex.runner_strategy,
+            'path-dependent tail execution is not a fixed 3R fill','Keep runner_exit_price and full_policy_net_rr unknown',severity='UNSUPPORTED')
+        add('STATIC_RR_NOT_EXIT_POLICY_RETURN','rr','all supplied static targets reached',
+            'not guaranteed return or statistical expectation','TP partial fills, stop moves, time/trend exits and funding path need later explicit modeling',severity='WARNING')
+        add('ACTUAL_FILL_R_RECHECK_REQUIRED','setup.entry',setup.entry.reference_price,
+            'first confirmed entry freezes its own R anchor','Future fill adapter must check price, stop geometry, quantity, costs and target assumptions without rewriting history',severity='PREREQUISITE')
     costs=setup.cost_assumptions
     floors={'entry_fee_rate':max(policy.minimum_entry_fee_rate,D(str(main['risk']['taker_fee_rate']))),
         'exit_fee_rate':max(policy.minimum_exit_fee_rate,ex.expected_exit_fee_rate,D(str(main['risk']['taker_fee_rate']))),
@@ -257,7 +260,7 @@ def _plan_checks(bundle, inputs, now):
     elif not ex.max_holding_seconds<=_d(costs.assumed_holding_seconds)<=_d(policy.max_holding_assumption_seconds):
         add('FUNDING_HORIZON_INCOMPATIBLE','setup.cost_assumptions.assumed_holding_seconds',costs.assumed_holding_seconds,
             'cover configured exit horizon within the admitted horizon limit','Produce a separately labeled conservative scenario')
-    else:
+    elif exit_usage=='legacy_full_policy':
         add('FUNDING_PATH_NOT_MODELED','setup.cost_assumptions','fixed total allocated pro rata',
             'funding for actual partial-exit/time path','Static cost budget is not confirmed funding or full-policy valuation',severity='UNSUPPORTED')
     if inputs.bound_position is not None:
@@ -268,6 +271,26 @@ def _plan_checks(bundle, inputs, now):
         add('EXISTING_POSITION_POLICY_RETAINED','bound_position.policy','original binding retained',
             'new config never switches policy or disables protection','Full original-policy checkpoint replay belongs to the existing recovery contract',severity='WARNING')
     return problems,comparison
+
+
+def validate_paper_context_8b(bundle, inputs, *, evaluated_at):
+    """Only shared input/context checks, NOT an ExitPlan approval or execution.
+
+    Explicit new usage dispatch, not suppression of legacy error codes. Stage 7
+    validate_contract still reports the full-policy valuation gaps unchanged.
+    The 8B composer MUST separately validate allocation mapping, path scenarios,
+    funding model, trusted instance evidence and actual-fill adaptation.
+    """
+    checked=verify_bundle(bundle)
+    if checked.parsing!='PASS' or checked.consistency!='PASS':
+        return checked.issues
+    if type(inputs) is not PlanInputs:
+        raise ConfigurationError('Explicit PlanInputs required')
+    inputs=PlanInputs.model_validate(inputs.model_dump())
+    with localcontext(Context(prec=50,rounding=ROUND_HALF_EVEN)):
+        p,_=_plan_checks(bundle,inputs,_time(evaluated_at),exit_usage='conditional_paper_8b')
+        r,_=_runtime_checks(bundle,inputs,_time(evaluated_at))
+    return tuple(p+r)
 
 
 def _runtime_checks(bundle, inputs, now):

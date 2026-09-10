@@ -277,3 +277,37 @@ JSON 独立记录 `config_parsing / config_consistency / plan_consistency / runt
 **第七阶段交付后暂停等待验收；不进入第八阶段、不合并 main、不部署、不接入 Paper/Live。实盘继续硬关闭。**
 
 详细边界见 [架构隔离](docs/ARCHITECTURE_ISOLATION.md)、[历史隔离验收](docs/ISOLATION_ACCEPTANCE.md)、[Paper 闭环验收与文件清单](docs/PAPER_ACCEPTANCE.md)。未连接或部署任何新/旧服务器，未改原前端或重启旧服务。
+
+## 第八阶段 8B：普通审批的合成离线闭环
+
+这是独立新入口，**不是 `main.py` 的新默认模式，也不启用任何实盘能力**。8A 入口和旧账本不变。8B 只接受本实例供应器生成的合成计划，不能传裸 Signal／JSON 审批绕过准入。默认 `allow_fixtures=false`，成功示例从空数据库开始，不调用 `fixture_entry`。
+
+从本仓库根目录，在自己的依赖环境执行（不需要 `.env` 或 API Key）：
+
+```bash
+python -m app.admitted_paper.cli demo --workspace . --run-id demo-long --side LONG
+python -m app.admitted_paper.cli demo --workspace . --run-id demo-short --side SHORT
+python -m app.admitted_paper.cli recover --workspace . --run-id demo-long
+python -m app.admitted_paper.cli review --workspace . --run-id demo-long
+
+# 普通入口拒绝例：不会产生订单、预留或持仓
+python -m app.admitted_paper.cli reject --workspace . --run-id reject-evidence --reason evidence
+python -m app.admitted_paper.cli reject --workspace . --run-id reject-risk --reason risk
+python -m app.admitted_paper.cli reject --workspace . --run-id reject-s3 --reason scenario
+
+# 显式进程崩溃探针（预期退出码 91），随后按原订单 ID 恢复
+python -m app.admitted_paper.cli demo --workspace . --run-id crash-demo --fault after_broker_execution
+python -m app.admitted_paper.cli recover --workspace . --run-id crash-demo
+
+python -m pytest -q tests/test_admitted_paper.py tests/test_admitted_recovery.py tests/test_admitted_boundaries.py
+```
+
+每个 `demo/reject` 必须使用尚未存在的 run-id；重复初始化直接拒绝，不重置余额。数据库身份为 `sol-admitted-paper/8b`、schema 2，固定在本模块的 `offline-admitted-runs/<run-id>/ledger.sqlite3`，不能接管 schema 1 的 8A 数据库。运行目录和数据库不上传。
+
+数据链 → Candidate → 原 RR/Scorecard/Admission → **独立 ExitPlan 与 S0–S3 条件准入** → 锁内重算/预留/消费 → 原模拟 Broker → 确认成交 → 原退出状态机 → 事务账本/复盘/恢复。JSON 输出每个绑定 ID、原因、现金、费用、原始 R、剩余仓位和待对账项。
+
+原第七阶段 `RUNNER_FULL_POLICY_VALUATION_UNSUPPORTED` **仍然存在**。8B 只建模指定条件路径；原 50/50 结构目标及其静态 RR 不会被改成执行的 30/40/30。S3 扣除 Runner 跟踪距离，使用最接近的合格既有结构位置，不把 3R 激活当作 3R 成交。`win_probability` 和 `full_policy_expected_return` 均未知，模拟盈利不能证明策略有效。
+
+限制：只有明确的合成无资金费合约、固定 R Runner、指定报价和显式成交量；没有实时行情、真实流动性、真实资金费、强平系统、交易所账户或私有 Bridge。报价/版本改变后的旧审批拒绝，需用新请求重新申请；尚未被 Broker 接受的意图在重启改变账户版本后会以原 ID 拒绝结清，而非暗中重新授权。已接受订单/已有仓位继续恢复和保护。
+
+完整模型、事务边界、测试记录与限制见 [STAGE_08B_REPORT.md](STAGE_08B_REPORT.md)。8B 交付后暂停验收，不合并 main，不自动进入后续阶段。
