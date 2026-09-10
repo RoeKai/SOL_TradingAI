@@ -1,0 +1,182 @@
+{
+  "scope": "ACTUAL_FULL_MONTH_CLI_RECOVERY_NOT_HISTORICAL_POSITION_EXECUTION_PROOF",
+  "implementation_commit": "88901b3288ab21540917506f32f4759fdf72a1e5",
+  "network": "OS_DENIED",
+  "per_run": {
+    "baseline": {
+      "run": "august-baseline-v2",
+      "recoveries": [
+        {
+          "attempt": 1,
+          "full_cli_seconds": 6.741451959125698,
+          "core_recovery_seconds": 0.11258350010029972,
+          "metrics": {
+            "average_holding_seconds": null,
+            "average_win_loss_ratio": null,
+            "cash_usdt": "500",
+            "completed_positions": 0,
+            "equity_points": 178560,
+            "equity_usdt": "500",
+            "funding_net_cash_usdt": "0",
+            "gross_realized_pnl": "0",
+            "max_consecutive_losses": 0,
+            "maximum_equity_drawdown": "0",
+            "maximum_holding_seconds": null,
+            "missing_equity_points": 0,
+            "modeled_slippage_and_rounding_cost_usdt": "0",
+            "modeled_spread_cost_usdt": "0",
+            "net_return": "0",
+            "profit_factor": null,
+            "trade_fees_usdt": "0",
+            "unrealized_pnl_usdt": "0",
+            "win_rate": null
+          },
+          "counts": {
+            "approval_records": 37141,
+            "candidates": 37141,
+            "confirmed_fills": 0,
+            "consumed_approvals": 0,
+            "simulated_orders": 0
+          },
+          "consumed_market_records": 76496930,
+          "market_prefix_digest": "098ed3de25806dc4661c965cc18d36f447f54a5f56222e2fbbd2624e17b75f73",
+          "statistics_sha256": "5f19bc7d49d4c924cf727b6aa8b0bad93d26f48f3069bc093bfe4f18971399b9",
+          "positions": [],
+          "reconciliation_clear": true,
+          "finished": true,
+          "database_and_sidecar_bytes": 5279817728
+        },
+        {
+          "attempt": 2,
+          "full_cli_seconds": 7.591591707896441,
+          "core_recovery_seconds": 0.14946583402343094,
+          "metrics": {
+            "average_holding_seconds": null,
+            "average_win_loss_ratio": null,
+            "cash_usdt": "500",
+            "completed_positions": 0,
+            "equity_points": 178560,
+            "equity_usdt": "500",
+            "funding_net_cash_usdt": "0",
+            "gross_realized_pnl": "0",
+            "max_consecutive_losses": 0,
+            "maximum_equity_drawdown": "0",
+            "maximum_holding_seconds": null,
+            "missing_equity_points": 0,
+            "modeled_slippage_and_rounding_cost_usdt": "0",
+            "modeled_spread_cost_usdt": "0",
+            "net_return": "0",
+            "profit_factor": null,
+            "trade_fees_usdt": "0",
+            "unrealized_pnl_usdt": "0",
+            "win_rate": null
+          },
+          "counts": {
+            "approval_records": 37141,
+            "candidates": 37141,
+            "confirmed_fills": 0,
+            "consumed_approvals": 0,
+            "simulated_orders": 0
+          },
+          "consumed_market_records": 76496930,
+          "market_prefix_digest": "098ed3de25806dc4661c965cc18d36f447f54a5f56222e2fbbd2624e17b75f73",
+          "statistics_sha256": "5f19bc7d49d4c924cf727b6aa8b0bad93d26f48f3069bc093bfe4f18971399b9",
+          "positions": [],
+          "reconciliation_clear": true,
+          "finished": true,
+          "database_and_sidecar_bytes": 5279817728
+        }
+      ],
+      "maximum_cli_peak_rss_bytes": 48775168
+    },
+    "stress": {
+      "run": "august-stress-v2",
+      "recoveries": [
+        {
+          "attempt": 1,
+          "full_cli_seconds": 7.007306375075132,
+          "core_recovery_seconds": 0.21764074987731874,
+          "metrics": {
+            "average_holding_seconds": null,
+            "average_win_loss_ratio": null,
+            "cash_usdt": "500",
+            "completed_positions": 0,
+            "equity_points": 178560,
+            "equity_usdt": "500",
+            "funding_net_cash_usdt": "0",
+            "gross_realized_pnl": "0",
+            "max_consecutive_losses": 0,
+            "maximum_equity_drawdown": "0",
+            "maximum_holding_seconds": null,
+            "missing_equity_points": 0,
+            "modeled_slippage_and_rounding_cost_usdt": "0",
+            "modeled_spread_cost_usdt": "0",
+            "net_return": "0",
+            "profit_factor": null,
+            "trade_fees_usdt": "0",
+            "unrealized_pnl_usdt": "0",
+            "win_rate": null
+          },
+          "counts": {
+            "approval_records": 37141,
+            "candidates": 37141,
+            "confirmed_fills": 0,
+            "consumed_approvals": 0,
+            "simulated_orders": 0
+          },
+          "consumed_market_records": 76496930,
+          "market_prefix_digest": "098ed3de25806dc4661c965cc18d36f447f54a5f56222e2fbbd2624e17b75f73",
+          "statistics_sha256": "5f19bc7d49d4c924cf727b6aa8b0bad93d26f48f3069bc093bfe4f18971399b9",
+          "positions": [],
+          "reconciliation_clear": true,
+          "finished": true,
+          "database_and_sidecar_bytes": 5279879168
+        },
+        {
+          "attempt": 2,
+          "full_cli_seconds": 5.864974834024906,
+          "core_recovery_seconds": 0.1384462919086218,
+          "metrics": {
+            "average_holding_seconds": null,
+            "average_win_loss_ratio": null,
+            "cash_usdt": "500",
+            "completed_positions": 0,
+            "equity_points": 178560,
+            "equity_usdt": "500",
+            "funding_net_cash_usdt": "0",
+            "gross_realized_pnl": "0",
+            "max_consecutive_losses": 0,
+            "maximum_equity_drawdown": "0",
+            "maximum_holding_seconds": null,
+            "missing_equity_points": 0,
+            "modeled_slippage_and_rounding_cost_usdt": "0",
+            "modeled_spread_cost_usdt": "0",
+            "net_return": "0",
+            "profit_factor": null,
+            "trade_fees_usdt": "0",
+            "unrealized_pnl_usdt": "0",
+            "win_rate": null
+          },
+          "counts": {
+            "approval_records": 37141,
+            "candidates": 37141,
+            "confirmed_fills": 0,
+            "consumed_approvals": 0,
+            "simulated_orders": 0
+          },
+          "consumed_market_records": 76496930,
+          "market_prefix_digest": "098ed3de25806dc4661c965cc18d36f447f54a5f56222e2fbbd2624e17b75f73",
+          "statistics_sha256": "5f19bc7d49d4c924cf727b6aa8b0bad93d26f48f3069bc093bfe4f18971399b9",
+          "positions": [],
+          "reconciliation_clear": true,
+          "finished": true,
+          "database_and_sidecar_bytes": 5279879168
+        }
+      ],
+      "maximum_cli_peak_rss_bytes": 49332224
+    }
+  },
+  "economic_and_count_comparisons_passed": true,
+  "account_revision_and_recovery_counter_may_advance": true,
+  "live_allowed": false
+}

@@ -311,3 +311,39 @@ python -m pytest -q tests/test_admitted_paper.py tests/test_admitted_recovery.py
 限制：只有明确的合成无资金费合约、固定 R Runner、指定报价和显式成交量；没有实时行情、真实流动性、真实资金费、强平系统、交易所账户或私有 Bridge。报价/版本改变后的旧审批拒绝，需用新请求重新申请；尚未被 Broker 接受的意图在重启改变账户版本后会以原 ID 拒绝结清，而非暗中重新授权。已接受订单/已有仓位继续恢复和保护。
 
 完整模型、事务边界、测试记录与限制见 [STAGE_08B_REPORT.md](STAGE_08B_REPORT.md)。8B 交付后暂停验收，不合并 main，不自动进入后续阶段。
+
+## 第八阶段 8C：真实历史观察、假设执行模型、离线模拟账户
+
+新入口与 `main.py`、8A/8B 实例、真实 `.env`、私有 Bridge 完全分开。只执行 SOL；BTC/ETH 是参考。
+固定评估 2026-08-01 至 2026-09-01（UTC，右端不含），预热 300 秒。官方历史 aggTrades **不是真实盘口**；价差、滑点、延迟、参与率、规则和账户均为明确的模型假设。不得以模拟结果宣传实盘收益。
+
+首次运行先准备本项目依赖环境。下列命令不需要 API Key：
+
+```bash
+# 唯一有公共历史网络权限的独立下载器（不启动交易循环）
+mkdir -p historical-data
+python -m app.historical_download.cli preflight
+python -m app.historical_download.cli download --directory historical-data/august-2026-v1
+
+# macOS 禁网；Linux 请在 --network none 容器/等效隔离环境中执行后续命令
+offline() { sandbox-exec -f examples/historical-replay/offline.sb "$@"; }
+offline python -m app.historical_replay.cli index --dataset historical-data/august-2026-v1
+
+# 先冻结。此 commit 是本次正式回放实际使用的代码，不是结果后的文档提交。
+offline python -m app.historical_replay.cli freeze --dataset historical-data/august-2026-v1 --manifest historical-data/august-2026-v1/baseline-v2.json --run-id august-baseline-v2 --kind baseline --code-commit 88901b3288ab21540917506f32f4759fdf72a1e5
+offline python -m app.historical_replay.cli init --dataset historical-data/august-2026-v1 --manifest historical-data/august-2026-v1/baseline-v2.json --run-id august-baseline-v2
+offline python -m app.historical_replay.cli run --dataset historical-data/august-2026-v1 --run-id august-baseline-v2
+offline python -m app.historical_replay.cli recover --dataset historical-data/august-2026-v1 --run-id august-baseline-v2
+offline python -m app.historical_replay.cli report --dataset historical-data/august-2026-v1 --run-id august-baseline-v2
+
+offline python -m pytest -q
+offline python scripts/verify_isolation.py
+```
+
+`--kind engineering` 固定首小时；`stress` 固定整月、滑点20bps/接受延迟3000ms；`missing_restart` 固定首小时、BTC缺失第10–12分钟。各用新 `--run-id` 和 manifest，再 `init/run`。故障实验 `run --fault scheduled_restart` 会在第15分钟提交游标后以91退出，随后先 `recover` 再不带 `--fault` 的 `run`。`--max-events` 可分段推进，不能当成整月完成。其他真实进程故障点为 `before_market_cursor_commit`、`after_market_cursor_commit`、`before_funding_cursor_commit`。
+
+重复初始化、未知/其他实例数据库、配置或代码摘要变化、已存在清单/索引均拒绝；不会自动重置余额或迁移旧状态。新数据库仅在 `historical-runs/<run-id>/ledger.sqlite3`，application ID 1397705786 / schema 3。大行情、数据库、WAL 和日志不上传。代码与数据内容摘要是绑定信息，不是外部真实性签名。
+
+**当前重要限制：原8B精确单点入场区间与本轮非零价差存在冲突。** 原 Admission 拒绝区间外可成交价；不扩大区间、不回退 fixture、不伪造通过。固定资金费预算也会影响诊断数量下的静态净RR。零成交不是策略安全或有效性的证据；没有发生的完整历史成交链路不能列为验证通过。
+
+完整证据、实际范围、性能、故障对照、拒绝分布和限制见 [STAGE_08C_REPORT.md](STAGE_08C_REPORT.md)；可重取的公开来源及实验摘要在 [validation/stage08c](validation/stage08c)。实盘、实时行情、测试网、账户、Telegram 和服务器部署继续关闭。8C交付后暂停验收。

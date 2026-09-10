@@ -1,0 +1,5 @@
+; macOS example: replay/test processes and their children have no network.
+; File ownership / instance isolation is additionally enforced by Python.
+(version 1)
+(allow default)
+(deny network*)

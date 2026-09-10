@@ -1,0 +1,33 @@
+{
+  "scope": "DEVELOPER_EXECUTED_TESTS_NOT_INDEPENDENT_REVIEWER_RESULTS",
+  "implementation_commit": "88901b3288ab21540917506f32f4759fdf72a1e5",
+  "python": {
+    "command": "python -m pytest -q",
+    "environment": "project Python 3.12.13, macOS OS-level network-deny sandbox",
+    "passed": 2037,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 2,
+    "seconds": 182.95,
+    "existing_tests_included": 1961,
+    "new_stage08c_tests": 76,
+    "counts_do_not_add_repeated_runs": true,
+    "warnings_detail": ["Starlette httpx TestClient deprecation", "anyio BlockingPortal alias deprecation"]
+  },
+  "bridge": {
+    "command": "node --import tsx --test tests/*.test.ts",
+    "environment": "Node 24.18.0, loopback-only sandbox, mock exchange transport",
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "milliseconds": 860.38825,
+    "initial_runner_limitation": "tsx CLI IPC pipe blocked by sandbox; node --import tsx used without opening external network",
+    "type_check": "PASS: node node_modules/typescript/bin/tsc --noEmit",
+    "build": "PASS: 6 isolated vendor snapshots, 82 bundle inputs, standalone import"
+  },
+  "static_isolation": "ISOLATION_SOURCE_PASS: 101 Python files",
+  "historical_full_execution_proven_by_test_count": false,
+  "synthetic_fault_tests_are_historical_performance": false,
+  "live_allowed": false,
+  "account_access": false
+}

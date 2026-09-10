@@ -1,0 +1,9 @@
+{
+  "scope": "READ_ONLY_STREAM_MICROBENCH_NOT_STRATEGY_RUN",
+  "source": "verified SOLUSDT-aggTrades-2026-08.csv prefix",
+  "records": 100000,
+  "trade_stream_seconds": 0.13139858399517834,
+  "raw_line_and_byte_offset_seconds": 0.016466750064864755,
+  "byte_offset": 6345238,
+  "interpretation": "Parsing alone is NOT full replay throughput; this omits candidate/evidence, admission, transactions, risk and recovery work. No experiment parameters or stored account state changed."
+}

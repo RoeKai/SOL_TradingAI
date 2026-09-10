@@ -1,0 +1,79 @@
+{
+  "version": "seekable-historical-csv/v1",
+  "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "files": [
+    {
+      "file": "SOLUSDT-aggTrades-2026-07-31.csv",
+      "source_file": "SOLUSDT-aggTrades-2026-07-31.zip",
+      "source_digest": "8b4adb7354216b354a9c03ae761b9daa59c9b0fca94da8e342dc6db28dd37229",
+      "symbol": "SOLUSDT",
+      "sha256": "094a6d7f9673defba3fed03d6c89f1bf0236572217e8f9387df1b8161aefd17e",
+      "bytes": 21688,
+      "records": 342,
+      "first_ms": 1785542102913,
+      "last_ms": 1785542399779,
+      "downloaded_at": "2026-09-10T04:03:51.675370+00:00"
+    },
+    {
+      "file": "SOLUSDT-aggTrades-2026-08.csv",
+      "source_file": "SOLUSDT-aggTrades-2026-08.zip",
+      "source_digest": "7fec21ef6d768aaa5a3cb4eaaf3dc0599c7a0c3fc641a43eb039da528a1118b6",
+      "symbol": "SOLUSDT",
+      "sha256": "c02bc6bfa5db5fc95bfb195d6801cd2cec10633d712e6c9f87ef34a9e0a85cfd",
+      "bytes": 499974613,
+      "records": 7807910,
+      "first_ms": 1785542400074,
+      "last_ms": 1788220799020,
+      "downloaded_at": "2026-09-10T04:03:56.630804+00:00"
+    },
+    {
+      "file": "BTCUSDT-aggTrades-2026-07-31.csv",
+      "source_file": "BTCUSDT-aggTrades-2026-07-31.zip",
+      "source_digest": "84f079be767204630b3f624d69af2c5764086976ab9f1015d9183bf13c3770b2",
+      "symbol": "BTCUSDT",
+      "sha256": "bfb53dfeebe9970705421d4e8c5a28347f1f5908636603fdbe04a8ebba38ebe3",
+      "bytes": 79855,
+      "records": 1200,
+      "first_ms": 1785542100426,
+      "last_ms": 1785542399958,
+      "downloaded_at": "2026-09-10T04:04:18.456746+00:00"
+    },
+    {
+      "file": "BTCUSDT-aggTrades-2026-08.csv",
+      "source_file": "BTCUSDT-aggTrades-2026-08.zip",
+      "source_digest": "0f154421a06dc63f31fc98769c71c621685be67522cc3a595b44ddb004db1c66",
+      "symbol": "BTCUSDT",
+      "sha256": "8c11999e8f78122c448f0eb9e2d54de8294d78c690ab4cbcca398daae0c479d2",
+      "bytes": 2370241710,
+      "records": 35676321,
+      "first_ms": 1785542400081,
+      "last_ms": 1788220799466,
+      "downloaded_at": "2026-09-10T04:04:34.909405+00:00"
+    },
+    {
+      "file": "ETHUSDT-aggTrades-2026-07-31.csv",
+      "source_file": "ETHUSDT-aggTrades-2026-07-31.zip",
+      "source_digest": "7c274d935dbf2e7cd3bb93efa32f0be84838d328e2f0286639d5b64e53b65ed8",
+      "symbol": "ETHUSDT",
+      "sha256": "35141b5cbe55d3ded51de740e853c8b155c43e35d90c36a8f0e44779d79863d7",
+      "bytes": 50575,
+      "records": 762,
+      "first_ms": 1785542100495,
+      "last_ms": 1785542399886,
+      "downloaded_at": "2026-09-10T04:06:07.730305+00:00"
+    },
+    {
+      "file": "ETHUSDT-aggTrades-2026-08.csv",
+      "source_file": "ETHUSDT-aggTrades-2026-08.zip",
+      "source_digest": "53e5909247af8b9bec612086919260c8b47151a31b86b5e433142b60deb5f1cb",
+      "symbol": "ETHUSDT",
+      "sha256": "0ce4ef539a5f71f831cb418e078c6d09d473a41846677d2b913042661820651c",
+      "bytes": 2187210799,
+      "records": 33010405,
+      "first_ms": 1785542400013,
+      "last_ms": 1788220799994,
+      "downloaded_at": "2026-09-10T04:06:23.762542+00:00"
+    }
+  ],
+  "content_digest": "e815e3c6bea4310de1f564be881740c6ebf077dbe8c644d60681b43c77354fc7"
+}

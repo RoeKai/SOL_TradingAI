@@ -1,0 +1,144 @@
+[
+  {
+    "provenance": "OFFICIAL_HISTORICAL_CANDIDATE_NOT_EXECUTED",
+    "candidate_id": "c416233183d19e8f9f5b5c55f1d97f98157d4c0b485fb351376e6d38a87db726",
+    "setup_id": "historical:37bde45eca1b32aa9e325703:LONG",
+    "at": 1785542610.0,
+    "side": "LONG",
+    "entry": {
+      "basis": "structure_zone",
+      "evidence_ids": [
+        "reclaim:1785542535000"
+      ],
+      "lower_price": 72.9,
+      "order_type": "MARKET",
+      "reference_price": 72.9,
+      "upper_price": 72.9
+    },
+    "stop": {
+      "basis": "nearest confirmed loss-side swing",
+      "evidence_ids": [
+        "swing:1785542595000"
+      ],
+      "price": 72.89
+    },
+    "targets": [
+      {
+        "basis": "Confirmed profit-side swing",
+        "evidence_ids": [
+          "swing:1785542550000"
+        ],
+        "fraction": 0.5,
+        "kind": "structure",
+        "net_rr": null,
+        "price": 72.92,
+        "target_id": "structure-1",
+        "theoretical_rr": null
+      },
+      {
+        "basis": "Confirmed profit-side swing",
+        "evidence_ids": [
+          "swing:1785542580000"
+        ],
+        "fraction": 0.5,
+        "kind": "structure",
+        "net_rr": null,
+        "price": 72.93,
+        "target_id": "structure-2",
+        "theoretical_rr": null
+      }
+    ],
+    "cost": {
+      "assumed_holding_seconds": 3600.0,
+      "entry_fee_rate": 0.0005,
+      "entry_slippage_bps": 12.0,
+      "exit_fee_rate": 0.0005,
+      "exit_slippage_bps": 12.0,
+      "funding_cost_usdt": 1.0,
+      "observed_at": 1785542610.0,
+      "source": "fixed-ex-ante-funding-budget/v1"
+    },
+    "diagnostic_quantity": "0.069",
+    "diagnostic_gross_rr": "2.5",
+    "diagnostic_net_rr": "-0.99763124693337082553948365934939752235966243725821",
+    "diagnostic_gross_pnl": "0.001725",
+    "diagnostic_net_pnl": "-1.0153802714650000000000000000000000000000000000000",
+    "reason_codes": [
+      "ADMISSION_REJECT_IS_NOT_ELIGIBILITY",
+      "VALIDITY_MISSING_OR_EXPIRED",
+      "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+      "NET_RR_BELOW_HARD_FLOOR"
+    ]
+  },
+  {
+    "provenance": "OFFICIAL_HISTORICAL_CANDIDATE_NOT_EXECUTED",
+    "candidate_id": "762cdbde04f2071fb03146a661685884668ab3b34503bf4ed54a8622c8b6db98",
+    "setup_id": "historical:0c4e44951a856a1b76040eb3:SHORT",
+    "at": 1785543600.0,
+    "side": "SHORT",
+    "entry": {
+      "basis": "structure_zone",
+      "evidence_ids": [
+        "reclaim:1785543465000"
+      ],
+      "lower_price": 72.94,
+      "order_type": "MARKET",
+      "reference_price": 72.94,
+      "upper_price": 72.94
+    },
+    "stop": {
+      "basis": "nearest confirmed loss-side swing",
+      "evidence_ids": [
+        "swing:1785543585000"
+      ],
+      "price": 72.96
+    },
+    "targets": [
+      {
+        "basis": "Confirmed profit-side swing",
+        "evidence_ids": [
+          "swing:1785543450000"
+        ],
+        "fraction": 0.5,
+        "kind": "structure",
+        "net_rr": null,
+        "price": 72.93,
+        "target_id": "structure-1",
+        "theoretical_rr": null
+      },
+      {
+        "basis": "Confirmed profit-side swing",
+        "evidence_ids": [
+          "swing:1785543510000"
+        ],
+        "fraction": 0.5,
+        "kind": "structure",
+        "net_rr": null,
+        "price": 72.88,
+        "target_id": "structure-2",
+        "theoretical_rr": null
+      }
+    ],
+    "cost": {
+      "assumed_holding_seconds": 3600.0,
+      "entry_fee_rate": 0.0005,
+      "entry_slippage_bps": 12.0,
+      "exit_fee_rate": 0.0005,
+      "exit_slippage_bps": 12.0,
+      "funding_cost_usdt": 1.0,
+      "observed_at": 1785543600.0,
+      "source": "fixed-ex-ante-funding-budget/v1"
+    },
+    "diagnostic_quantity": "0.069",
+    "diagnostic_gross_rr": "1.75",
+    "diagnostic_net_rr": "-0.99626757397427993738765333394923255615031263118453",
+    "diagnostic_gross_pnl": "0.002415",
+    "diagnostic_net_pnl": "-1.0146926170510000000000000000000000000000000000000",
+    "reason_codes": [
+      "ADMISSION_REJECT_IS_NOT_ELIGIBILITY",
+      "VALIDITY_MISSING_OR_EXPIRED",
+      "EXECUTABLE_QUOTE_OUTSIDE_PLAN",
+      "NET_RR_BELOW_HARD_FLOOR"
+    ]
+  }
+]

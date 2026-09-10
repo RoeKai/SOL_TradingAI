@@ -1,0 +1,31 @@
+{
+  "scope": "OFFICIAL_HISTORICAL_INPUT_WITH_EXPLICIT_MISSING_DATA_AND_SIMULATED_ACCOUNT",
+  "interrupted_run": "august-missing-restart-v2",
+  "continuous_control": "august-missing-control-v2",
+  "process_exit_code": 91,
+  "committed_restart_ms": 1785543300000,
+  "records_before_death": 14334,
+  "records_after_resumption": 27567,
+  "total_consumed_records": 41901,
+  "explicitly_dropped_btc_records": 451,
+  "recovery_seconds": 0.04013154190033674,
+  "comparisons_equal": [
+    "market_prefix_digest",
+    "consumed_market_records",
+    "consumed_by_symbol",
+    "metrics",
+    "counts",
+    "statistics",
+    "reconciliation_clear"
+  ],
+  "final_market_prefix_digest": "6725398b0b14727a22a963d66a2889302a7aca63091db4b936ac79ffa8ab1c9c",
+  "completed_15_second_samples": 240,
+  "samples_with_stale_references": 8,
+  "stale_window_side_evaluations": 56,
+  "cash_usdt": "500",
+  "equity_usdt": "500",
+  "simulated_orders": 0,
+  "confirmed_fills": 0,
+  "historical_position_execution_or_funding_validated": false,
+  "note": "Historical rejected-entry recovery only. Positive and negative position funding cash with actual process death is tested separately using explicitly labeled synthetic component inventory. It does not count as normal historical entry."
+}

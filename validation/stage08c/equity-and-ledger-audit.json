@@ -1,0 +1,97 @@
+{
+  "scope": "ACTUAL_SIMULATED_LEDGER_READ_ONLY_AUDIT",
+  "per_run": {
+    "baseline": {
+      "funding": {
+        "count": 93,
+        "net_cash": "0"
+      },
+      "counts": {
+        "reservations": 0,
+        "outbox": 0,
+        "broker_orders": 0,
+        "broker_fills": 0,
+        "fills": 0,
+        "history_funding": 93,
+        "history_consumptions": 0
+      },
+      "excluded_after_end": {
+        "count": 10,
+        "by_symbol": {
+          "ETHUSDT": 10
+        },
+        "min_raw_ms": 1788220799994,
+        "max_raw_ms": 1788220799994,
+        "min_visible_ms": 1788220800244,
+        "max_visible_ms": 1788220800244
+      },
+      "equity_curve_run_length_encoding": [
+        {
+          "first_at_ms": 1785542400000,
+          "last_at_ms": 1788220785000,
+          "points": 178560,
+          "step_ms": 15000,
+          "values": {
+            "cash": "500",
+            "equity": "500",
+            "unrealized_loss": "0",
+            "funding_net_cash": "0"
+          }
+        }
+      ],
+      "files": {
+        "ledger.sqlite3-shm": 32768,
+        "ledger.sqlite3-wal": 0,
+        "ledger.sqlite3": 5279784960
+      },
+      "position_execution_observed": false
+    },
+    "stress": {
+      "funding": {
+        "count": 93,
+        "net_cash": "0"
+      },
+      "counts": {
+        "reservations": 0,
+        "outbox": 0,
+        "broker_orders": 0,
+        "broker_fills": 0,
+        "fills": 0,
+        "history_funding": 93,
+        "history_consumptions": 0
+      },
+      "excluded_after_end": {
+        "count": 10,
+        "by_symbol": {
+          "ETHUSDT": 10
+        },
+        "min_raw_ms": 1788220799994,
+        "max_raw_ms": 1788220799994,
+        "min_visible_ms": 1788220800244,
+        "max_visible_ms": 1788220800244
+      },
+      "equity_curve_run_length_encoding": [
+        {
+          "first_at_ms": 1785542400000,
+          "last_at_ms": 1788220785000,
+          "points": 178560,
+          "step_ms": 15000,
+          "values": {
+            "cash": "500",
+            "equity": "500",
+            "unrealized_loss": "0",
+            "funding_net_cash": "0"
+          }
+        }
+      ],
+      "files": {
+        "ledger.sqlite3-shm": 32768,
+        "ledger.sqlite3-wal": 0,
+        "ledger.sqlite3": 5279846400
+      },
+      "position_execution_observed": false
+    }
+  },
+  "curve_is_exact_run_length_encoding_of_all_15_second_equity_points": true,
+  "live_allowed": false
+}

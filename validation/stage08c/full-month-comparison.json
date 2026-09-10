@@ -1,0 +1,45 @@
+{
+  "scope": "OFFICIAL_HISTORICAL_OBSERVATIONS_WITH_DECLARED_EXECUTION_ASSUMPTIONS",
+  "baseline_run": "august-baseline-v2",
+  "stress_run": "august-stress-v2",
+  "code_commit": "88901b3288ab21540917506f32f4759fdf72a1e5",
+  "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "both_finished": true,
+  "records_per_run": 76496930,
+  "candidates_per_run": 37141,
+  "completed_positions_per_run": 0,
+  "equal_outcome_fields": [
+    "metrics",
+    "counts",
+    "statistics",
+    "reason_occurrences_not_independent_trades",
+    "market_prefix_digest",
+    "consumed_market_records",
+    "consumed_by_symbol",
+    "positions",
+    "reconciliation_clear"
+  ],
+  "distinct_experiments_not_independent_market_samples": true,
+  "execution_cost_sensitivity_on_filled_orders": "NOT_OBSERVED_NO_ORDERS",
+  "soft_score_admission": "NOT_REACHED_AFTER_HARD_REJECT",
+  "conditional_scenario_admission": "NOT_EVALUATED_AFTER_ORIGINAL_ADMISSION_REJECT",
+  "historical_position_execution_verified": false,
+  "statistical_strategy_effectiveness_verified": false,
+  "live_allowed": false,
+  "summary": {
+    "baseline": {
+      "active_seconds": 5183.641103041824,
+      "records_per_active_second": 14757.373915240903,
+      "peak_rss_bytes": 52183040,
+      "database_and_sidecar_bytes": 5279817728,
+      "settlement_events_with_no_open_position": 93
+    },
+    "stress": {
+      "active_seconds": 5163.79068158404,
+      "records_per_active_second": 14814.103575657306,
+      "peak_rss_bytes": 53428224,
+      "database_and_sidecar_bytes": 5279879168,
+      "settlement_events_with_no_open_position": 93
+    }
+  }
+}

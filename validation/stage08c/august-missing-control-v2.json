@@ -1,0 +1,150 @@
+{
+  "best": [],
+  "completed_through_ms": 1785545999960,
+  "consumed_by_symbol": {
+    "BTCUSDT": 18480,
+    "ETHUSDT": 16051,
+    "SOLUSDT": 7370
+  },
+  "consumed_market_records": 41901,
+  "counts": {
+    "approval_records": 15,
+    "candidates": 15,
+    "confirmed_fills": 0,
+    "consumed_approvals": 0,
+    "simulated_orders": 0
+  },
+  "database_and_sidecar_bytes": 3010560,
+  "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "dropped_records": 451,
+  "evaluation_range_ms": [
+    1785542400000,
+    1785546000000
+  ],
+  "experiment_id": "august-missing-control-v2",
+  "finished": true,
+  "limitations": [
+    "Sample metrics with zero denominator are null (NA), not favorable ratios",
+    "Zero trades or zero drawdown does not prove strategy safety",
+    "Observed aggregate trades, not actual book liquidity or historical account execution",
+    "Tick/step/minimum/fee/rule capabilities are explicit assumptions, not dated exchange snapshots",
+    "Original Broker requires >=5 USDT per entry partial fill; stricter than order-only minimum interpretation",
+    "Funding budget is conservative ex ante; actual funding cash differs and never rewrites approval",
+    "No liquidation, maintenance-margin schedule, ADL, probabilities or statistical expectation"
+  ],
+  "live_allowed": false,
+  "market_prefix_digest": "6725398b0b14727a22a963d66a2889302a7aca63091db4b936ac79ffa8ab1c9c",
+  "metrics": {
+    "average_holding_seconds": null,
+    "average_win_loss_ratio": null,
+    "cash_usdt": "500",
+    "completed_positions": 0,
+    "equity_points": 240,
+    "equity_usdt": "500",
+    "funding_net_cash_usdt": "0",
+    "gross_realized_pnl": "0",
+    "max_consecutive_losses": 0,
+    "maximum_equity_drawdown": "0",
+    "maximum_holding_seconds": null,
+    "missing_equity_points": 0,
+    "modeled_slippage_and_rounding_cost_usdt": "0",
+    "modeled_spread_cost_usdt": "0",
+    "net_return": "0",
+    "profit_factor": null,
+    "trade_fees_usdt": "0",
+    "unrealized_pnl_usdt": "0",
+    "win_rate": null
+  },
+  "model_limit": null,
+  "performance": {
+    "active_seconds": 2.7752958750352263,
+    "peak_rss_platform_units": 53149696,
+    "segments": [
+      {
+        "end_at_ms": 1785545999960,
+        "events": 41901,
+        "seconds": 2.7752958750352263
+      }
+    ]
+  },
+  "positions": [],
+  "real_runtime_connected": false,
+  "reason_occurrences_not_independent_trades": {
+    "ADMISSION_REJECT_IS_NOT_ELIGIBILITY": 15,
+    "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 15,
+    "NET_RR_BELOW_HARD_FLOOR": 15,
+    "VALIDITY_MISSING_OR_EXPIRED": 15
+  },
+  "reconciliation_clear": true,
+  "recoveries": {
+    "seconds": [
+      0.03839837503619492
+    ]
+  },
+  "run_digest": "5424fe1c54feb6a627b249084cc681888169fa969d2a9885bc460e6eab891427",
+  "scheduled_restart": null,
+  "scope": "REAL_HISTORICAL_OBSERVATIONS_ASSUMED_EXECUTION_RULES_SIMULATED_ACCOUNT",
+  "sides": {
+    "LONG": {
+      "completed": 0,
+      "net_realized": "0"
+    },
+    "SHORT": {
+      "completed": 0,
+      "net_realized": "0"
+    }
+  },
+  "statistics": {
+    "by_side": {
+      "LONG": {
+        "EXACT_PAST_RECLAIM_LEVEL_MISSING": 45,
+        "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 11,
+        "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 7,
+        "RECLAIM_DIRECTION_MISSING": 124,
+        "REFERENCE_MISSING_OR_STALE": 28,
+        "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 25
+      },
+      "SHORT": {
+        "EXACT_PAST_RECLAIM_LEVEL_MISSING": 45,
+        "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 4,
+        "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 3,
+        "RECLAIM_DIRECTION_MISSING": 113,
+        "REFERENCE_MISSING_OR_STALE": 28,
+        "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 47
+      }
+    },
+    "candidates": 15,
+    "categories": {
+      "EXACT_PAST_RECLAIM_LEVEL_MISSING": 90,
+      "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 15,
+      "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 10,
+      "RECLAIM_DIRECTION_MISSING": 237,
+      "REFERENCE_MISSING_OR_STALE": 56,
+      "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 72
+    },
+    "days": {
+      "2026-08-01": {
+        "accepted": 0,
+        "candidates": 15,
+        "categories": {
+          "EXACT_PAST_RECLAIM_LEVEL_MISSING": 90,
+          "EXECUTABLE_QUOTE_OUTSIDE_PLAN": 15,
+          "NEAREST_STRUCTURAL_TARGETS_HAVE_DUPLICATE_PRICE": 10,
+          "RECLAIM_DIRECTION_MISSING": 237,
+          "REFERENCE_MISSING_OR_STALE": 56,
+          "STRUCTURE_STOP_OR_TWO_TARGETS_MISSING": 72
+        },
+        "complete_samples": 232,
+        "samples": 240,
+        "stale_samples": 8
+      }
+    }
+  },
+  "strategy_effectiveness_verified": false,
+  "version": "historical-report/v1",
+  "warmup_range_ms": [
+    1785542100000,
+    1785542400000
+  ],
+  "worst": []
+}
