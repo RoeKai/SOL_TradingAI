@@ -75,8 +75,12 @@ def main(argv=None):
                     segment=Replay(paper).run_stream(args.dataset,index,max_events=args.max_events,fault=args.fault)
                     with store.transaction() as db:
                         perf=hget(db,'history_meta','performance')
-                        perf['peak_rss_platform_units']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-                        hput(db,'history_meta','performance',perf)
+                        # A latched invalid run may have crashed after the
+                        # market commit but before its optional timing record.
+                        # Do not invent a completed performance segment.
+                        if perf is not None:
+                            perf['peak_rss_platform_units']=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+                            hput(db,'history_meta','performance',perf)
                     output={'segment':segment,'result':result(paper)}
         print(json.dumps(output,indent=2,sort_keys=True,allow_nan=False));return 0
     except (ValueError,ArithmeticError,OSError) as error:

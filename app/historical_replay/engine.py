@@ -299,4 +299,6 @@ class HistoricalPaper(OfflinePaper):
                 funding_net_cash_usdt=str(net_funding(db)),funding=hrows(db,'history_funding'),
                 run=self.store.run(db),cursor=hget(db,'history_cursor','cursor'),
                 statistics=hget(db,'history_meta','statistics'),model_limit=hget(db,'history_meta','model_limit'))
+            result['result_usage']=('DIAGNOSTIC_ONLY_MODEL_LIMIT_EXCEEDED' if result['model_limit'] is not None else
+                'WITHIN_DECLARED_SIMULATION_BOUNDARY_NOT_MARKET_VALIDATION')
         return result

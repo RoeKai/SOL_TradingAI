@@ -57,21 +57,26 @@ def result(paper):
             maximum_holding_seconds=max((t['holding_seconds'] for t in trades),default=None),max_consecutive_losses=longest)
         sides={side:dict(completed=sum(t['side']==side for t in trades),net_realized=str(sum((D(t['net_realized']) for t in trades if t['side']==side),D(0)))) for side in ('LONG','SHORT')}
         size=sum(p.stat().st_size for p in paper.store.root.iterdir() if p.is_file())
-        return dict(version='historical-report/v1',scope=run['scope'],experiment_id=run['experiment_id'],run_digest=run['content_digest'],
+        limit=hget(db,'history_meta','model_limit')
+        return dict(version='historical-report/v2',scope=run['scope'],experiment_id=run['experiment_id'],run_digest=run['content_digest'],
             dataset_digest=cursor['dataset_digest'],finished=cursor['finished'],completed_through_ms=cursor['at_ms'],
             evaluation_range_ms=run['evaluation_range_ms'],warmup_range_ms=run['warmup_range_ms'],
             consumed_market_records=cursor['event_count'],consumed_by_symbol=cursor.get('record_counts',{}),
             dropped_records=cursor.get('explicitly_dropped',0),market_prefix_digest=cursor['prefix'],
-            counts=counts,metrics=metrics,sides=sides,statistics=hget(db,'history_meta','statistics'),
+            result_usage='DIAGNOSTIC_ONLY_MODEL_LIMIT_EXCEEDED' if limit else 'WITHIN_DECLARED_SIMULATION_BOUNDARY_NOT_MARKET_VALIDATION',
+            model_supported_metrics_available=limit is None,
+            counts=counts,metrics=metrics if limit is None else None,
+            diagnostic_metrics=metrics if limit is not None else None,sides=sides,statistics=hget(db,'history_meta','statistics'),
             reason_occurrences_not_independent_trades=all_reasons,positions=positions,
             best=sorted(trades,key=lambda t:D(t['net_realized']),reverse=True)[:3],worst=sorted(trades,key=lambda t:D(t['net_realized']))[:3],
             performance=hget(db,'history_meta','performance'),database_and_sidecar_bytes=size,
-            model_limit=hget(db,'history_meta','model_limit'),reconciliation_clear=a['reconciliation_clear'],
+            model_limit=limit,invalid_after_ms=None if limit is None else limit['at_ms'],reconciliation_clear=a['reconciliation_clear'],
             limitations=['Sample metrics with zero denominator are null (NA), not favorable ratios',
                 'Zero trades or zero drawdown does not prove strategy safety',
                 'Observed aggregate trades, not actual book liquidity or historical account execution',
                 'Tick/step/minimum/fee/rule capabilities are explicit assumptions, not dated exchange snapshots',
                 'Original Broker requires >=5 USDT per entry partial fill; stricter than order-only minimum interpretation',
                 'Funding budget is conservative ex ante; actual funding cash differs and never rewrites approval',
+                'After the first model-limit breach all outcome metrics/sides/positions are diagnostic; metrics is null and no supported return is asserted',
                 'No liquidation, maintenance-margin schedule, ADL, probabilities or statistical expectation'],
             strategy_effectiveness_verified=False,real_runtime_connected=False,live_allowed=False)

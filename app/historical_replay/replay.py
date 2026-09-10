@@ -13,6 +13,7 @@ import time
 from datetime import datetime, timezone
 from app.utils.paths import read_text_nofollow
 from app.offline_paper.storage import get, put, rows, digest
+from app.offline_paper.broker import TERMINAL, inventory
 from app.offline_paper.models import Quote
 from app.exits.models import MarketEvent
 from .storage import hget, hput
@@ -80,7 +81,12 @@ class Replay:
             hput(db,'history_execution','last-protection:'+pid,visible)
 
     def _fills(self,db,event):
-        available=(D(event['quantity'])*self.model.participation/D('.001')).to_integral_value(rounding=ROUND_FLOOR)*D('.001')
+        use=hget(db,'history_meta','liquidity')
+        if use is None or use['event_id']!=event['event_id']:
+            raise HistoricalError('LIQUIDITY_CURSOR_MISMATCH')
+        # The persisted budget is shared even if this consumer is re-entered.
+        # A snapshot of candidate IDs fixes ordering, not their mutable state.
+        available=((D(event['quantity'])*self.model.participation-D(use['used']))/D('.001')).to_integral_value(rounding=ROUND_FLOOR)*D('.001')
         if available<=0: return
         orders=rows(db,'broker_orders')
         # Previously accepted protection gets first use of this one finite
@@ -88,16 +94,24 @@ class Replay:
         def priority(pair):
             k,o=pair;kind=o['action']['kind']
             return (0 if kind in ('ARM_STOP','MOVE_STOP','CLOSE_ALL') else 1 if kind!='ENTRY' else 2,o['created_at'],k)
-        for k,o in sorted(orders,key=priority):
-            if o['status'] in ('CANCELED','FILLED','REJECTED'): continue
+        for k,_ in sorted(orders,key=priority):
+            o=get(db,'broker_orders',k)
+            if o is None: raise HistoricalError('CANDIDATE_ORDER_DISAPPEARED')
+            if o['status'] in TERMINAL: continue
+            # Receipt delivery below may retire an order, change its cumulative
+            # quantity or consume this position through another reduce-only leg.
+            # Already executed order/event pairs must not spend liquidity twice.
+            if get(db,'broker_fills',digest({'order':k,'execution':event['event_id']})) is not None: continue
             timing=hget(db,'history_execution','order:'+k)
             if timing is None or timing.get('accepted_at_ms') is None or event['available_at_ms']<=timing['accepted_at_ms'] or event['event_time_ms']<=timing['submitted_at_ms']:
                 continue
             action=o['action'];kind=action['kind'];quote=get(db,'account','account')['quote']
+            if kind=='ENTRY' and hget(db,'history_meta','model_limit') is not None: continue
             if kind in ('ARM_STOP','MOVE_STOP'):
                 price=D(quote['bid'] if action['side']=='SELL' else quote['ask'])
                 if (action['side']=='SELL' and price>D(action['stop_price']) or action['side']=='BUY' and price<D(action['stop_price'])): continue
             q=min(available,D(action['quantity'])-D(o['cumulative']))
+            if kind!='ENTRY': q=min(q,inventory(db,action['position_id']))
             q=(q/D('.001')).to_integral_value(rounding=ROUND_FLOOR)*D('.001')
             if q<=0: continue
             # Inherited 8A Broker requires this fill's entry notional >=5.
@@ -109,8 +123,15 @@ class Replay:
             self.paper.pump()
             if available<D('.001'): break
 
-    def _model_limit(self,db,at):
+    def _model_limit(self,db,at,*,phase='POST_EVENT',cursor=None):
         a=get(db,'account','account');q=a['quote']
+        # This is a run-level first-failure latch, not a current-position flag.
+        # Closing the position or seeing a later favorable quote cannot undo it.
+        previous=hget(db,'history_meta','model_limit')
+        if previous is not None:
+            a['paused']=True;put(db,'account','account',a)
+            if cursor is not None: cursor['invalid_after_ms']=previous['at_ms']
+            return previous
         if q is None: return
         funding_by={}
         from .storage import hrows
@@ -121,11 +142,20 @@ class Replay:
             if quantity<=0: continue
             cost=D(s['remaining_entry_cost']);price=D(q['bid'] if s['side']=='LONG' else q['ask'])
             floating=(price*quantity-cost)*(1 if s['side']=='LONG' else -1)
-            isolated=cost/self.store.settings(db).leverage+floating+min(D(0),funding_by.get(pid,D(0)))
+            leverage=self.store.settings(db).leverage
+            allocated=cost/leverage;adverse_funding=min(D(0),funding_by.get(pid,D(0)))
+            isolated=allocated+floating+adverse_funding
             if isolated<=0:
-                hput(db,'history_meta','model_limit',dict(reason_code='MODEL_LIMIT_EXCEEDED',at_ms=at,position_id=pid,
-                    basis='isolated allocated margin exhausted; maintenance/liquidation/ADL not modeled',valid_after=False))
+                limit=dict(reason_code='MODEL_LIMIT_EXCEEDED',at_ms=at,position_id=pid,
+                    basis='isolated allocated margin exhausted; maintenance/liquidation/ADL not modeled',valid_after=False,
+                    detection_phase=phase,side=s['side'],remaining_quantity=str(quantity),remaining_entry_cost=str(cost),
+                    quote=dict(q),leverage=str(leverage),allocated_margin_usdt=str(allocated),
+                    floating_pnl_usdt=str(floating),adverse_funding_usdt=str(adverse_funding),
+                    model_margin_balance_usdt=str(isolated),result_usage='DIAGNOSTIC_ONLY_FROM_FIRST_FAILURE')
+                hput(db,'history_meta','model_limit',limit)
                 a['paused']=True;put(db,'account','account',a)
+                if cursor is not None: cursor['invalid_after_ms']=limit['at_ms']
+                return limit
 
     def trade(self,db,cursor,event,*,active):
         if event['available_at_ms']<cursor['at_ms']: raise HistoricalError('MARKET_STREAM_BACKWARDS')
@@ -151,8 +181,14 @@ class Replay:
         self._set_clock(db,cursor,event['available_at_ms'])
         a=get(db,'account','account');a['quote']=quote_from(event,self.model);put(db,'account','account',a)
         hput(db,'history_meta','active_market',event);hput(db,'history_meta','liquidity',dict(event_id=event['event_id'],used='0'))
-        self.paper.pump();self._fills(db,event);self._protect(db,event);self.paper.pump()
-        self._model_limit(db,event['available_at_ms'])
+        # Observe OLD exposure at the NEW visible quote before any pending
+        # receipt or ordinary simulated exit can erase the boundary violation.
+        # Same-event protective fills remain recorded as diagnostic cash facts.
+        self._model_limit(db,event['available_at_ms'],phase='PRE_MARKET_EXECUTION',cursor=cursor)
+        self.paper.pump()
+        self._model_limit(db,event['available_at_ms'],phase='POST_RECEIPTS_PRE_FILLS',cursor=cursor)
+        self._fills(db,event);self._protect(db,event);self.paper.pump()
+        self._model_limit(db,event['available_at_ms'],cursor=cursor)
         return self._active(db)
 
     def sample(self,db,cursor,at):
@@ -200,13 +236,13 @@ class Replay:
         hput(db,'history_equity',str(at),dict(at_ms=at,cash=get(db,'account','account')['cash'],
             equity=None if risk.equity_usdt is None else str(risk.equity_usdt),unrealized_loss=None if risk.unrealized_loss_usdt is None else str(risk.unrealized_loss_usdt),
             funding_net_cash=hget(db,'history_meta','funding')['net_cash'],risk_revision=risk.snapshot_revision))
-        self._model_limit(db,at)
+        self._model_limit(db,at,cursor=cursor)
 
     def funding(self,db,cursor,event):
         self._set_clock(db,cursor,event['at_ms']);hput(db,'history_meta','active_funding',event)
         self.paper.pump();settle(self.paper,db,event)
         cursor['funding_index']=cursor.get('funding_index',0)+1
-        self._model_limit(db,event['at_ms'])
+        self._model_limit(db,event['at_ms'],cursor=cursor)
 
     def run_stream(self,root,index,*,max_events=None,fault=None):
         start=time.perf_counter()
@@ -214,6 +250,13 @@ class Replay:
             cursor=hget(db,'history_cursor','cursor')
             if 'content_digest' in cursor: verify_seal(cursor)
             elif cursor['event_count']: raise HistoricalError('UNSEALED_CURSOR')
+            limit=hget(db,'history_meta','model_limit')
+            if cursor.get('invalid_after_ms') is not None and (limit is None or cursor['invalid_after_ms']!=limit['at_ms']):
+                raise HistoricalError('MODEL_LIMIT_CURSOR_MISMATCH')
+            if limit is not None:
+                cursor['invalid_after_ms']=limit['at_ms'];saved_cursor(db,cursor)
+                return dict(model_invalid=True,reason_code=limit['reason_code'],invalid_after_ms=limit['at_ms'],
+                    event_count=cursor['event_count'],new_events=0,at_ms=cursor['at_ms'],finished=cursor['finished'])
             if cursor['finished']: return {'already_finished':True,'event_count':cursor['event_count']}
             dataset=hget(db,'history_meta','dataset')
             if index['dataset_digest']!=dataset['content_digest']: raise HistoricalError('REPLAY_INDEX_DATASET_MISMATCH')
@@ -246,6 +289,13 @@ class Replay:
                         current=next(stream,None)
                     else:
                         self.sample(db,cursor,sample_at);active=self._active(db)
+                    # Invalidity survives even if that event closed everything.
+                    # Halt supported replay; never restart as an empty valid run.
+                    # Each model check latches the same timestamp in the cursor
+                    # and meta record, in this transaction. No per-tick SQL scan
+                    # of an empty portfolio, and no dependency on post-fill active.
+                    if cursor.get('invalid_after_ms') is not None:
+                        done=True;break
                     missing=self.run['missing_data']
                     if (fault=='scheduled_restart' and missing and
                         cursor['at_ms']>=missing['restart_after_ms'] and
@@ -253,8 +303,6 @@ class Replay:
                         hput(db,'history_meta','scheduled_restart',dict(at_ms=cursor['at_ms'],
                             requested_at_ms=missing['restart_after_ms'],event_count=cursor['event_count']))
                         scheduled_death=True;break
-                    if active and hget(db,'history_meta','model_limit') is not None:
-                        cursor['invalid_after_ms']=cursor['at_ms'];done=True;break
                     if max_events is not None and processed>=max_events: done=True;break
                 saved_cursor(db,cursor)
                 self.paper._crash('before_market_cursor_commit',fault)
@@ -267,4 +315,5 @@ class Replay:
             prior=hget(db,'history_meta','performance') or {'active_seconds':0,'segments':[]}
             prior['active_seconds']+=elapsed;prior['segments'].append(dict(events=processed,seconds=elapsed,end_at_ms=cursor['at_ms']))
             hput(db,'history_meta','performance',prior)
-        return dict(event_count=cursor['event_count'],new_events=processed,at_ms=cursor['at_ms'],finished=cursor['finished'],seconds=elapsed)
+        return dict(event_count=cursor['event_count'],new_events=processed,at_ms=cursor['at_ms'],finished=cursor['finished'],seconds=elapsed,
+            model_invalid=cursor.get('invalid_after_ms') is not None,invalid_after_ms=cursor.get('invalid_after_ms'))
