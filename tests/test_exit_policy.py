@@ -404,7 +404,9 @@ def test_no_live_mode_no_upstream_mutation_and_no_runtime_wiring():
             'app/admitted_paper/models.py','app/admitted_paper/scenarios.py',
             'app/admitted_paper/engine.py','app/admitted_paper/gate.py',
             'app/historical_replay/scenarios.py','app/historical_replay/gate.py',
-            'app/historical_replay/engine.py','app/historical_replay/replay.py'}: continue
+            'app/historical_replay/engine.py','app/historical_replay/replay.py',
+            # 8D exact isolated composition; the original main remains excluded.
+            'app/execution_costs/gate.py','app/execution_costs/engine.py','app/execution_costs/replay.py'}: continue
         assert 'app.exits' not in path.read_text()
     assert 'exit-policy' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

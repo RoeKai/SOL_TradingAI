@@ -139,7 +139,8 @@ def _check_structure(setup, request, policy, now, reasons):
                 reasons.append(_reason('PLAN_INVALIDATED','参考价或可成交报价已触发价格失效，确认记录不能覆盖事实','invalidation_conditions.'+c.condition_id))
 
 
-def _check_plan_data(setup, rr, card, request, policy, now, reasons):
+def _check_plan_data(setup, rr, card, request, policy, now, reasons, *,
+                     entry_quote_check=None, cost_bounds_check=None):
     if not policy.enabled:
         reasons.append(_reason('ADMISSION_DISABLED','准入策略已停用'))
     if setup.symbol not in policy.allowed_symbols:
@@ -179,22 +180,12 @@ def _check_plan_data(setup, rr, card, request, policy, now, reasons):
                      _d(market.reference_price)-_d(setup.entry.upper_price),ZERO)
         if distance/_d(setup.entry.reference_price)*10000>_d(policy.max_entry_deviation_bps):
             reasons.append(_reason('ENTRY_DEVIATION_LIMIT','当前价格偏离计划区间，不能自动改入场价','market_state.reference_price'))
-    executable=market.ask if setup.side=='LONG' else market.bid
-    if executable is not None:
-        distance=max(_d(setup.entry.lower_price)-_d(executable),_d(executable)-_d(setup.entry.upper_price),ZERO)
-        if (setup.entry.order_type=='MARKET' and distance>0) or distance/_d(setup.entry.reference_price)*10000>_d(policy.max_entry_deviation_bps):
-            reasons.append(_reason('EXECUTABLE_QUOTE_OUTSIDE_PLAN','可成交报价超出市价入场区间或限价偏离上限，不能忽略报价重算风险','market_state.bid','market_state.ask'))
+    # Default Stage 5 semantics are unchanged. Versioned 8D supplies explicit
+    # price/cost validators, never filters an old decision's rejection codes.
+    (entry_quote_check or _legacy_entry_quote)(setup,policy,now,reasons)
     costs=setup.cost_assumptions
     _fresh(reasons,'cost_assumptions',costs.observed_at,now,policy.max_cost_age_seconds,source=costs.source)
-    for field,floor,ceiling in (
-        ('entry_fee_rate',policy.minimum_entry_fee_rate,None),('exit_fee_rate',policy.minimum_exit_fee_rate,None),
-        ('entry_slippage_bps',policy.minimum_entry_slippage_bps,policy.maximum_entry_slippage_bps),
-        ('exit_slippage_bps',policy.minimum_exit_slippage_bps,policy.maximum_exit_slippage_bps)):
-        value=getattr(costs,field)
-        if value is None:
-            reasons.append(_reason('COSTS_UNKNOWN','成本缺失，不能以零或毛 RR 代替','cost_assumptions.'+field))
-        elif _d(value)<floor or (ceiling is not None and _d(value)>ceiling):
-            reasons.append(_reason('COST_ASSUMPTION_OUT_OF_BOUNDS','成本假设低于配置下界或滑点超过配置上界','cost_assumptions.'+field))
+    (cost_bounds_check or _legacy_cost_bounds)(setup,policy,now,reasons)
     if costs.funding_cost_usdt is None or costs.assumed_holding_seconds is None:
         reasons.append(_reason('FUNDING_HORIZON_UNKNOWN','必须明确资金费及其持仓时长假设','cost_assumptions'))
     elif costs.assumed_holding_seconds>policy.max_holding_assumption_seconds:
@@ -208,6 +199,28 @@ def _check_plan_data(setup, rr, card, request, policy, now, reasons):
     if setup.rejection_reasons:
         reasons.append(_reason('PRIOR_REJECTION_UNRESOLVED','计划保留未解除的拒绝记录；不能通过评分清除','rejection_reasons'))
     _check_structure(setup,request,policy,now,reasons)
+
+
+def _legacy_entry_quote(setup,policy,now,reasons):
+    market=setup.market_state
+    executable=market.ask if setup.side=='LONG' else market.bid
+    if executable is not None:
+        distance=max(_d(setup.entry.lower_price)-_d(executable),_d(executable)-_d(setup.entry.upper_price),ZERO)
+        if (setup.entry.order_type=='MARKET' and distance>0) or distance/_d(setup.entry.reference_price)*10000>_d(policy.max_entry_deviation_bps):
+            reasons.append(_reason('EXECUTABLE_QUOTE_OUTSIDE_PLAN','可成交报价超出市价入场区间或限价偏离上限，不能忽略报价重算风险','market_state.bid','market_state.ask'))
+
+
+def _legacy_cost_bounds(setup,policy,now,reasons):
+    costs=setup.cost_assumptions
+    for field,floor,ceiling in (
+        ('entry_fee_rate',policy.minimum_entry_fee_rate,None),('exit_fee_rate',policy.minimum_exit_fee_rate,None),
+        ('entry_slippage_bps',policy.minimum_entry_slippage_bps,policy.maximum_entry_slippage_bps),
+        ('exit_slippage_bps',policy.minimum_exit_slippage_bps,policy.maximum_exit_slippage_bps)):
+        value=getattr(costs,field)
+        if value is None:
+            reasons.append(_reason('COSTS_UNKNOWN','成本缺失，不能以零或毛 RR 代替','cost_assumptions.'+field))
+        elif _d(value)<floor or (ceiling is not None and _d(value)>ceiling):
+            reasons.append(_reason('COST_ASSUMPTION_OUT_OF_BOUNDS','成本假设低于配置下界或滑点超过配置上界','cost_assumptions.'+field))
 
 
 def _check_account(account, exchange, request, setup, policy, now, reasons):

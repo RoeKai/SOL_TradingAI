@@ -1,5 +1,45 @@
 # sol-ai-trading-system · 独立 PAPER 交易 agent
 
+## 8D：独立历史离线价格／数量成本契约
+
+本分支 `phase-08d-execution-cost-contracts` 只运行独立8D入口。
+不启动下面保留的旧 `main.py`、公共实时行情、Bridge或Telegram；实盘硬关闭。
+结构信号价、对手报价与模拟成交价分开；同一最终数量物化资金费预算、
+调用原RR和评分、原退出路径模拟并重新核验原阈值。新配置／schema 4
+仅使用 `quantified-runs/`，不接管8A/B/C数据库，不重置其资金。
+
+```sh
+# Python 3.12，先在独立虚拟环境安装 requirements.lock.txt。
+# 复用已经校验的八月数据；以下命令不下载、不联网。
+python -m pytest -q tests/test_stage08d_*.py
+python scripts/verify_isolation.py
+
+# <CODE_SHA> 必须替换为报告记录的40位代码冻结提交。
+python -m app.execution_costs.cli freeze --workspace . \
+  --dataset historical-data/august-2026-v1 --kind engineering \
+  --run-id august-8d-engineering-v1 --code-commit <CODE_SHA> \
+  --manifest validation/stage08d/engineering-manifest.json
+# 四组只读归因：同一原8C候选、同一空账本反事实快照，不创建订单。
+python -m app.execution_costs.cli attribute --workspace . \
+  --dataset historical-data/august-2026-v1 --source-run august-baseline-v2 \
+  --manifest validation/stage08d/engineering-manifest.json
+python -m app.execution_costs.cli init --workspace . \
+  --dataset historical-data/august-2026-v1 --run-id august-8d-engineering-v1 \
+  --manifest validation/stage08d/engineering-manifest.json
+python -m app.execution_costs.cli run --workspace . \
+  --dataset historical-data/august-2026-v1 --run-id august-8d-engineering-v1
+python -m app.execution_costs.cli recover --workspace . \
+  --dataset historical-data/august-2026-v1 --run-id august-8d-engineering-v1
+```
+
+结果可用 `--output 新文件.json` 独占保存；不会覆盖旧实验。先创建输出父目录。
+整月基准／压力分别用新run ID及 `--kind baseline` / `--kind stress` 冻结；
+日期固定为八月，原压力参数保持20bps滑点、3000ms接受延迟。
+`--max-events` 可分段，结果中的 `finished=false` 必须按未完成解释。
+只读归因不是四份独立统计样本；受控多空正常开仓测试也不是历史盈利证明。
+具体已运行范围、限制及报告见 [STAGE_08D_REPORT.md](STAGE_08D_REPORT.md)，
+逐腿公式见 [8D契约](docs/STAGE_08D_CONTRACT.md)。
+
 ## 当前交付：8A 独立离线 Paper（不运行下方旧实时入口）
 
 `phase-08a-offline-paper` 新增独立模拟 Broker、SQLite 事务账本、事件收件箱、动作出站队列和崩溃恢复。**只使用显式合成报价、成交流及逻辑时钟；没有行情连接、账户连接、Telegram、部署或实盘能力。** 不替换 `main.py`，不读取旧 Paper 账本。

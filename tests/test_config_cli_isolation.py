@@ -112,7 +112,9 @@ def test_pure_modules_exact_dependencies_and_no_integration_anywhere_else():
             'app/admitted_paper/engine.py','app/admitted_paper/provider.py','app/admitted_paper/plans.py',
             'app/admitted_paper/gate.py','app/admitted_paper/demo.py',
             'app/historical_replay/configuration.py','app/historical_replay/engine.py',
-            'app/historical_replay/gate.py','app/historical_replay/plans.py','app/historical_replay/provider.py'}: continue
+            'app/historical_replay/gate.py','app/historical_replay/plans.py','app/historical_replay/provider.py',
+            'app/execution_costs/configuration.py','app/execution_costs/gate.py',
+            'app/execution_costs/plans.py','app/execution_costs/attribution.py'}: continue
         assert 'app.configuration' not in path.read_text()
     assert 'configuration' not in (ROOT/'config.yaml').read_text()
     assert '"live_runtime_allowed": false' in (ROOT/'isolation-policy.json').read_text()

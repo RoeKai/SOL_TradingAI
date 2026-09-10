@@ -606,7 +606,12 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
             # Explicit 8C offline boundary; no main/old runtime blanket exception.
             'app/historical_replay/engine.py','app/historical_replay/evidence.py',
             'app/historical_replay/plans.py','app/historical_replay/provider.py',
-            'app/historical_replay/configuration.py','app/historical_replay/gate.py','app/historical_replay/cli.py'}: continue
+            'app/historical_replay/configuration.py','app/historical_replay/gate.py','app/historical_replay/cli.py',
+            # Exact 8D OFFLINE files only; no runtime/execution wildcard.
+            'app/execution_costs/configuration.py','app/execution_costs/engine.py',
+            'app/execution_costs/evidence.py','app/execution_costs/gate.py',
+            'app/execution_costs/prices.py','app/execution_costs/plans.py',
+            'app/execution_costs/cli.py','app/execution_costs/attribution.py','app/execution_costs/storage.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

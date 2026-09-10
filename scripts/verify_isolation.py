@@ -30,13 +30,13 @@ IMPORT_LOCATION_ALLOWLIST = {
     "fastapi": {"app/dashboard/server.py"},
     "starlette": {"app/dashboard/server.py"},
     "uvicorn": {"main.py"},
-    "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py", "app/offline_paper/storage.py", "app/offline_paper/cli.py"},
+    "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py", "app/offline_paper/storage.py", "app/offline_paper/cli.py", "app/execution_costs/attribution.py"},
 }
 HISTORICAL_IMPORTS = {
     'csv': {'app/historical_replay/data.py'},
     'zipfile': {'app/historical_replay/data.py','app/historical_replay/index.py'},
     'heapq': {'app/historical_replay/index.py'},
-    'resource': {'app/historical_replay/cli.py'},
+    'resource': {'app/historical_replay/cli.py','app/execution_costs/cli.py'},
 }
 FORBIDDEN_NAMES = frozenset({
     "__import__", "__builtins__", "__loader__", "__spec__", "eval", "exec", "compile",
