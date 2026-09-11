@@ -456,3 +456,32 @@ sandbox-exec -f examples/historical-replay/offline.sb \
 已完成的现金流，但S3前提未发生时 `scenario_net_rr=null`，不能取得新审批。
 统计期望、真实资金费／流动性、策略有效性和实盘仍未验证。
 详见 [STAGE_08E_REPORT.md](STAGE_08E_REPORT.md)。
+# Stage 8F-A: frozen, read-only signal / cost research
+
+The protocol is committed **before** this new analysis:
+[`docs/STAGE_08FA_RESEARCH_PROTOCOL.md`](docs/STAGE_08FA_RESEARCH_PROTOCOL.md).
+August remains `DEVELOPMENT / ALREADY_EXAMINED`; this is not a new strategy,
+admission policy, account replay, cost calibration or trading authorization.
+
+After installing this project's pinned dependencies, use the already verified
+local August files and 8E cost artifact (no API keys, network or old service):
+
+```bash
+python -m pytest -q tests/test_stage08fa_research.py
+python -m app.signal_research.cli \
+  --source "$PWD/quantified-runs/august-8d-baseline-v2/ledger.sqlite3" \
+  --dataset "$PWD/historical-data/august-2026-v1" \
+  --cost-rows "$PWD/diagnostic-runs/8e-full-v1/cost-rows.jsonl" \
+  --output "$PWD/research-runs/august-8fa-v1" \
+  --code-commit "$(git rev-parse HEAD)"
+```
+
+The output directory must be new. Inputs have frozen identity/hash checks; an
+existing result is never overwritten and a failed run leaves `FAILED.json`.
+`candidate-features.jsonl` contains past-only source descriptions;
+`future-labels.jsonl` contains separated future labels, not executable plans.
+`direction-summary.json` reports the fixed 15m primary comparison, all auxiliary
+windows, coverage and paired day-block intervals. `cost-sensitivities.jsonl` and
+`cost-boundary-summary.json` are six same-quantity counterfactuals, **NOT_ADMISSION**.
+`summary.json` / `artifact-manifest.json` bind actual inputs, versions and workload.
+The command never imports the new results into the existing trading paths.

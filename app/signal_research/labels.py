@@ -129,7 +129,8 @@ class ObservationIndex:
         return v, band
 
     def background(self):
-        for at in range(self.start, self.end, 900_000):
+        first=((self.start+899_999)//900_000)*900_000
+        for at in range(first, self.end, 900_000):
             b = self.bar(at)
             for side in ('LONG', 'SHORT'):
                 yield dict(kind='BACKGROUND', candidate_id=f'background:{at}:{side}', side=side,

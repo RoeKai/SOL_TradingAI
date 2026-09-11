@@ -226,7 +226,10 @@ def test_grid_bracket_not_precise_smoothed_threshold(flags,expected):
 
 @pytest.mark.parametrize('side',['LONG','SHORT'])
 def test_readonly_store_feature_and_cost_integration(tmp_path,side):
-    p,r,args,now=inputs(tmp_path,side);body=quantify(*args,now=now)
+    p,r,args,now=inputs(tmp_path,side)
+    # Arrange a persisted synthetic source through the real original prepare
+    # path before the read-only boundary. Pure quantify alone is not persisted.
+    body=p.prepare(args[0].candidate_id,'research-original')['body']
     old=cost_row(body,args[1],args[2]);dest=tmp_path/'cost-rows.jsonl'
     from app.scenario_diagnostics.cli import serial
     dest.write_text(json.dumps(serial(old))+'\n')
@@ -262,3 +265,104 @@ def test_cli_boundaries_and_no_runtime_import_or_network(tmp_path):
         if path.parent.name!='signal_research':assert 'signal_research' not in path.read_text()
     assert hashlib.sha256((ROOT/'docs/STAGE_08FA_RESEARCH_PROTOCOL.md').read_bytes()).hexdigest()==PROTOCOL_SHA256
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()
+
+
+@pytest.mark.parametrize('side',['LONG','SHORT'])
+@pytest.mark.parametrize('seed',[1,17,91])
+def test_streamed_extrema_and_first_touch_match_independent_tick_oracle(side,seed):
+    from random import Random
+    rng=Random(seed);p=D(100);events=[]
+    for seq,at in enumerate(range(0,END,1000),1):
+        if at>=START:p+=D(rng.choice([-2,-1,0,1,2]))/100
+        events.append((at,at+250,price_units(p),seq))
+    f=feature(events,side,stop=D('99.95') if side=='LONG' else D('100.05'))
+    # Use an independent direct tick scan on this SMALL synthetic sequence only.
+    idx=indexed(events,f);d=1 if side=='LONG' else -1;p0=f['origin_price_units']
+    for h in HORIZONS:
+        path=[e for e in events if START<e[1]<=START+h*1000]
+        out=idx.label(f,h);moves=[d*(e[2]-p0) for e in path]
+        assert out['mfe']['usdt_per_sol']==D(max([0,*moves]))/SCALE
+        assert out['mae']['usdt_per_sol']==D(max([0,*[-x for x in moves]]))/SCALE
+        first=next((i for i,e in enumerate(path) if d*(e[2]-f['stop_units'])<=0),None)
+        if first is not None:
+            assert out['first_observed_invalidation']['event_id']=='SOLUSDT:agg:'+str(path[first][3])
+            assert out['mfe_before_invalidation']['usdt_per_sol']==D(max([0,*moves[:first]]))/SCALE
+        else:assert out['first_observed_invalidation'] is None
+
+
+@pytest.mark.parametrize('vol,band',[(0,0),(9,0),(10,1),(24,1),(25,2),(49,2),(50,3),(99,3),(100,4)])
+def test_volatility_bands_are_fixed_and_past_only(vol,band):
+    at=600_000
+    events=stream(change=lambda t:100+D(vol)/100 if t==at-10_000 else 100)
+    f=feature(events,at=at);idx=indexed(events,f)
+    assert idx.volatility(at)==(D(vol),band)
+    changed=events.copy()
+    for i,e in enumerate(changed):
+        if e[0]>at:changed[i]=(e[0],e[1],price_units(200),e[3])
+    assert indexed(changed,f).volatility(at)==idx.volatility(at)
+
+
+@pytest.mark.parametrize('side',['LONG','SHORT'])
+def test_same_time_event_order_and_first_touch_confirmation(side):
+    sign=1 if side=='LONG' else -1;events=stream()
+    at=START+1000
+    # Two different aggregate IDs available in the same ms, in source order.
+    i=next(i for i,e in enumerate(events) if e[0]==at)
+    events.insert(i,(at,at+250,price_units(100+sign*D('.5')),0))
+    events[i+1]=(at,at+250,price_units(100-sign*2),0)
+    events=[(*e[:3],n) for n,e in enumerate(events,1)]
+    f=feature(events,side);out=indexed(events,f).label(f,60)
+    assert out['mfe_before_invalidation']['usdt_per_sol']==D('.5')
+    assert out['first_observed_invalidation']['event_id']=='SOLUSDT:agg:'+str(i+2)
+
+
+@pytest.mark.parametrize('side',['LONG','SHORT'])
+def test_unrepresentable_money_missing_fees_and_tick_boundaries_are_not_filled_in(tmp_path,side):
+    _,_,args,_=inputs(tmp_path,side);s=args[0].setup
+    bad=s.model_copy(update={'cost_assumptions':s.cost_assumptions.model_copy(update={'entry_fee_rate':None})})
+    with pytest.raises(ValueError,match='MISSING_OR_INVALID_FROZEN_COST'):
+        evaluate(bad,D(1),D(1),D(2),spread_bps=D(2),tick=D('.01'),slippage_bps=0)
+    with pytest.raises(ValueError,match='NUMBER_REPRESENTATION_UNSUPPORTED'):
+        evaluate(s,D('1.0000000000000000001'),D(1),D(2),spread_bps=D(2),tick=D('.01'),slippage_bps=0)
+    from app.signal_research.costs import projected_bps
+    a=projected_bps(s,spread_bps=D(2),slippage_bps=D('0.01'),tick=D('.1'))
+    b=projected_bps(s,spread_bps=D(2),slippage_bps=D('0.02'),tick=D('.1'))
+    assert a==b  # discrete rounding plateau, not a smooth threshold
+
+
+def test_candidate_background_matching_never_borrows_another_day_or_direction():
+    rows=[stat_row('SIGNAL','LONG',0,'10'),stat_row('BACKGROUND','SHORT',0,'-10'),
+          stat_row('BACKGROUND','LONG',86_400_000,'100')]
+    out=compare(rows,0,31*86_400_000)
+    assert out['matched_signals']==0 and out['stratified_difference_bps'] is None
+    assert out['confidence_interval']['empty_repetitions']==2000
+
+
+def test_fixed_earliest_sensitivity_is_not_outcome_selection():
+    base=stat_row('SIGNAL','LONG',0,'-1',cid='early')
+    late=stat_row('SIGNAL','LONG',15000,'999',cid='late')
+    rows=[base,late,stat_row('BACKGROUND','LONG',0,'0')]
+    out=summarize(rows,0,31*86_400_000)['windows']['900']['results']['LONG']
+    assert out['comparison']['stratified_difference_bps']==499
+    assert out['fixed_earliest_per_15m']['stratified_difference_bps']==-1
+
+
+def test_source_stream_counts_bytes_and_preserves_visibility(tmp_path):
+    folder=tmp_path/'stream-v1';folder.mkdir()
+    text='1,100.01,2,1,1,1000,true\n2,100.02,3,2,2,2000,false\n'
+    (folder/'test.csv').write_text(text)
+    idx=dict(files=[dict(file='test.csv',source_file='test.zip',source_digest='a'*64,
+        symbol='SOLUSDT',downloaded_at='SYNTHETIC',first_ms=1000,records=2)])
+    m=dict(parsed_records=0,parsed_bytes=0)
+    assert list(sol_events(tmp_path,idx,250,m))==[(1000,1250,price_units('100.01'),1),(2000,2250,price_units('100.02'),2)]
+    assert m==dict(parsed_records=2,parsed_bytes=len(text.encode()))
+
+
+def test_counterfactual_pass_never_proves_real_cost_identification(tmp_path):
+    p,r,args,now=inputs(tmp_path,'LONG');body=quantify(*args,now=now)
+    old=cost_row(body,args[1],args[2]);row=research_row(body['candidate'],old,spread_bps=D(2),tick=D('.01'))
+    assert any(v['necessary_static_condition'] for v in row['sensitivities'])
+    assert row['real_executability']=='UNIDENTIFIED_COST_EVIDENCE'
+    assert all(v['execution_authority']=='NONE' and not v['actual_execution_cost_identified'] for v in row['sensitivities'])
+    summary=CostSummary();summary.add(row);summary.add(dict(row,candidate_id='z'*64))
+    assert summary.result()['sides']['LONG']['real_executability_unknown']==2

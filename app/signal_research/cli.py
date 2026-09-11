@@ -17,10 +17,10 @@ from decimal import Decimal as D
 from app.historical_replay.data import load_manifest, sha_file, START, END, WARMUP
 from app.historical_replay.index import verify_index, TradeStream
 from app.scenario_diagnostics.source import frozen_source, bodies
-from app.scenario_diagnostics.cli import serial, write, emit
 from app.offline_paper.storage import digest
 from app.utils.paths import check_owned, read_text_nofollow
 from .features import extract, price_units
+from .io import serial, write, emit
 from .labels import ObservationIndex, HORIZONS
 from .statistics import compact, summarize as summarize_labels
 from .costs import research_row, CostSummary
@@ -115,11 +115,13 @@ def cost_pass(db,cost_path,model,output,start):
             candidate=body.get('candidate')
             if not candidate:
                 candidate=json.loads(db.execute('SELECT payload FROM history_candidates WHERE id=?',(body['candidate_id'],)).fetchone()[0])
+            # The 27 pre-quantification stale records had no rule receipt. The
+            # old 8E descriptor explicitly used the frozen assumed .01 rule;
+            # reuse that declared assumption, never label it venue-verified.
             tick=D(body['exchange']['price_tick']) if body.get('exchange') else D('.01')
-            # Missing rules must be explicit, never inferred as historical truth.
-            if not body.get('exchange'):
-                tick=D('.01')  # frozen declared 8D synthetic rule, not a historical venue assertion
             row=research_row(candidate,old,spread_bps=model.spread_bps,tick=tick)
+            row['price_rule_basis']='FROZEN_8D_DECLARED_SNAPSHOT' if body.get('exchange') else '8E_RETROSPECTIVE_DECLARED_TICK_0.01_NO_RECEIPT'
+            row['price_tick']=tick
             raw=serial(row);out.write(json.dumps(raw,sort_keys=True)+'\n');summary.add(row)
             chain=digest({'previous':chain,'row':raw});count+=1
             if count%1000==0:emit(dict(cost_candidates=count));budget(start)
@@ -128,6 +130,7 @@ def cost_pass(db,cost_path,model,output,start):
 
 
 def run(source,dataset,cost_rows,output,*,code_commit):
+    start=time.perf_counter()
     output=check_owned(Path(output).absolute());root=Path(__file__).absolute().parents[2]
     if output.parent.name!='research-runs' or output.exists():raise ValueError('NEW_RESEARCH_DIRECTORY_REQUIRED')
     if not re.fullmatch('[0-9a-f]{40}',code_commit):raise ValueError('EXPLICIT_CODE_COMMIT_REQUIRED')
@@ -135,7 +138,7 @@ def run(source,dataset,cost_rows,output,*,code_commit):
     if sha_file(protocol)!=PROTOCOL_SHA256:raise ValueError('FROZEN_PROTOCOL_CHANGED')
     source=check_owned(Path(source).absolute());dataset=check_owned(Path(dataset).absolute());cost_rows=check_owned(Path(cost_rows).absolute())
     if sha_file(cost_rows)!=COST_SHA256:raise ValueError('FROZEN_8E_COST_ARTIFACT_CHANGED')
-    output.mkdir(parents=True,exist_ok=False);start=time.perf_counter()
+    output.mkdir(parents=True,exist_ok=False)
     versions=dict(version='stage08fa-readonly-research/v1',protocol_commit=PROTOCOL_COMMIT,protocol_sha256=PROTOCOL_SHA256,
         code_commit=code_commit,research_code_digest=digest({p.name:sha_file(p) for p in sorted((root/'app/signal_research').glob('*.py'))}),
         declared_data_use='DEVELOPMENT / ALREADY_EXAMINED',holdout='PENDING',execution_authority='NONE',live_allowed=False)

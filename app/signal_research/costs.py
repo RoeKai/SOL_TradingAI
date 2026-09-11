@@ -10,6 +10,7 @@ from app.setups.rr import calculate_rr
 from app.admitted_paper.provider import number
 from app.offline_paper.pricing import execution_price
 from app.offline_paper.storage import digest
+from .io import serial
 
 GRID = (0,2,5,10,20)
 
@@ -92,7 +93,7 @@ def research_row(candidate, old, *, spread_bps, tick):
         'LOWER_SLIPPAGE_NECESSARY_ONLY' if not baseline['necessary_static_condition'] else
         'CURRENT_STATIC_NECESSARY_CONDITION_ONLY')
     return dict(candidate_id=old['candidate_id'],side=s.side,at=s.created_at,quantity=q,
-        quantity_basis=old['quantity_basis'],frozen_8e_record_digest=digest(old),
+        quantity_basis=old['quantity_basis'],frozen_8e_record_digest=digest(serial(old)),
         primary=category,fee_only=fee,sensitivities=rows,boundary=boundary(rows),
         original_rejection_reasons=old['reason_codes'],real_executability='UNIDENTIFIED_COST_EVIDENCE',
         execution_authority='NONE')
