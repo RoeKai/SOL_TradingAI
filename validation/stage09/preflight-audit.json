@@ -1,0 +1,163 @@
+{
+  "version": "stage09-metadata-preflight/v1",
+  "recorded_at_utc": "2026-09-11T07:02:04Z",
+  "stage": "09",
+  "scope": "METADATA_AUDIT_NOT_BACKTEST",
+  "execution_authority": "NONE",
+  "live_allowed": false,
+  "formal_readout_status": "FORMAL_READOUT_NOT_STARTED",
+  "protocol_commit": "18e83761db640abfddffe990abbb492cc28d1a3c",
+  "protocol_sha256": "39a08425397aba67e4f65dd3c5b6a6f7674b8033ab82a5e6fb597d28fb15e736",
+  "accepted_code_commit": "506b33364f112480198caa57436253b0282ba86d",
+  "qualification": {
+    "start_utc": "2026-05-01T00:00:00Z",
+    "end_exclusive_utc": "2026-07-01T00:00:00Z",
+    "status": "NO_PRIOR_USE_FOUND_IN_AVAILABLE_RECORDS",
+    "proven_never_seen": false,
+    "reviewer_statement": "No use for strategy returns, design or parameter selection found in the reviewer's currently searchable records; external use is not excluded.",
+    "repository_result": "No May-June historical experiment or selection result found in the audited local records.",
+    "confirmed_contaminated_dates_in_requested_range": [],
+    "formal_period_archive_available_locally": false,
+    "external_use_uncertainty": "User, other machines, tools, chats and deleted or unavailable records are not exhaustively auditable."
+  },
+  "audited_surfaces": [
+    "Local repository branches and commit subjects",
+    "docs and STAGE_*_REPORT.md",
+    "validation",
+    "research-runs",
+    "historical-data",
+    "historical-runs run metadata",
+    "quantified-runs run metadata",
+    "diagnostic-runs JSON summaries and filenames",
+    "Legacy SOL working copy docs and reports only"
+  ],
+  "excluded_surfaces": [
+    "Live copy-trading databases, configuration and credentials",
+    "Real accounts and private exchange endpoints",
+    "Other machines and external tools",
+    "Deleted or inaccessible historical conversations",
+    "Formal-period returns, labels and trading outcomes"
+  ],
+  "known_seen_data": [
+    {
+      "start_utc": "2026-08-01T00:00:00Z",
+      "end_exclusive_utc": "2026-09-01T00:00:00Z",
+      "use": "DEVELOPMENT / SEEN DATA",
+      "purpose": "Earlier historical replay, cost diagnostics and signal research. Stage 09 may use it for engineering correctness only."
+    },
+    {
+      "start_utc": "2026-07-31T00:00:00Z",
+      "end_exclusive_utc": "2026-08-01T00:00:00Z",
+      "use": "ARCHIVE_SCANNED_AND_WARMUP_USED",
+      "purpose": "Previous archive verification and August warmup; outside the Stage 09 validation period."
+    }
+  ],
+  "known_dataset": {
+    "relative_path": "historical-data/august-2026-v1",
+    "content_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+    "types_found": ["aggTrades", "funding"],
+    "historical_top20_book_found": false,
+    "source_for_stage09_results": false
+  },
+  "sqlite_audit": {
+    "tables_read": ["history_meta WHERE id='run'"],
+    "fields_selected": ["version", "evaluation_range_ms", "warmup_range_ms", "content_digest"],
+    "orders_fills_equity_or_returns_queried": false,
+    "databases_inventoried": 13,
+    "metadata_reads_completed": 13,
+    "initial_mode_ro_completed": 5,
+    "initial_mode_ro_errors": 8,
+    "initial_error": "SQLite unable to open database file (14) for the eight frozen files without WAL sidecars; this was a read failure, not evidence of corruption or unknown database identity.",
+    "additional_read_method": "For those eight files only, after confirming no WAL, rollback journal or symlink: mode=ro&immutable=1, application_id verification, run metadata only, inode/size/mtime and sidecar absence checked before/after. No reset, deletion, checkpoint, migration or trading service was run.",
+    "additional_reads_completed": 8,
+    "observed_concurrent_changes": 0,
+    "remaining_metadata_read_failures": 0,
+    "limitation": "Metadata declarations and file stability checks are not a proof that no person has used the formal period elsewhere. Mutable SQLite control sidecars are not included in a claim of byte-for-byte source-directory preservation."
+  },
+  "run_records": [
+    {
+      "source": "historical-runs/august-baseline-v2/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1788220800000],
+      "run_content_digest": "083439c3487dcc52999b7fbf114f0f9dffea989428c22e31525759f75c971181"
+    },
+    {
+      "source": "historical-runs/august-engineering-r1-v3/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "28ea1d804fdc5d70414912004bda130fab33da641f79290419e531705711149a"
+    },
+    {
+      "source": "historical-runs/august-engineering-v1/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "accdeba19b4958b744f1b216384902dfba6e4fb7532b7ae8a0c59e7bcf704ff6"
+    },
+    {
+      "source": "historical-runs/august-engineering-v2/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "143b5c7f3468c3fd9fab31875cadb3d52013b01b4c0c457f1601161a3ec5ceda"
+    },
+    {
+      "source": "historical-runs/august-missing-control-v2/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "5424fe1c54feb6a627b249084cc681888169fa969d2a9885bc460e6eab891427"
+    },
+    {
+      "source": "historical-runs/august-missing-restart-v2/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "a498c3c7655c3598153c0c90750e760a17aa699583f5d3525192f4b14cf15f12"
+    },
+    {
+      "source": "historical-runs/august-stress-v2/ledger.sqlite3",
+      "application_id": 1397705786,
+      "evaluation_range_ms": [1785542400000, 1788220800000],
+      "run_content_digest": "172db59ab9700873bf15e495b380d796873597d6192d3f9783bf588f4b6187c0"
+    },
+    {
+      "source": "quantified-runs/august-8d-baseline-v1/ledger.sqlite3",
+      "application_id": 1397705787,
+      "evaluation_range_ms": [1785542400000, 1788220800000],
+      "run_content_digest": "27c0196485c2478f5bb4db3953e3daadbfc75195b4bb6628d9157d0f1b86e51a"
+    },
+    {
+      "source": "quantified-runs/august-8d-baseline-v2/ledger.sqlite3",
+      "application_id": 1397705787,
+      "evaluation_range_ms": [1785542400000, 1788220800000],
+      "run_content_digest": "4814773e5b96237582512da461358ae837100362d4ba16d7aa7906e725bdf8bc"
+    },
+    {
+      "source": "quantified-runs/august-8d-engineering-v1/ledger.sqlite3",
+      "application_id": 1397705787,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "8437a7c021e716db7912a52b47134a371a4f943c7cc90f3a6240bfc6e7ee5891"
+    },
+    {
+      "source": "quantified-runs/august-8d-engineering-v2/ledger.sqlite3",
+      "application_id": 1397705787,
+      "evaluation_range_ms": [1785542400000, 1785546000000],
+      "run_content_digest": "86b48ab9228fd751bf0938f600bca3d64cfbac56e4fcb9fe16b40372d9da170e"
+    },
+    {
+      "source": "quantified-runs/august-8d-stress-v1/ledger.sqlite3",
+      "application_id": 1397705787,
+      "evaluation_range_ms": [1785542400000, 1788220800000],
+      "run_content_digest": "a555f56f8ebf34db88da9c62231a6de45bbec9f42d76dbc0fd8cfe858ac02c13"
+    },
+    {
+      "source": "quantified-runs/august-8d-stress-v2/ledger.sqlite3",
+      "application_id": 1397705787,
+      "evaluation_range_ms": [1785542400000, 1788220800000],
+      "run_content_digest": "b57ee97c7727dc996a200aa2261a9f5b86b5ed2be77c32ab309652dc33c8d772"
+    }
+  ],
+  "pending_before_formal_readout": [
+    "EXIT_SPECIFICATION_INCOMPLETE: partial fractions, runner activation/trailing and breakeven mode require confirmation before any formal return analysis.",
+    "FORMAL_DATA_NOT_PRESENT: acquire and verify explicitly scoped May-June archives and prehistory, without changing the frozen period.",
+    "DATA_INSUFFICIENT: original order-book pressure has no reconstructable local historical source.",
+    "RESEARCH_IMPLEMENTATION_NOT_STARTED: original-four adapters and Stage 09 alpha/trade/statistical tests are not claimed complete."
+  ]
+}

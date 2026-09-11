@@ -1,0 +1,48 @@
+{
+  "version": "stage09-preflight-regression-evidence/v1",
+  "evidence_owner": "DEVELOPER_ACTUALLY_RERUN_THIS_TURN",
+  "scope": "EXISTING_PROJECT_REGRESSION_NOT_STAGE09_BACKTEST",
+  "protocol_commit": "18e83761db640abfddffe990abbb492cc28d1a3c",
+  "python": {
+    "version": "3.12.13",
+    "command": "python -m pytest -q",
+    "passed": 2311,
+    "warnings": 2,
+    "seconds": 220.69,
+    "exit_code": 0,
+    "network": "OS_DENIED",
+    "legacy_system_access": "OS_DENIED"
+  },
+  "bridge_mock": {
+    "node_version": "24.18.0",
+    "command": "node --import tsx --test tests/*.test.ts",
+    "passed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 568.9965,
+    "exit_code": 0,
+    "network": "LOOPBACK_MOCK_ONLY_NO_EXCHANGE"
+  },
+  "bridge_types": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit",
+    "exit_code": 0
+  },
+  "bridge_build": {
+    "command": "node scripts/build.mjs",
+    "exit_code": 0,
+    "isolated_vendor_snapshots": 6,
+    "inputs": 82,
+    "standalone_import": "PASSED",
+    "deployed": false
+  },
+  "metadata_audit": {
+    "matched_run_digests": 13,
+    "included_in_python_or_bridge_counts": false
+  },
+  "new_stage09_tests_added": 0,
+  "stage09_alpha_run": false,
+  "stage09_trading_run": false,
+  "august_engineering_run": false,
+  "prior_review_evidence_recounted": false,
+  "live_allowed": false
+}
