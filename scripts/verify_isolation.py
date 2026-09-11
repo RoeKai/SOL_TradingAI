@@ -30,7 +30,7 @@ IMPORT_LOCATION_ALLOWLIST = {
     "fastapi": {"app/dashboard/server.py"},
     "starlette": {"app/dashboard/server.py"},
     "uvicorn": {"main.py"},
-    "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py", "app/offline_paper/storage.py", "app/offline_paper/cli.py", "app/execution_costs/attribution.py"},
+    "sqlite3": {"app/portfolio/manager.py", "app/utils/paths.py", "app/offline_paper/storage.py", "app/offline_paper/cli.py", "app/execution_costs/attribution.py", "app/scenario_diagnostics/source.py"},
 }
 HISTORICAL_IMPORTS = {
     'csv': {'app/historical_replay/data.py'},

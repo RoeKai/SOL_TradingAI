@@ -611,7 +611,11 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
             'app/execution_costs/configuration.py','app/execution_costs/engine.py',
             'app/execution_costs/evidence.py','app/execution_costs/gate.py',
             'app/execution_costs/prices.py','app/execution_costs/plans.py',
-            'app/execution_costs/cli.py','app/execution_costs/attribution.py','app/execution_costs/storage.py'}: continue
+            'app/execution_costs/cli.py','app/execution_costs/attribution.py','app/execution_costs/storage.py',
+            # Scope-limited 8E descriptions/read-only reports; no permission calls.
+            'app/scenario_diagnostics/__init__.py','app/scenario_diagnostics/scenarios.py',
+            'app/scenario_diagnostics/proofs.py','app/scenario_diagnostics/costs.py',
+            'app/scenario_diagnostics/quantities.py','app/scenario_diagnostics/cli.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

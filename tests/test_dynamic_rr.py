@@ -414,7 +414,10 @@ def test_rr_has_no_execution_dependencies_and_is_not_imported_by_runtime():
             'app/historical_replay/scenarios.py','app/historical_replay/gate.py',
             # 8D exact opt-in offline composition, not main/runtime wiring.
             'app/execution_costs/models.py','app/execution_costs/prices.py',
-            'app/execution_costs/gate.py','app/execution_costs/engine.py','app/execution_costs/attribution.py'}: continue
+            'app/execution_costs/gate.py','app/execution_costs/engine.py','app/execution_costs/attribution.py',
+            # 8E exact read-only diagnostics, not execution or admission wiring.
+            'app/scenario_diagnostics/scenarios.py','app/scenario_diagnostics/proofs.py',
+            'app/scenario_diagnostics/quantities.py'}: continue
         tree=ast.parse(file.read_text())
         for node in ast.walk(tree):
             if isinstance(node,ast.ImportFrom): assert not (node.module or '').startswith('app.setups')

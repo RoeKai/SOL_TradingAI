@@ -421,3 +421,38 @@ offline python -m pytest -q tests/test_stage08c_active_integration.py tests/test
 ```
 
 新增测试的仓位是明确注入的合成组件状态，使用真实历史模拟Broker/退出消费者/SQLite，但没有普通历史审批。完整HistoricalPaper/CLI恢复必须拒绝将其伪装为正常入场。真实数据首小时仍零订单；原整月v2结果不改标为R1。本轮记录与限制见报告第10节和 [validation/stage08c-r1](validation/stage08c-r1)，不放宽精确入场/价差及诊断数量净RR契约。
+
+## Stage 8E：独立只读情景与证明审计
+
+基线 `84c525cd613a039aed22821b9290c5992056eef9`；独立分支
+`phase-08e-scenario-diagnostics`。**不替换8D默认情景、求解器或任何交易入口。**
+
+```bash
+# 项目虚拟环境；无需 .env、账户、旧服务或网络。
+python -m pytest -q tests/test_stage08e_diagnostics.py
+
+# macOS 可叠加仓库提供的无网络隔离；其他系统在等效无网络环境执行。
+sandbox-exec -f examples/historical-replay/offline.sb \
+  python -m app.scenario_diagnostics.cli \
+  --source "$PWD/quantified-runs/august-8d-baseline-v2/ledger.sqlite3" \
+  --output "$PWD/diagnostic-runs/stage08e-review" \
+  --sample-points 64 \
+  --unresolved-reference "$PWD/validation/stage08d/unresolved-diagnostic.json"
+```
+
+输入必须是明确指定的既有8D模拟实验数据库，校验应用ID/schema/配置摘要；
+只读打开，不迁移、不恢复账户、不消费动作。已有输出目录拒绝覆盖。
+数据库和完整逐行结果不上传Git。首次检出没有该实验库时，可以先运行合成测试；
+不能用空库伪装原八月清单，也不能把局部测试说成全量证明审计。
+
+输出：`summary.json`、每份证书 `certificates.jsonl`、逐候选成本
+`cost-rows.jsonl`、方向分布 `cost-distributions.json`、未解决候选的
+`quantity-first-*.json` 确认事件与现金流、`quantity-grid-*.json` 全部已查数量。
+所有对象标记无执行权限。`--record-limit`／`--quantity-limit` 只限制诊断，
+不改变正式求解器32次上限；不完整或证书不一致返回1，输入／程序错误返回非零。
+64个格点是每个选定证书的抽样，不代表所有数量穷举；数量专查则单独报告范围。
+
+`protective-path-description/v1` 遵从原退出状态机：合法提前保护可以产生
+已完成的现金流，但S3前提未发生时 `scenario_net_rr=null`，不能取得新审批。
+统计期望、真实资金费／流动性、策略有效性和实盘仍未验证。
+详见 [STAGE_08E_REPORT.md](STAGE_08E_REPORT.md)。

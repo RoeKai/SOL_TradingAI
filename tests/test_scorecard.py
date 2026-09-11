@@ -481,5 +481,6 @@ def test_new_modules_are_pure_and_not_imported_into_existing_runtime():
             'app/offline_paper/engine.py','app/admitted_paper/engine.py','app/admitted_paper/gate.py',
             'app/historical_replay/engine.py','app/historical_replay/gate.py',
             # 8D explicitly authorized offline use, no old-runtime connection.
-            'app/execution_costs/attribution.py','app/execution_costs/engine.py','app/execution_costs/gate.py'}: continue
+            'app/execution_costs/attribution.py','app/execution_costs/engine.py','app/execution_costs/gate.py',
+            'app/scenario_diagnostics/quantities.py'}: continue
         assert 'scorecard' not in path.read_text().lower(), str(path.relative_to(root))
