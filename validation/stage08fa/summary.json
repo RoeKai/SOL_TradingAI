@@ -1,0 +1,98 @@
+{
+  "approvals_created": 0,
+  "candidate_count": 37141,
+  "code_commit": "783a3212b26e142a11cd308713738e313f43737c",
+  "cost_chain_digest": "5efac5b16d4af101ead3a2fa8a540b34a3e59d37dcb0cc562d03985aa6d34a07",
+  "cost_count": 37141,
+  "dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "declared_data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+  "equity_drawdown": null,
+  "execution_authority": "NONE",
+  "feature_chain_digest": "85ee5169bb1aa1cc9737a06c297b8d9fe4344e51c194c304684ebdb18af22245",
+  "frozen_cost_rows_sha256": "56177d9579b687b42f5c0cc31af0019d2e9e8d3ced936ff4bf475747dc461546",
+  "holdout": "PENDING",
+  "index_digest": "e815e3c6bea4310de1f564be881740c6ebf077dbe8c644d60681b43c77354fc7",
+  "label_chain_digest": "b43e44e377102eba9b223946a1e0b1773761b88ab56272d51398b2c2591c2d8b",
+  "live_allowed": false,
+  "orders_created": 0,
+  "performance": {
+    "observation_bins": 178581,
+    "outside_month_visibility": 0,
+    "parsed_bytes": 499996301,
+    "parsed_records": 7808252,
+    "peak_rss_bytes": 428097536,
+    "scan": "ONE_SOL_SCAN; other symbol files hash-verified only",
+    "seconds": 254.5164203750901,
+    "verification_bytes": 6136057752
+  },
+  "primary_result": {
+    "background_count": 5940,
+    "common_support_fraction": "0.8809786855649268410983266416965320255450",
+    "conclusion": "DEVELOPMENT_DIRECTION_CLUE_ONLY",
+    "confidence_interval": {
+      "available_blocks": 31,
+      "block_seconds": 86400,
+      "contributing_blocks": 31,
+      "empty_repetitions": 0,
+      "iid_samples": false,
+      "limitations": "Only finite origin days; cross-midnight and inter-day dependence remain",
+      "lower": "0.4322734296905824121434368840163309861373",
+      "method": "PAIRED_UTC_ORIGIN_DAY_BLOCK_PERCENTILE",
+      "repetitions": 2000,
+      "seed": 808061,
+      "upper": "1.801794920240865961946468953326867379020",
+      "usable_repetitions": 2000
+    },
+    "execution_authority": "NONE",
+    "matched_signals": 32694,
+    "raw_background_mean_bps": "0E-38",
+    "raw_difference_bps": "0.07390778252905590118220140793975973140678",
+    "raw_signal_mean_bps": "0.07390778252905590118220140793975973140678",
+    "signal_count": 37111,
+    "stratified_difference_bps": "1.153534249288064558316930571600051524242",
+    "unmatched_signals": 4417,
+    "weekly": [
+      {
+        "difference_bps": "0.9192613318763176344530112424184159429932",
+        "first_day": 1,
+        "last_day": 7,
+        "n": 4702
+      },
+      {
+        "difference_bps": "1.685906482546420379438206335589131984450",
+        "first_day": 8,
+        "last_day": 14,
+        "n": 4395
+      },
+      {
+        "difference_bps": "0.5154095514972020341474236287878655932781",
+        "first_day": 15,
+        "last_day": 21,
+        "n": 5882
+      },
+      {
+        "difference_bps": "1.651400812196088807323617540531426786193",
+        "first_day": 22,
+        "last_day": 28,
+        "n": 13400
+      },
+      {
+        "difference_bps": "0.1903390747661384013425565639571525708637",
+        "first_day": 29,
+        "last_day": 31,
+        "n": 4315
+      }
+    ]
+  },
+  "protocol_commit": "d00bf544eec2c5cd918af2cf478c7c0081a4803d",
+  "protocol_sha256": "1374bcdb5580f86c5752bcf25c23c159f8f610a18358a2ca165ff93cd203d743",
+  "research_code_digest": "5449337badd4e74b1ba7c5800298fc7003fc8ab80c01d9e3c2b893a2a83b504f",
+  "sensitivity_rows": 222846,
+  "simulated_profit": null,
+  "source_bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+  "source_check": "READ_ONLY_TRANSACTION_AND_COUNTS_ACCOUNT_DIGEST_NOT_BINARY_DB_HASH",
+  "source_run_digest": "4814773e5b96237582512da461358ae837100362d4ba16d7aa7906e725bdf8bc",
+  "source_state_unchanged": true,
+  "status": "COMPLETE",
+  "version": "stage08fa-readonly-research/v1"
+}

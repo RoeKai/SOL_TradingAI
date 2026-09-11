@@ -1,0 +1,1672 @@
+{
+  "fixed_class_examples": {
+    "LONG:300:invalidated_then_favorable": {
+      "candidate_digest": "b0e7c40b55f443051d4a654b87088b86a148efa96b7acb57cc35080267cd9acf",
+      "candidate_id": "0000b7e35b6b41e11f9e4f13d1dfe060ea91ec682df514c3b2f92afd01069798",
+      "coverage": {
+        "max_observation_gap_ms": 2781,
+        "observed_events": 854
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788203385000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1788203384703,
+      "endpoint_event_time_ms": 1788203384453,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788203089656,
+        "bin_index": 177400,
+        "event_id": "SOLUSDT:agg:1093075906",
+        "event_time_ms": 1788203089406,
+        "prefix_high": 10452000000,
+        "prefix_low": 10449000000,
+        "price_units": 10448000000
+      },
+      "flags": [],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "5.741626794258373205741626794258373205742",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe": {
+        "bps": "15.31100478468899521531100478468899521531",
+        "usdt_per_sol": "0.16"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.913875598086124401913875598086124401914",
+        "usdt_per_sol": "0.02"
+      },
+      "observed_return": {
+        "bps": "3.827751196172248803827751196172248803828",
+        "usdt_per_sol": "0.04"
+      },
+      "observed_through_ms": 1788203385000,
+      "origin_available_at_ms": 1788203084913,
+      "origin_event_id": "SOLUSDT:agg:1093075887",
+      "origin_event_time_ms": 1788203084663,
+      "origin_price": "104.5",
+      "past_volatility_bps": "31.57894736842105263157894736842105263158",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "2e593ebeaeba75f52c75d6a00a641a4bd5cd5a3f73ca9d9c139821130d1da322",
+      "side": "LONG",
+      "signal_at_ms": 1788203085000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "LONG:300:status:CENSORED": {
+      "candidate_digest": "44746cc57764d32d9dd4b724f16c4402bc87dba80ceb446c7e00e956295d814c",
+      "candidate_id": "254a5d541e67f40629af0aa44ed8b62d7db755fb3cd8412c56c5b3636d4d012d",
+      "coverage": {
+        "max_observation_gap_ms": 5481,
+        "observed_events": 403
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788220800000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1788220799270,
+      "endpoint_event_time_ms": 1788220799020,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788220504817,
+        "bin_index": 178561,
+        "event_id": "SOLUSDT:agg:1093114901",
+        "event_time_ms": 1788220504567,
+        "prefix_high": 10296000000,
+        "prefix_low": 10296000000,
+        "price_units": 10295000000
+      },
+      "flags": [
+        "CENSORED"
+      ],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "1.942501942501942501942501942501942501943",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe": {
+        "bps": "3.885003885003885003885003885003885003885",
+        "usdt_per_sol": "0.04"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_return": {
+        "bps": "3.885003885003885003885003885003885003885",
+        "usdt_per_sol": "0.04"
+      },
+      "observed_through_ms": 1788220800000,
+      "origin_available_at_ms": 1788220499863,
+      "origin_event_id": "SOLUSDT:agg:1093114895",
+      "origin_event_time_ms": 1788220499613,
+      "origin_price": "102.96",
+      "past_volatility_bps": "5.827505827505827505827505827505827505828",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "a85e8221a0306026ed5074357d66830bb33219c0ae1a75c3a959ad27c32262b4",
+      "side": "LONG",
+      "signal_at_ms": 1788220500000,
+      "simulated_profit": null,
+      "status": "CENSORED",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "LONG:300:status:COMPLETE": {
+      "candidate_digest": "c37f901dcab19f04c70468d311b195a5e03d6c1068d0f5abf9497b2050d5113b",
+      "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+      "coverage": {
+        "max_observation_gap_ms": 4083,
+        "observed_events": 711
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1785841545000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1785841544974,
+      "endpoint_event_time_ms": 1785841544724,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1785841350044,
+        "bin_index": 19951,
+        "event_id": "SOLUSDT:agg:1085921446",
+        "event_time_ms": 1785841349794,
+        "prefix_high": 0,
+        "prefix_low": 0,
+        "price_units": 7357000000
+      },
+      "flags": [],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe_before_invalidation": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "-6.794401413235493952982742220410381845359",
+        "usdt_per_sol": "-0.05"
+      },
+      "observed_through_ms": 1785841545000,
+      "origin_available_at_ms": 1785841244489,
+      "origin_event_id": "SOLUSDT:agg:1085921192",
+      "origin_event_time_ms": 1785841244239,
+      "origin_price": "73.59",
+      "past_volatility_bps": "14.94768310911808669656203288490284005979",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+      "side": "LONG",
+      "signal_at_ms": 1785841245000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "LONG:3600:invalidated_then_favorable": {
+      "candidate_digest": "c37f901dcab19f04c70468d311b195a5e03d6c1068d0f5abf9497b2050d5113b",
+      "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+      "coverage": {
+        "max_observation_gap_ms": 13072,
+        "observed_events": 6669
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1785844845000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1785844844903,
+      "endpoint_event_time_ms": 1785844844653,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1785841350044,
+        "bin_index": 19951,
+        "event_id": "SOLUSDT:agg:1085921446",
+        "event_time_ms": 1785841349794,
+        "prefix_high": 0,
+        "prefix_low": 0,
+        "price_units": 7357000000
+      },
+      "flags": [],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "10.87104226117679032477238755265661095258",
+        "usdt_per_sol": "0.08"
+      },
+      "mfe": {
+        "bps": "48.91969017529555646147574398695474928659",
+        "usdt_per_sol": "0.36"
+      },
+      "mfe_before_invalidation": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "38.04864791411876613670335643429813833401",
+        "usdt_per_sol": "0.28"
+      },
+      "observed_through_ms": 1785844845000,
+      "origin_available_at_ms": 1785841244489,
+      "origin_event_id": "SOLUSDT:agg:1085921192",
+      "origin_event_time_ms": 1785841244239,
+      "origin_price": "73.59",
+      "past_volatility_bps": "14.94768310911808669656203288490284005979",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+      "side": "LONG",
+      "signal_at_ms": 1785841245000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "LONG:3600:status:CENSORED": {
+      "candidate_digest": "5ab006056255a79eef871e9890442b2463e43b95de2d37d2f70ee56df17fe3df",
+      "candidate_id": "11d42f16aa598b7d165569e807d5714d07b81f2c610875bdd74af8e4ae8964e8",
+      "coverage": {
+        "max_observation_gap_ms": 5481,
+        "observed_events": 444
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788224070000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1788220799270,
+      "endpoint_event_time_ms": 1788220799020,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788220471293,
+        "bin_index": 178559,
+        "event_id": "SOLUSDT:agg:1093114856",
+        "event_time_ms": 1788220471043,
+        "prefix_high": 10296000000,
+        "prefix_low": 10296000000,
+        "price_units": 10295000000
+      },
+      "flags": [
+        "CENSORED"
+      ],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "1.942501942501942501942501942501942501943",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe": {
+        "bps": "3.885003885003885003885003885003885003885",
+        "usdt_per_sol": "0.04"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_return": {
+        "bps": "3.885003885003885003885003885003885003885",
+        "usdt_per_sol": "0.04"
+      },
+      "observed_through_ms": 1788220800000,
+      "origin_available_at_ms": 1788220469439,
+      "origin_event_id": "SOLUSDT:agg:1093114854",
+      "origin_event_time_ms": 1788220469189,
+      "origin_price": "102.96",
+      "past_volatility_bps": "5.827505827505827505827505827505827505828",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "46848c5774b0daf44a69709aa3c9bd019966e3e5a6f48a3ca06478bd58d50244",
+      "side": "LONG",
+      "signal_at_ms": 1788220470000,
+      "simulated_profit": null,
+      "status": "CENSORED",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "LONG:3600:status:COMPLETE": {
+      "candidate_digest": "c37f901dcab19f04c70468d311b195a5e03d6c1068d0f5abf9497b2050d5113b",
+      "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+      "coverage": {
+        "max_observation_gap_ms": 13072,
+        "observed_events": 6669
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1785844845000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1785844844903,
+      "endpoint_event_time_ms": 1785844844653,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1785841350044,
+        "bin_index": 19951,
+        "event_id": "SOLUSDT:agg:1085921446",
+        "event_time_ms": 1785841349794,
+        "prefix_high": 0,
+        "prefix_low": 0,
+        "price_units": 7357000000
+      },
+      "flags": [],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "10.87104226117679032477238755265661095258",
+        "usdt_per_sol": "0.08"
+      },
+      "mfe": {
+        "bps": "48.91969017529555646147574398695474928659",
+        "usdt_per_sol": "0.36"
+      },
+      "mfe_before_invalidation": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "38.04864791411876613670335643429813833401",
+        "usdt_per_sol": "0.28"
+      },
+      "observed_through_ms": 1785844845000,
+      "origin_available_at_ms": 1785841244489,
+      "origin_event_id": "SOLUSDT:agg:1085921192",
+      "origin_event_time_ms": 1785841244239,
+      "origin_price": "73.59",
+      "past_volatility_bps": "14.94768310911808669656203288490284005979",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+      "side": "LONG",
+      "signal_at_ms": 1785841245000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "LONG:3600:status:INSUFFICIENT_COVERAGE": {
+      "candidate_digest": "b8d8bbdb07180dd297a143df595f2db9217fc5e4ee88e15318909e4048c6a581",
+      "candidate_id": "062c2acf14d9eaba5cc11cb75697341d5c269286b77d2321ca449d7c417912ff",
+      "coverage": {
+        "max_observation_gap_ms": 15539,
+        "observed_events": 5572
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786751370000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1786751369516,
+      "endpoint_event_time_ms": 1786751369266,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786747959274,
+        "bin_index": 80391,
+        "event_id": "SOLUSDT:agg:1087737923",
+        "event_time_ms": 1786747959024,
+        "prefix_high": 7515000000,
+        "prefix_low": 7513000000,
+        "price_units": 7512000000
+      },
+      "flags": [
+        "INSUFFICIENT_COVERAGE"
+      ],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "3.992547245142400851743412297045515038595",
+        "usdt_per_sol": "0.03"
+      },
+      "mfe": {
+        "bps": "31.94037796113920681394729837636412030876",
+        "usdt_per_sol": "0.24"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.330849081714133617247804099015171679532",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_return": {
+        "bps": "25.28613255256853872770827788128826191110",
+        "usdt_per_sol": "0.19"
+      },
+      "observed_through_ms": 1786751370000,
+      "origin_available_at_ms": 1786747767221,
+      "origin_event_id": "SOLUSDT:agg:1087737652",
+      "origin_event_time_ms": 1786747766971,
+      "origin_price": "75.14",
+      "past_volatility_bps": "21.29358530742613787596486558424274687250",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "d617a42690cb94b37f4f1883ff73af09b7b60042f177f6627ac7c7d8321e7f74",
+      "side": "LONG",
+      "signal_at_ms": 1786747770000,
+      "simulated_profit": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "LONG:60:invalidated_then_favorable": {
+      "candidate_digest": "b0e7c40b55f443051d4a654b87088b86a148efa96b7acb57cc35080267cd9acf",
+      "candidate_id": "0000b7e35b6b41e11f9e4f13d1dfe060ea91ec682df514c3b2f92afd01069798",
+      "coverage": {
+        "max_observation_gap_ms": 1722,
+        "observed_events": 194
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788203145000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1788203144575,
+      "endpoint_event_time_ms": 1788203144325,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788203089656,
+        "bin_index": 177400,
+        "event_id": "SOLUSDT:agg:1093075906",
+        "event_time_ms": 1788203089406,
+        "prefix_high": 10452000000,
+        "prefix_low": 10449000000,
+        "price_units": 10448000000
+      },
+      "flags": [],
+      "horizon_seconds": 60,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "5.741626794258373205741626794258373205742",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe": {
+        "bps": "4.784688995215311004784688995215311004785",
+        "usdt_per_sol": "0.05"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.913875598086124401913875598086124401914",
+        "usdt_per_sol": "0.02"
+      },
+      "observed_return": {
+        "bps": "2.870813397129186602870813397129186602871",
+        "usdt_per_sol": "0.03"
+      },
+      "observed_through_ms": 1788203145000,
+      "origin_available_at_ms": 1788203084913,
+      "origin_event_id": "SOLUSDT:agg:1093075887",
+      "origin_event_time_ms": 1788203084663,
+      "origin_price": "104.5",
+      "past_volatility_bps": "31.57894736842105263157894736842105263158",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "2e593ebeaeba75f52c75d6a00a641a4bd5cd5a3f73ca9d9c139821130d1da322",
+      "side": "LONG",
+      "signal_at_ms": 1788203085000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "LONG:60:status:COMPLETE": {
+      "candidate_digest": "c37f901dcab19f04c70468d311b195a5e03d6c1068d0f5abf9497b2050d5113b",
+      "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+      "coverage": {
+        "max_observation_gap_ms": 4083,
+        "observed_events": 128
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1785841305000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1785841304912,
+      "endpoint_event_time_ms": 1785841304662,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": null,
+      "flags": [],
+      "horizon_seconds": 60,
+      "invalidation_status": "NOT_OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "mfe": {
+        "bps": "4.076640847941296371789645332246229107216",
+        "usdt_per_sol": "0.03"
+      },
+      "mfe_before_invalidation": {
+        "bps": "4.076640847941296371789645332246229107216",
+        "usdt_per_sol": "0.03"
+      },
+      "observed_return": {
+        "bps": "4.076640847941296371789645332246229107216",
+        "usdt_per_sol": "0.03"
+      },
+      "observed_through_ms": 1785841305000,
+      "origin_available_at_ms": 1785841244489,
+      "origin_event_id": "SOLUSDT:agg:1085921192",
+      "origin_event_time_ms": 1785841244239,
+      "origin_price": "73.59",
+      "past_volatility_bps": "14.94768310911808669656203288490284005979",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+      "side": "LONG",
+      "signal_at_ms": 1785841245000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "LONG:900:invalidated_then_favorable": {
+      "candidate_digest": "b0e7c40b55f443051d4a654b87088b86a148efa96b7acb57cc35080267cd9acf",
+      "candidate_id": "0000b7e35b6b41e11f9e4f13d1dfe060ea91ec682df514c3b2f92afd01069798",
+      "coverage": {
+        "max_observation_gap_ms": 2830,
+        "observed_events": 2779
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788203985000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1788203984921,
+      "endpoint_event_time_ms": 1788203984671,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788203089656,
+        "bin_index": 177400,
+        "event_id": "SOLUSDT:agg:1093075906",
+        "event_time_ms": 1788203089406,
+        "prefix_high": 10452000000,
+        "prefix_low": 10449000000,
+        "price_units": 10448000000
+      },
+      "flags": [],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "44.97607655502392344497607655502392344498",
+        "usdt_per_sol": "0.47"
+      },
+      "mfe": {
+        "bps": "15.31100478468899521531100478468899521531",
+        "usdt_per_sol": "0.16"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.913875598086124401913875598086124401914",
+        "usdt_per_sol": "0.02"
+      },
+      "observed_return": {
+        "bps": "-42.10526315789473684210526315789473684211",
+        "usdt_per_sol": "-0.44"
+      },
+      "observed_through_ms": 1788203985000,
+      "origin_available_at_ms": 1788203084913,
+      "origin_event_id": "SOLUSDT:agg:1093075887",
+      "origin_event_time_ms": 1788203084663,
+      "origin_price": "104.5",
+      "past_volatility_bps": "31.57894736842105263157894736842105263158",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "2e593ebeaeba75f52c75d6a00a641a4bd5cd5a3f73ca9d9c139821130d1da322",
+      "side": "LONG",
+      "signal_at_ms": 1788203085000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "LONG:900:status:CENSORED": {
+      "candidate_digest": "5ab006056255a79eef871e9890442b2463e43b95de2d37d2f70ee56df17fe3df",
+      "candidate_id": "11d42f16aa598b7d165569e807d5714d07b81f2c610875bdd74af8e4ae8964e8",
+      "coverage": {
+        "max_observation_gap_ms": 5481,
+        "observed_events": 444
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788221370000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1788220799270,
+      "endpoint_event_time_ms": 1788220799020,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788220471293,
+        "bin_index": 178559,
+        "event_id": "SOLUSDT:agg:1093114856",
+        "event_time_ms": 1788220471043,
+        "prefix_high": 10296000000,
+        "prefix_low": 10296000000,
+        "price_units": 10295000000
+      },
+      "flags": [
+        "CENSORED"
+      ],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "1.942501942501942501942501942501942501943",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe": {
+        "bps": "3.885003885003885003885003885003885003885",
+        "usdt_per_sol": "0.04"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_return": {
+        "bps": "3.885003885003885003885003885003885003885",
+        "usdt_per_sol": "0.04"
+      },
+      "observed_through_ms": 1788220800000,
+      "origin_available_at_ms": 1788220469439,
+      "origin_event_id": "SOLUSDT:agg:1093114854",
+      "origin_event_time_ms": 1788220469189,
+      "origin_price": "102.96",
+      "past_volatility_bps": "5.827505827505827505827505827505827505828",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "46848c5774b0daf44a69709aa3c9bd019966e3e5a6f48a3ca06478bd58d50244",
+      "side": "LONG",
+      "signal_at_ms": 1788220470000,
+      "simulated_profit": null,
+      "status": "CENSORED",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "LONG:900:status:COMPLETE": {
+      "candidate_digest": "c37f901dcab19f04c70468d311b195a5e03d6c1068d0f5abf9497b2050d5113b",
+      "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+      "coverage": {
+        "max_observation_gap_ms": 5104,
+        "observed_events": 1729
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1785842145000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1785842143418,
+      "endpoint_event_time_ms": 1785842143168,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1785841350044,
+        "bin_index": 19951,
+        "event_id": "SOLUSDT:agg:1085921446",
+        "event_time_ms": 1785841349794,
+        "prefix_high": 0,
+        "prefix_low": 0,
+        "price_units": 7357000000
+      },
+      "flags": [],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "10.87104226117679032477238755265661095258",
+        "usdt_per_sol": "0.08"
+      },
+      "mfe": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe_before_invalidation": {
+        "bps": "8.153281695882592743579290664492458214431",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "-5.435521130588395162386193776328305476288",
+        "usdt_per_sol": "-0.04"
+      },
+      "observed_through_ms": 1785842145000,
+      "origin_available_at_ms": 1785841244489,
+      "origin_event_id": "SOLUSDT:agg:1085921192",
+      "origin_event_time_ms": 1785841244239,
+      "origin_price": "73.59",
+      "past_volatility_bps": "14.94768310911808669656203288490284005979",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+      "side": "LONG",
+      "signal_at_ms": 1785841245000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "LONG:900:status:INSUFFICIENT_COVERAGE": {
+      "candidate_digest": "b8d8bbdb07180dd297a143df595f2db9217fc5e4ee88e15318909e4048c6a581",
+      "candidate_id": "062c2acf14d9eaba5cc11cb75697341d5c269286b77d2321ca449d7c417912ff",
+      "coverage": {
+        "max_observation_gap_ms": 15539,
+        "observed_events": 1011
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786748670000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1786748669729,
+      "endpoint_event_time_ms": 1786748669479,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786747959274,
+        "bin_index": 80391,
+        "event_id": "SOLUSDT:agg:1087737923",
+        "event_time_ms": 1786747959024,
+        "prefix_high": 7515000000,
+        "prefix_low": 7513000000,
+        "price_units": 7512000000
+      },
+      "flags": [
+        "INSUFFICIENT_COVERAGE"
+      ],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "3.992547245142400851743412297045515038595",
+        "usdt_per_sol": "0.03"
+      },
+      "mfe": {
+        "bps": "3.992547245142400851743412297045515038595",
+        "usdt_per_sol": "0.03"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.330849081714133617247804099015171679532",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_return": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_through_ms": 1786748670000,
+      "origin_available_at_ms": 1786747767221,
+      "origin_event_id": "SOLUSDT:agg:1087737652",
+      "origin_event_time_ms": 1786747766971,
+      "origin_price": "75.14",
+      "past_volatility_bps": "21.29358530742613787596486558424274687250",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "d617a42690cb94b37f4f1883ff73af09b7b60042f177f6627ac7c7d8321e7f74",
+      "side": "LONG",
+      "signal_at_ms": 1786747770000,
+      "simulated_profit": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "SHORT:300:invalidated_then_favorable": {
+      "candidate_digest": "9f45f6628b17fa096d0d6819ce2600f171fea467ed5720d3ebef56f970f7859f",
+      "candidate_id": "00126345a407c355c7272c4f88a4519c566ae235a03f75ad483e1a7db663248a",
+      "coverage": {
+        "max_observation_gap_ms": 1387,
+        "observed_events": 1194
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1787724360000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1787724359902,
+      "endpoint_event_time_ms": 1787724359652,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1787724062225,
+        "bin_index": 145465,
+        "event_id": "SOLUSDT:agg:1091103636",
+        "event_time_ms": 1787724061975,
+        "prefix_high": 9710000000,
+        "prefix_low": 9709000000,
+        "price_units": 9711000000
+      },
+      "flags": [],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "25.74930476877124317643423627562055824493",
+        "usdt_per_sol": "0.25"
+      },
+      "mfe": {
+        "bps": "11.32969409825934699763106396127304562777",
+        "usdt_per_sol": "0.11"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_return": {
+        "bps": "-15.44958286126274590586054176537233494696",
+        "usdt_per_sol": "-0.15"
+      },
+      "observed_through_ms": 1787724360000,
+      "origin_available_at_ms": 1787724059633,
+      "origin_event_id": "SOLUSDT:agg:1091103632",
+      "origin_event_time_ms": 1787724059383,
+      "origin_price": "97.09",
+      "past_volatility_bps": "13.38963847976104645174580286332269028736",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+      "side": "SHORT",
+      "signal_at_ms": 1787724060000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "SHORT:300:status:CENSORED": {
+      "candidate_digest": "53ae409c82dca4cf719158119424d4210d8274cccb92335ce13f9a3a709f4896",
+      "candidate_id": "84bfe0e472e8036933bf1527eb6d2b7a8cd9db3407fb6031910d95f104969c92",
+      "coverage": {
+        "max_observation_gap_ms": 4174,
+        "observed_events": 170
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788220965000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1788220799270,
+      "endpoint_event_time_ms": 1788220799020,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788220678980,
+        "bin_index": 178572,
+        "event_id": "SOLUSDT:agg:1093115142",
+        "event_time_ms": 1788220678730,
+        "prefix_high": 10297000000,
+        "prefix_low": 10296000000,
+        "price_units": 10298000000
+      },
+      "flags": [
+        "CENSORED"
+      ],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "2.913469942701757793532096727202097698359",
+        "usdt_per_sol": "0.03"
+      },
+      "mfe": {
+        "bps": "0.9711566475672525978440322424006992327862",
+        "usdt_per_sol": "0.01"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0.9711566475672525978440322424006992327862",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_return": {
+        "bps": "-2.913469942701757793532096727202097698359",
+        "usdt_per_sol": "-0.03"
+      },
+      "observed_through_ms": 1788220800000,
+      "origin_available_at_ms": 1788220664855,
+      "origin_event_id": "SOLUSDT:agg:1093115128",
+      "origin_event_time_ms": 1788220664605,
+      "origin_price": "102.97",
+      "past_volatility_bps": "4.855783237836262989220161212003496163931",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "cdfd3abb5562395796df9b2d98870279cccdcb2eb6f62e1b691a585cee5fae31",
+      "side": "SHORT",
+      "signal_at_ms": 1788220665000,
+      "simulated_profit": null,
+      "status": "CENSORED",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "SHORT:300:status:COMPLETE": {
+      "candidate_digest": "ec4dca8e6acfd63bfcdf321d068508815964616a9ee5160b739f74a01b8a3f36",
+      "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+      "coverage": {
+        "max_observation_gap_ms": 2841,
+        "observed_events": 653
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786323420000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1786323419986,
+      "endpoint_event_time_ms": 1786323419736,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786323346356,
+        "bin_index": 52084,
+        "event_id": "SOLUSDT:agg:1086872680",
+        "event_time_ms": 1786323346106,
+        "prefix_high": 7663000000,
+        "prefix_low": 7662000000,
+        "price_units": 7664000000
+      },
+      "flags": [],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "6.527415143603133159268929503916449086162",
+        "usdt_per_sol": "0.05"
+      },
+      "mfe": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe_before_invalidation": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "2.610966057441253263707571801566579634465",
+        "usdt_per_sol": "0.02"
+      },
+      "observed_through_ms": 1786323420000,
+      "origin_available_at_ms": 1786323119218,
+      "origin_event_id": "SOLUSDT:agg:1086872141",
+      "origin_event_time_ms": 1786323118968,
+      "origin_price": "76.6",
+      "past_volatility_bps": "36.55352480417754569190600522193211488251",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+      "side": "SHORT",
+      "signal_at_ms": 1786323120000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "SHORT:300:status:INSUFFICIENT_COVERAGE": {
+      "candidate_digest": "2c8840049c15ab8ca6bf58e62270686c9f2180aac041401845915b5f4dc92fe7",
+      "candidate_id": "00d991891c0e091ed8ca64efe0b2a1fcdc81abbf474edc5788f3b616ea5ba93f",
+      "coverage": {
+        "max_observation_gap_ms": 16674,
+        "observed_events": 211
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786837170000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1786837169470,
+      "endpoint_event_time_ms": 1786837169220,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786836931880,
+        "bin_index": 86323,
+        "event_id": "SOLUSDT:agg:1087855690",
+        "event_time_ms": 1786836931630,
+        "prefix_high": 7531000000,
+        "prefix_low": 7531000000,
+        "price_units": 7532000000
+      },
+      "flags": [
+        "INSUFFICIENT_COVERAGE"
+      ],
+      "horizon_seconds": 300,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "5.312084993359893758300132802124833997344",
+        "usdt_per_sol": "0.04"
+      },
+      "mfe": {
+        "bps": "1.328021248339973439575033200531208499336",
+        "usdt_per_sol": "0.01"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.328021248339973439575033200531208499336",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_return": {
+        "bps": "-3.984063745019920318725099601593625498008",
+        "usdt_per_sol": "-0.03"
+      },
+      "observed_through_ms": 1786837170000,
+      "origin_available_at_ms": 1786836869530,
+      "origin_event_id": "SOLUSDT:agg:1087855646",
+      "origin_event_time_ms": 1786836869280,
+      "origin_price": "75.3",
+      "past_volatility_bps": "9.296148738379814077025232403718459495352",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "4a3c72fa6246fd08e9bc3e545888da676309f9f80a13932705666f3ddeabbd46",
+      "side": "SHORT",
+      "signal_at_ms": 1786836870000,
+      "simulated_profit": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "SHORT:3600:invalidated_then_favorable": {
+      "candidate_digest": "ec4dca8e6acfd63bfcdf321d068508815964616a9ee5160b739f74a01b8a3f36",
+      "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+      "coverage": {
+        "max_observation_gap_ms": 7344,
+        "observed_events": 8824
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786326720000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1786326719985,
+      "endpoint_event_time_ms": 1786326719735,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786323346356,
+        "bin_index": 52084,
+        "event_id": "SOLUSDT:agg:1086872680",
+        "event_time_ms": 1786323346106,
+        "prefix_high": 7663000000,
+        "prefix_low": 7662000000,
+        "price_units": 7664000000
+      },
+      "flags": [],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "70.49608355091383812010443864229765013055",
+        "usdt_per_sol": "0.54"
+      },
+      "mfe": {
+        "bps": "30.02610966057441253263707571801566579634",
+        "usdt_per_sol": "0.23"
+      },
+      "mfe_before_invalidation": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "-52.21932114882506527415143603133159268930",
+        "usdt_per_sol": "-0.4"
+      },
+      "observed_through_ms": 1786326720000,
+      "origin_available_at_ms": 1786323119218,
+      "origin_event_id": "SOLUSDT:agg:1086872141",
+      "origin_event_time_ms": 1786323118968,
+      "origin_price": "76.6",
+      "past_volatility_bps": "36.55352480417754569190600522193211488251",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+      "side": "SHORT",
+      "signal_at_ms": 1786323120000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "SHORT:3600:status:CENSORED": {
+      "candidate_digest": "b554cd638b541810b8b67fb1823fa03c9710b04924d73e29875c522430b61bfe",
+      "candidate_id": "080dd0709e11b7869e0deda4f4698ab033f987b9894c314e74d183e4fa4306c6",
+      "coverage": {
+        "max_observation_gap_ms": 6930,
+        "observed_events": 3528
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788222120000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1788220799270,
+      "endpoint_event_time_ms": 1788220799020,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788218520259,
+        "bin_index": 178429,
+        "event_id": "SOLUSDT:agg:1093111771",
+        "event_time_ms": 1788218520009,
+        "prefix_high": 0,
+        "prefix_low": 0,
+        "price_units": 10304000000
+      },
+      "flags": [
+        "CENSORED"
+      ],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "11.64709307968552848684849073085509075027",
+        "usdt_per_sol": "0.12"
+      },
+      "mfe": {
+        "bps": "15.52945743958070464913132097447345433369",
+        "usdt_per_sol": "0.16"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_return": {
+        "bps": "2.911773269921382121712122682713772687567",
+        "usdt_per_sol": "0.03"
+      },
+      "observed_through_ms": 1788220800000,
+      "origin_available_at_ms": 1788218518089,
+      "origin_event_id": "SOLUSDT:agg:1093111770",
+      "origin_event_time_ms": 1788218517839,
+      "origin_price": "103.03",
+      "past_volatility_bps": "13.58827525963311656798990585266427254198",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "dd039d5d345b551ce0016b5a6fa8dd04bc360bb9ef9183e633e4c6ce69f2cd68",
+      "side": "SHORT",
+      "signal_at_ms": 1788218520000,
+      "simulated_profit": null,
+      "status": "CENSORED",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "SHORT:3600:status:COMPLETE": {
+      "candidate_digest": "ec4dca8e6acfd63bfcdf321d068508815964616a9ee5160b739f74a01b8a3f36",
+      "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+      "coverage": {
+        "max_observation_gap_ms": 7344,
+        "observed_events": 8824
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786326720000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1786326719985,
+      "endpoint_event_time_ms": 1786326719735,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786323346356,
+        "bin_index": 52084,
+        "event_id": "SOLUSDT:agg:1086872680",
+        "event_time_ms": 1786323346106,
+        "prefix_high": 7663000000,
+        "prefix_low": 7662000000,
+        "price_units": 7664000000
+      },
+      "flags": [],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "70.49608355091383812010443864229765013055",
+        "usdt_per_sol": "0.54"
+      },
+      "mfe": {
+        "bps": "30.02610966057441253263707571801566579634",
+        "usdt_per_sol": "0.23"
+      },
+      "mfe_before_invalidation": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "-52.21932114882506527415143603133159268930",
+        "usdt_per_sol": "-0.4"
+      },
+      "observed_through_ms": 1786326720000,
+      "origin_available_at_ms": 1786323119218,
+      "origin_event_id": "SOLUSDT:agg:1086872141",
+      "origin_event_time_ms": 1786323118968,
+      "origin_price": "76.6",
+      "past_volatility_bps": "36.55352480417754569190600522193211488251",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+      "side": "SHORT",
+      "signal_at_ms": 1786323120000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "SHORT:3600:status:INSUFFICIENT_COVERAGE": {
+      "candidate_digest": "2c8840049c15ab8ca6bf58e62270686c9f2180aac041401845915b5f4dc92fe7",
+      "candidate_id": "00d991891c0e091ed8ca64efe0b2a1fcdc81abbf474edc5788f3b616ea5ba93f",
+      "coverage": {
+        "max_observation_gap_ms": 16674,
+        "observed_events": 4725
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786840470000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1786840468355,
+      "endpoint_event_time_ms": 1786840468105,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786836931880,
+        "bin_index": 86323,
+        "event_id": "SOLUSDT:agg:1087855690",
+        "event_time_ms": 1786836931630,
+        "prefix_high": 7531000000,
+        "prefix_low": 7531000000,
+        "price_units": 7532000000
+      },
+      "flags": [
+        "INSUFFICIENT_COVERAGE"
+      ],
+      "horizon_seconds": 3600,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "15.93625498007968127490039840637450199203",
+        "usdt_per_sol": "0.12"
+      },
+      "mfe": {
+        "bps": "9.296148738379814077025232403718459495352",
+        "usdt_per_sol": "0.07"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.328021248339973439575033200531208499336",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_return": {
+        "bps": "-9.296148738379814077025232403718459495352",
+        "usdt_per_sol": "-0.07"
+      },
+      "observed_through_ms": 1786840470000,
+      "origin_available_at_ms": 1786836869530,
+      "origin_event_id": "SOLUSDT:agg:1087855646",
+      "origin_event_time_ms": 1786836869280,
+      "origin_price": "75.3",
+      "past_volatility_bps": "9.296148738379814077025232403718459495352",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "4a3c72fa6246fd08e9bc3e545888da676309f9f80a13932705666f3ddeabbd46",
+      "side": "SHORT",
+      "signal_at_ms": 1786836870000,
+      "simulated_profit": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "SHORT:60:invalidated_then_favorable": {
+      "candidate_digest": "9f45f6628b17fa096d0d6819ce2600f171fea467ed5720d3ebef56f970f7859f",
+      "candidate_id": "00126345a407c355c7272c4f88a4519c566ae235a03f75ad483e1a7db663248a",
+      "coverage": {
+        "max_observation_gap_ms": 1167,
+        "observed_events": 192
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1787724120000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1787724119842,
+      "endpoint_event_time_ms": 1787724119592,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1787724062225,
+        "bin_index": 145465,
+        "event_id": "SOLUSDT:agg:1091103636",
+        "event_time_ms": 1787724061975,
+        "prefix_high": 9710000000,
+        "prefix_low": 9709000000,
+        "price_units": 9711000000
+      },
+      "flags": [],
+      "horizon_seconds": 60,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "5.149860953754248635286847255124111648985",
+        "usdt_per_sol": "0.05"
+      },
+      "mfe": {
+        "bps": "6.179833144505098362344216706148933978783",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe_before_invalidation": {
+        "bps": "0",
+        "usdt_per_sol": "0"
+      },
+      "observed_return": {
+        "bps": "1.029972190750849727057369451024822329797",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_through_ms": 1787724120000,
+      "origin_available_at_ms": 1787724059633,
+      "origin_event_id": "SOLUSDT:agg:1091103632",
+      "origin_event_time_ms": 1787724059383,
+      "origin_price": "97.09",
+      "past_volatility_bps": "13.38963847976104645174580286332269028736",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+      "side": "SHORT",
+      "signal_at_ms": 1787724060000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "SHORT:60:status:COMPLETE": {
+      "candidate_digest": "ec4dca8e6acfd63bfcdf321d068508815964616a9ee5160b739f74a01b8a3f36",
+      "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+      "coverage": {
+        "max_observation_gap_ms": 1058,
+        "observed_events": 167
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786323180000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1786323179575,
+      "endpoint_event_time_ms": 1786323179325,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": null,
+      "flags": [],
+      "horizon_seconds": 60,
+      "invalidation_status": "NOT_OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "3.916449086161879895561357702349869451697",
+        "usdt_per_sol": "0.03"
+      },
+      "mfe": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "mfe_before_invalidation": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_through_ms": 1786323180000,
+      "origin_available_at_ms": 1786323119218,
+      "origin_event_id": "SOLUSDT:agg:1086872141",
+      "origin_event_time_ms": 1786323118968,
+      "origin_price": "76.6",
+      "past_volatility_bps": "36.55352480417754569190600522193211488251",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+      "side": "SHORT",
+      "signal_at_ms": 1786323120000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "SHORT:60:status:INSUFFICIENT_COVERAGE": {
+      "candidate_digest": "4ce33062f60f32d04cf8dc6f7032017d5b704563a56de95b56b273388156d1de",
+      "candidate_id": "46e4955804938eeabe907272458156fb511d068ad93f4540eaaea58c1d388b19",
+      "coverage": {
+        "max_observation_gap_ms": 15297,
+        "observed_events": 37
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786663740000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1786663739802,
+      "endpoint_event_time_ms": 1786663739552,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786663688480,
+        "bin_index": 74773,
+        "event_id": "SOLUSDT:agg:1087585067",
+        "event_time_ms": 1786663688230,
+        "prefix_high": 7618000000,
+        "prefix_low": 7616000000,
+        "price_units": 7619000000
+      },
+      "flags": [
+        "INSUFFICIENT_COVERAGE"
+      ],
+      "horizon_seconds": 60,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "2.625360987135731163034917301128905224468",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe": {
+        "bps": "2.625360987135731163034917301128905224468",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe_before_invalidation": {
+        "bps": "2.625360987135731163034917301128905224468",
+        "usdt_per_sol": "0.02"
+      },
+      "observed_return": {
+        "bps": "-1.312680493567865581517458650564452612234",
+        "usdt_per_sol": "-0.01"
+      },
+      "observed_through_ms": 1786663740000,
+      "origin_available_at_ms": 1786663678691,
+      "origin_event_id": "SOLUSDT:agg:1087585052",
+      "origin_event_time_ms": 1786663678441,
+      "origin_price": "76.18",
+      "past_volatility_bps": "7.876082961407193489104751903386715673405",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "ba9f59696ee52460df3a2657d77be915b942738bf6d384a614330af49c789842",
+      "side": "SHORT",
+      "signal_at_ms": 1786663680000,
+      "simulated_profit": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    },
+    "SHORT:900:invalidated_then_favorable": {
+      "candidate_digest": "ec4dca8e6acfd63bfcdf321d068508815964616a9ee5160b739f74a01b8a3f36",
+      "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+      "coverage": {
+        "max_observation_gap_ms": 4919,
+        "observed_events": 1727
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786324020000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1786324019202,
+      "endpoint_event_time_ms": 1786324018952,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786323346356,
+        "bin_index": 52084,
+        "event_id": "SOLUSDT:agg:1086872680",
+        "event_time_ms": 1786323346106,
+        "prefix_high": 7663000000,
+        "prefix_low": 7662000000,
+        "price_units": 7664000000
+      },
+      "flags": [],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "6.527415143603133159268929503916449086162",
+        "usdt_per_sol": "0.05"
+      },
+      "mfe": {
+        "bps": "23.49869451697127937336814621409921671018",
+        "usdt_per_sol": "0.18"
+      },
+      "mfe_before_invalidation": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "16.97127937336814621409921671018276762402",
+        "usdt_per_sol": "0.13"
+      },
+      "observed_through_ms": 1786324020000,
+      "origin_available_at_ms": 1786323119218,
+      "origin_event_id": "SOLUSDT:agg:1086872141",
+      "origin_event_time_ms": 1786323118968,
+      "origin_price": "76.6",
+      "past_volatility_bps": "36.55352480417754569190600522193211488251",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+      "side": "SHORT",
+      "signal_at_ms": 1786323120000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "SHORT:900:status:CENSORED": {
+      "candidate_digest": "d3daa243799b3a87ca1671f42923d3ec564274b297fa7e60c53f6a52726c5135",
+      "candidate_id": "1821cba52dabef0a88b07a811560038125ae68774567d15326583713672cca1d",
+      "coverage": {
+        "max_observation_gap_ms": 6930,
+        "observed_events": 1071
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1788220890000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1788220799270,
+      "endpoint_event_time_ms": 1788220799020,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1788220057547,
+        "bin_index": 178531,
+        "event_id": "SOLUSDT:agg:1093114328",
+        "event_time_ms": 1788220057297,
+        "prefix_high": 10292000000,
+        "prefix_low": 10289000000,
+        "price_units": 10293000000
+      },
+      "flags": [
+        "CENSORED"
+      ],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": false,
+      "mae": {
+        "bps": "8.745505781751044602079486930327470605383",
+        "usdt_per_sol": "0.09"
+      },
+      "mfe": {
+        "bps": "1.943445729278009911573219317850549023419",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.943445729278009911573219317850549023419",
+        "usdt_per_sol": "0.02"
+      },
+      "observed_return": {
+        "bps": "-8.745505781751044602079486930327470605383",
+        "usdt_per_sol": "-0.09"
+      },
+      "observed_through_ms": 1788220800000,
+      "origin_available_at_ms": 1788219989882,
+      "origin_event_id": "SOLUSDT:agg:1093114227",
+      "origin_event_time_ms": 1788219989632,
+      "origin_price": "102.91",
+      "past_volatility_bps": "18.46273442814109415994558351958021572248",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "4f21141dd2e76b7ca90d22b55dbfedae9c5a19f11e77526b69515e459775722f",
+      "side": "SHORT",
+      "signal_at_ms": 1788219990000,
+      "simulated_profit": null,
+      "status": "CENSORED",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 1
+    },
+    "SHORT:900:status:COMPLETE": {
+      "candidate_digest": "ec4dca8e6acfd63bfcdf321d068508815964616a9ee5160b739f74a01b8a3f36",
+      "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+      "coverage": {
+        "max_observation_gap_ms": 4919,
+        "observed_events": 1727
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786324020000,
+      "eligible": true,
+      "endpoint_available_at_ms": 1786324019202,
+      "endpoint_event_time_ms": 1786324018952,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786323346356,
+        "bin_index": 52084,
+        "event_id": "SOLUSDT:agg:1086872680",
+        "event_time_ms": 1786323346106,
+        "prefix_high": 7663000000,
+        "prefix_low": 7662000000,
+        "price_units": 7664000000
+      },
+      "flags": [],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "6.527415143603133159268929503916449086162",
+        "usdt_per_sol": "0.05"
+      },
+      "mfe": {
+        "bps": "23.49869451697127937336814621409921671018",
+        "usdt_per_sol": "0.18"
+      },
+      "mfe_before_invalidation": {
+        "bps": "7.832898172323759791122715404699738903394",
+        "usdt_per_sol": "0.06"
+      },
+      "observed_return": {
+        "bps": "16.97127937336814621409921671018276762402",
+        "usdt_per_sol": "0.13"
+      },
+      "observed_through_ms": 1786324020000,
+      "origin_available_at_ms": 1786323119218,
+      "origin_event_id": "SOLUSDT:agg:1086872141",
+      "origin_event_time_ms": 1786323118968,
+      "origin_price": "76.6",
+      "past_volatility_bps": "36.55352480417754569190600522193211488251",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+      "side": "SHORT",
+      "signal_at_ms": 1786323120000,
+      "simulated_profit": null,
+      "status": "COMPLETE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 2
+    },
+    "SHORT:900:status:INSUFFICIENT_COVERAGE": {
+      "candidate_digest": "2c8840049c15ab8ca6bf58e62270686c9f2180aac041401845915b5f4dc92fe7",
+      "candidate_id": "00d991891c0e091ed8ca64efe0b2a1fcdc81abbf474edc5788f3b616ea5ba93f",
+      "coverage": {
+        "max_observation_gap_ms": 16674,
+        "observed_events": 626
+      },
+      "data_use": "DEVELOPMENT / ALREADY_EXAMINED",
+      "deadline_ms": 1786837770000,
+      "eligible": false,
+      "endpoint_available_at_ms": 1786837767426,
+      "endpoint_event_time_ms": 1786837767176,
+      "execution_authority": "NONE",
+      "first_observed_invalidation": {
+        "available_at_ms": 1786836931880,
+        "bin_index": 86323,
+        "event_id": "SOLUSDT:agg:1087855690",
+        "event_time_ms": 1786836931630,
+        "prefix_high": 7531000000,
+        "prefix_low": 7531000000,
+        "price_units": 7532000000
+      },
+      "flags": [
+        "INSUFFICIENT_COVERAGE"
+      ],
+      "horizon_seconds": 900,
+      "invalidation_status": "OBSERVED",
+      "kind": "SIGNAL",
+      "later_favorable_after_invalidation": true,
+      "mae": {
+        "bps": "6.640106241699867197875166002656042496680",
+        "usdt_per_sol": "0.05"
+      },
+      "mfe": {
+        "bps": "2.656042496679946879150066401062416998672",
+        "usdt_per_sol": "0.02"
+      },
+      "mfe_before_invalidation": {
+        "bps": "1.328021248339973439575033200531208499336",
+        "usdt_per_sol": "0.01"
+      },
+      "observed_return": {
+        "bps": "-1.328021248339973439575033200531208499336",
+        "usdt_per_sol": "-0.01"
+      },
+      "observed_through_ms": 1786837770000,
+      "origin_available_at_ms": 1786836869530,
+      "origin_event_id": "SOLUSDT:agg:1087855646",
+      "origin_event_time_ms": 1786836869280,
+      "origin_price": "75.3",
+      "past_volatility_bps": "9.296148738379814077025232403718459495352",
+      "scope": "PRICE_LABEL_NOT_TRADE_PNL",
+      "setup_digest": "4a3c72fa6246fd08e9bc3e545888da676309f9f80a13932705666f3ddeabbd46",
+      "side": "SHORT",
+      "signal_at_ms": 1786836870000,
+      "simulated_profit": null,
+      "status": "INSUFFICIENT_COVERAGE",
+      "version": "fixed-window-observation-label/v1",
+      "volatility_band": 0
+    }
+  },
+  "primary_median_examples": {
+    "LONG": {
+      "at": 1788120165000,
+      "band": 1,
+      "before": "5.674832119549796651849049465619975409061",
+      "distance": "0.01",
+      "eligible": true,
+      "flags": [],
+      "horizon": 900,
+      "id": "7f8f3970762f62f16a867d9be72816b0347944fc7b44e56d52ef51f8ea867f82",
+      "invalid": true,
+      "kind": "SIGNAL",
+      "later": true,
+      "mae": "11.34966423909959330369809893123995081812",
+      "mfe": "21.75352312494088716542135628487657240140",
+      "r": "0.9458053532582994419748415776033292348435",
+      "side": "LONG"
+    },
+    "SHORT": {
+      "at": 1786341870000,
+      "band": 1,
+      "before": "5.200208008320332813312532501300052002080",
+      "distance": "0",
+      "eligible": true,
+      "flags": [],
+      "horizon": 900,
+      "id": "013fba035a781730ef9206e1f5c1bb5bd0fe631d05590bdc2e6d7ec954d7ca69",
+      "invalid": true,
+      "kind": "SIGNAL",
+      "later": true,
+      "mae": "16.90067602704108164326573062922516900676",
+      "mfe": "19.50078003120124804992199687987519500780",
+      "r": "0",
+      "side": "SHORT"
+    }
+  }
+}

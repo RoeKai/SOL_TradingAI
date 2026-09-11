@@ -1,0 +1,2905 @@
+{
+  "expected_return": null,
+  "fee_spread_impact_rules": "DECLARED_NOT_ACCOUNT_OR_BOOK_VERIFIED",
+  "funding": "FROZEN_EX_ANTE_BUDGET_NOT_SETTLEMENT",
+  "production_costs_changed": false,
+  "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+  "sides": {
+    "LONG": {
+      "boundaries": {
+        "BRACKET_ONLY_WITH_TICK_DISCONTINUITIES": 4,
+        "NO_TESTED_SLIPPAGE_PASSES": 18651
+      },
+      "candidates": 18655,
+      "fees_only": {
+        "nonpositive_net": 13845,
+        "positive_below_floor": 4655,
+        "static_necessary_pass": 155,
+        "total": 18655
+      },
+      "primary": {
+        "CURRENT_STATIC_NECESSARY_CONDITION_ONLY": 1,
+        "FEES_EXHAUST_REWARD": 13845,
+        "FROZEN_SPREAD_FUNDING_BLOCK_EVEN_ZERO_SLIP": 151,
+        "LOWER_SLIPPAGE_NECESSARY_ONLY": 3,
+        "POSITIVE_FEES_ONLY_BELOW_RR": 4655
+      },
+      "real_executability_unknown": 18655,
+      "representatives": {
+        "CURRENT_STATIC_NECESSARY_CONDITION_ONLY": {
+          "at": 1787496195.0,
+          "boundary": {
+            "exact_threshold": null,
+            "failing_bps": 20,
+            "interpretation": "observed pass at lower / fail at upper; no interpolated equality",
+            "passing_bps": 10,
+            "status": "BRACKET_ONLY_WITH_TICK_DISCONTINUITIES"
+          },
+          "candidate_id": "fbcfdb9dad7e39691edad3abeb0f925b33900048ffd269ec562ea35cb1e2a6de",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.00162",
+            "gross_target": "0.091530",
+            "hypothetical_input_digest": "eea8fefde5583b583aaf75caa093bcd75ac9168a927897d16cd0c367185dd3bf",
+            "necessary_static_condition": true,
+            "net_rr": "12.940873256519102486355366889023650697392359005458",
+            "net_stop_risk": "0.0066784500",
+            "net_target": "0.08642497500",
+            "original_setup_digest": "951d80bb63c249bbd97a05906c686301d5ed0d474d81edba9cd81bc187cfe623",
+            "per_leg_slippage_bps": null,
+            "quantity": "0.054",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.0025296300",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.0025288200",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.00252963000",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.00257539500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "58c6dbeb7c073330705da9c7b36fdbf7ce2851da528c5badad2fa0d86a2b0ddf",
+          "original_rejection_reasons": [
+            "BTC_CRASH_LONG_BLOCK"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "CURRENT_STATIC_NECESSARY_CONDITION_ONLY",
+          "quantity": "0.054",
+          "quantity_basis": "MINIMUM_DIAGNOSTIC_NOT_APPROVED",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01031724",
+              "gross_stop_risk": "0.00162",
+              "gross_target": "0.091530",
+              "hypothetical_input_digest": "f6cdeba3bb03707d8f3cf5027a17f84e4a7c4179a64ed9f468057cf98f8aede6",
+              "necessary_static_condition": true,
+              "net_rr": "3.8942878659222225755833457027866239594557945561040",
+              "net_stop_risk": "0.0190190701620",
+              "net_target": "0.07406573415300",
+              "original_setup_digest": "951d80bb63c249bbd97a05906c686301d5ed0d474d81edba9cd81bc187cfe623",
+              "per_leg_slippage_bps": 0,
+              "quantity": "0.054",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025301359260",
+                "entry_friction": "0.001011852",
+                "exit_fee": "0.0025283142360",
+                "exit_friction": "0.001011528",
+                "funding": "0.01031724"
+              },
+              "target_costs": {
+                "entry_fee": "0.00253013592600",
+                "entry_friction": "0.0010118520",
+                "exit_fee": "0.00257487992100",
+                "exit_friction": "0.0010301580",
+                "funding": "0.010317240"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01031724",
+              "gross_stop_risk": "0.00162",
+              "gross_target": "0.091530",
+              "hypothetical_input_digest": "6d8380392a8c5192e76877b4b29ed16445d1696995ce80172dc13616ec8d7802",
+              "necessary_static_condition": true,
+              "net_rr": "3.4227826226042324100201592092873413595328205371222",
+              "net_stop_risk": "0.0210424503240",
+              "net_target": "0.07202373330600",
+              "original_setup_digest": "951d80bb63c249bbd97a05906c686301d5ed0d474d81edba9cd81bc187cfe623",
+              "per_leg_slippage_bps": 2,
+              "quantity": "0.054",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025306418520",
+                "entry_friction": "0.002023704",
+                "exit_fee": "0.0025278084720",
+                "exit_friction": "0.002023056",
+                "funding": "0.01031724"
+              },
+              "target_costs": {
+                "entry_fee": "0.00253064185200",
+                "entry_friction": "0.0020237040",
+                "exit_fee": "0.00257436484200",
+                "exit_friction": "0.0020603160",
+                "funding": "0.010317240"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01031724",
+              "gross_stop_risk": "0.00162",
+              "gross_target": "0.091530",
+              "hypothetical_input_digest": "63b15c5ff97e59111307cac7ce996de48defda2114b2132fe0b9c4bf3f1ab6a9",
+              "necessary_static_condition": true,
+              "net_rr": "2.8641126831811627043101094571271434021821886540931",
+              "net_stop_risk": "0.0240775205670",
+              "net_target": "0.06896073203550",
+              "original_setup_digest": "951d80bb63c249bbd97a05906c686301d5ed0d474d81edba9cd81bc187cfe623",
+              "per_leg_slippage_bps": 5,
+              "quantity": "0.054",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025314007410",
+                "entry_friction": "0.003541482",
+                "exit_fee": "0.0025270498260",
+                "exit_friction": "0.003540348",
+                "funding": "0.01031724"
+              },
+              "target_costs": {
+                "entry_fee": "0.00253140074100",
+                "entry_friction": "0.0035414820",
+                "exit_fee": "0.00257359222350",
+                "exit_friction": "0.0036055530",
+                "funding": "0.010317240"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01031724",
+              "gross_stop_risk": "0.00162",
+              "gross_target": "0.091530",
+              "hypothetical_input_digest": "b5924cbaa4513383dae66dca8ac6bcb6c29352e328e533ece9feb744c2f6c82c",
+              "necessary_static_condition": true,
+              "net_rr": "2.1916458517674280994269244290486795176094534996985",
+              "net_stop_risk": "0.0291359709720",
+              "net_target": "0.06385572991800",
+              "original_setup_digest": "951d80bb63c249bbd97a05906c686301d5ed0d474d81edba9cd81bc187cfe623",
+              "per_leg_slippage_bps": 10,
+              "quantity": "0.054",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025326655560",
+                "entry_friction": "0.006071112",
+                "exit_fee": "0.0025257854160",
+                "exit_friction": "0.006069168",
+                "funding": "0.01031724"
+              },
+              "target_costs": {
+                "entry_fee": "0.00253266555600",
+                "entry_friction": "0.0060711120",
+                "exit_fee": "0.00257230452600",
+                "exit_friction": "0.0061809480",
+                "funding": "0.010317240"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "23",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01031724",
+              "gross_stop_risk": "0.00162",
+              "gross_target": "0.091530",
+              "hypothetical_input_digest": "e424707330edf185015bd25ab044b5906f070e89921d34263f6df49a95af0e39",
+              "necessary_static_condition": false,
+              "net_rr": "1.3363446988307967626117912356038001736735625633305",
+              "net_stop_risk": "0.0397583829000",
+              "net_target": "0.05313090422250",
+              "original_setup_digest": "951d80bb63c249bbd97a05906c686301d5ed0d474d81edba9cd81bc187cfe623",
+              "per_leg_slippage_bps": 20,
+              "quantity": "0.054",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025351951860",
+                "entry_friction": "0.011130372",
+                "exit_fee": "0.0025230037140",
+                "exit_friction": "0.011632572",
+                "funding": "0.01031724"
+              },
+              "target_costs": {
+                "entry_fee": "0.00253519518600",
+                "entry_friction": "0.0111303720",
+                "exit_fee": "0.00256947159150",
+                "exit_friction": "0.0118468170",
+                "funding": "0.010317240"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "LONG"
+        },
+        "FEES_EXHAUST_REWARD": {
+          "at": 1785841245.0,
+          "boundary": {
+            "status": "NO_TESTED_SLIPPAGE_PASSES",
+            "tested_max": 20,
+            "tested_min": 0
+          },
+          "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.13536",
+            "gross_target": "0.203040",
+            "hypothetical_input_digest": "384a95923b34a6eeaa695c9cd91f415dda35b374733f89361afd01662a555761",
+            "necessary_static_condition": false,
+            "net_rr": "-0.46596494977559307544347082709980765120752297499466",
+            "net_stop_risk": "0.6333494400",
+            "net_target": "-0.29511864000",
+            "original_setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+            "per_leg_slippage_bps": null,
+            "quantity": "6.768",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.2490285600",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.2489608800",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.24902856000",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.24913008000",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "5a34be989736981e8a15473e01f0775cc953af7ceb99b5e00a0b6e09120937cc",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "FEES_EXHAUST_REWARD",
+          "quantity": "6.768",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99800928",
+              "gross_stop_risk": "0.13536",
+              "gross_target": "0.203040",
+              "hypothetical_input_digest": "b5e664ca3b50f74c5106c28124621ee401596fd1518c02ccb334f134ddb9f243",
+              "necessary_static_condition": false,
+              "net_rr": "-0.81526736730406572729106356819882599160855103960076",
+              "net_stop_risk": "1.8305545095360",
+              "net_target": "-1.49239135569600",
+              "original_setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+              "per_leg_slippage_bps": 0,
+              "quantity": "6.768",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2490783657120",
+                "entry_friction": "0.099611424",
+                "exit_fee": "0.2489110878240",
+                "exit_friction": "0.099584352",
+                "funding": "0.99800928"
+              },
+              "target_costs": {
+                "entry_fee": "0.24907836571200",
+                "entry_friction": "0.0996114240",
+                "exit_fee": "0.24908025398400",
+                "exit_friction": "0.0996520320",
+                "funding": "0.998009280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "5",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "5",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99800928",
+              "gross_stop_risk": "0.13536",
+              "gross_target": "0.203040",
+              "hypothetical_input_digest": "a261971218b1cb2299be4b3c46139029c86a15db444237180e59fd2db7aa7c03",
+              "necessary_static_condition": false,
+              "net_rr": "-0.84123701065989112802919191359112717578146373750137",
+              "net_stop_risk": "2.1293481938400",
+              "net_target": "-1.79128650924000",
+              "original_setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+              "per_leg_slippage_bps": 2,
+              "quantity": "6.768",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2491530742800",
+                "entry_friction": "0.249028560",
+                "exit_fee": "0.2488363995600",
+                "exit_friction": "0.248960880",
+                "funding": "0.99800928"
+              },
+              "target_costs": {
+                "entry_fee": "0.24915307428000",
+                "entry_friction": "0.2490285600",
+                "exit_fee": "0.2490055149600",
+                "exit_friction": "0.249130080",
+                "funding": "0.998009280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99800928",
+              "gross_stop_risk": "0.13536",
+              "gross_target": "0.203040",
+              "hypothetical_input_digest": "a2e6d7b2cc4b0fb459b482601d44b9938b219a3ec473cfc7e9df4e5ac5663cb6",
+              "necessary_static_condition": false,
+              "net_rr": "-0.85484747513767591537403820463689374728745587582054",
+              "net_stop_risk": "2.3285439833760",
+              "net_target": "-1.99054994493600",
+              "original_setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+              "per_leg_slippage_bps": 5,
+              "quantity": "6.768",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2492028799920",
+                "entry_friction": "0.348639984",
+                "exit_fee": "0.2487866073840",
+                "exit_friction": "0.348545232",
+                "funding": "0.99800928"
+              },
+              "target_costs": {
+                "entry_fee": "0.24920287999200",
+                "entry_friction": "0.3486399840",
+                "exit_fee": "0.24895568894400",
+                "exit_friction": "0.3487821120",
+                "funding": "0.998009280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "13",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "13",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99800928",
+              "gross_stop_risk": "0.13536",
+              "gross_target": "0.203040",
+              "hypothetical_input_digest": "1c03149dc776d8f7390c09ba8420371a868760a396271c5ba3d8de13f63ddb29",
+              "necessary_static_condition": false,
+              "net_rr": "-0.88456051375446011359372200931105007761421121646279",
+              "net_stop_risk": "2.9261313519840",
+              "net_target": "-2.58834025202400",
+              "original_setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+              "per_leg_slippage_bps": 10,
+              "quantity": "6.768",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2493522971280",
+                "entry_friction": "0.647474256",
+                "exit_fee": "0.2486372308560",
+                "exit_friction": "0.647298288",
+                "funding": "0.99800928"
+              },
+              "target_costs": {
+                "entry_fee": "0.24935229712800",
+                "entry_friction": "0.6474742560",
+                "exit_fee": "0.24880621089600",
+                "exit_friction": "0.6477382080",
+                "funding": "0.998009280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99800928",
+              "gross_stop_risk": "0.13536",
+              "gross_target": "0.203040",
+              "hypothetical_input_digest": "91315b9effac7281fb7309ece6ccc5ca078b2700f3155006891f696df6522167",
+              "necessary_static_condition": false,
+              "net_rr": "-0.91171076598528865197037078544285811459284387696255",
+              "net_stop_risk": "3.8225124048960",
+              "net_target": "-3.48502571265600",
+              "original_setup_digest": "3ae478026f0b620cf78e32e2030e1bfa6cf0920d0e8a0196d59d9cbb83a72ae6",
+              "per_leg_slippage_bps": 20,
+              "quantity": "6.768",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495764228320",
+                "entry_friction": "1.095725664",
+                "exit_fee": "0.2484131660640",
+                "exit_friction": "1.095427872",
+                "funding": "0.99800928"
+              },
+              "target_costs": {
+                "entry_fee": "0.24957642283200",
+                "entry_friction": "1.0957256640",
+                "exit_fee": "0.24858199382400",
+                "exit_friction": "1.0961723520",
+                "funding": "0.998009280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "LONG"
+        },
+        "FROZEN_SPREAD_FUNDING_BLOCK_EVEN_ZERO_SLIP": {
+          "at": 1787617710.0,
+          "boundary": {
+            "status": "NO_TESTED_SLIPPAGE_PASSES",
+            "tested_max": 20,
+            "tested_min": 0
+          },
+          "candidate_id": "00c0bc571f22d3241a4e037d4c045dd5eaa673370a423f85a65a0252785e2ae6",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.150",
+            "gross_target": "1.8250",
+            "hypothetical_input_digest": "7c62fcad978d396911d8f98997464aa2501a6650cca01ae48bb466f0a3ba5b9d",
+            "necessary_static_condition": true,
+            "net_rr": "2.0461980633463215153736352764168049072180857220015",
+            "net_stop_risk": "0.64802500",
+            "net_target": "1.325987500",
+            "original_setup_digest": "69bbff22807431c19ac2e952fdaa81401cba7009cc4e71965daf6f893015a3de",
+            "per_leg_slippage_bps": null,
+            "quantity": "5.000",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.2490500000",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.2489750000",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.24905000000",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.24996250000",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "7c81e3cbc69cd29b2d0d3967fe6766473f8ea317c63b1f7aa722b11d4dd906ba",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+            "FINAL_RISK_OUT_OF_BOUNDS"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "FROZEN_SPREAD_FUNDING_BLOCK_EVEN_ZERO_SLIP",
+          "quantity": "5.000",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00540000",
+              "gross_stop_risk": "0.150",
+              "gross_target": "1.8250",
+              "hypothetical_input_digest": "2e0393897a1c8197f9fc0d508e0ac9ceaded4781089c3eb8003db18551b472b5",
+              "necessary_static_condition": false,
+              "net_rr": "0.065303031369079462205889485468890373962839086251428",
+              "net_stop_risk": "1.85263501500",
+              "net_target": "0.120982682500",
+              "original_setup_digest": "69bbff22807431c19ac2e952fdaa81401cba7009cc4e71965daf6f893015a3de",
+              "per_leg_slippage_bps": 0,
+              "quantity": "5.000",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2490998100000",
+                "entry_friction": "0.099620000",
+                "exit_fee": "0.2489252050000",
+                "exit_friction": "0.099590000",
+                "funding": "1.00540000"
+              },
+              "target_costs": {
+                "entry_fee": "0.24909981000000",
+                "entry_friction": "0.0996200000",
+                "exit_fee": "0.24991250750000",
+                "exit_friction": "0.0999850000",
+                "funding": "1.005400000"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00540000",
+              "gross_stop_risk": "0.150",
+              "gross_target": "1.8250",
+              "hypothetical_input_digest": "0cb5f3c7d1e8a8636470abaef19b493113e47110481be5b1dda6409a35db1d3d",
+              "necessary_static_condition": false,
+              "net_rr": "-0.038317774417885740620479510579802413245604615666321",
+              "net_stop_risk": "2.05184503000",
+              "net_target": "-0.078622135000",
+              "original_setup_digest": "69bbff22807431c19ac2e952fdaa81401cba7009cc4e71965daf6f893015a3de",
+              "per_leg_slippage_bps": 2,
+              "quantity": "5.000",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2491496200000",
+                "entry_friction": "0.199240000",
+                "exit_fee": "0.2488754100000",
+                "exit_friction": "0.199180000",
+                "funding": "1.00540000"
+              },
+              "target_costs": {
+                "entry_fee": "0.24914962000000",
+                "entry_friction": "0.1992400000",
+                "exit_fee": "0.24986251500000",
+                "exit_friction": "0.1999700000",
+                "funding": "1.005400000"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00540000",
+              "gross_stop_risk": "0.150",
+              "gross_target": "1.8250",
+              "hypothetical_input_digest": "ec3f73bfe5cd9ad5ab4471e3c94b430400bd2793f9776de7342f5908fc544919",
+              "necessary_static_condition": false,
+              "net_rr": "-0.16081838837051492370141428606253136638948349167983",
+              "net_stop_risk": "2.35066005250",
+              "net_target": "-0.378029361250",
+              "original_setup_digest": "69bbff22807431c19ac2e952fdaa81401cba7009cc4e71965daf6f893015a3de",
+              "per_leg_slippage_bps": 5,
+              "quantity": "5.000",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2492243350000",
+                "entry_friction": "0.348670000",
+                "exit_fee": "0.2488007175000",
+                "exit_friction": "0.348565000",
+                "funding": "1.00540000"
+              },
+              "target_costs": {
+                "entry_fee": "0.24922433500000",
+                "entry_friction": "0.3486700000",
+                "exit_fee": "0.24978752625000",
+                "exit_friction": "0.3499475000",
+                "funding": "1.005400000"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00540000",
+              "gross_stop_risk": "0.150",
+              "gross_target": "1.8250",
+              "hypothetical_input_digest": "129b142a474671ce8d1b25dc4d40a462e3fce2707d1bd6fdd99b7fd3cd850ab2",
+              "necessary_static_condition": false,
+              "net_rr": "-0.30787587160081636120754926968779128899783022348743",
+              "net_stop_risk": "2.84868509000",
+              "net_target": "-0.877041405000",
+              "original_setup_digest": "69bbff22807431c19ac2e952fdaa81401cba7009cc4e71965daf6f893015a3de",
+              "per_leg_slippage_bps": 10,
+              "quantity": "5.000",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2493488600000",
+                "entry_friction": "0.597720000",
+                "exit_fee": "0.2486762300000",
+                "exit_friction": "0.597540000",
+                "funding": "1.00540000"
+              },
+              "target_costs": {
+                "entry_fee": "0.24934886000000",
+                "entry_friction": "0.5977200000",
+                "exit_fee": "0.24966254500000",
+                "exit_friction": "0.5999100000",
+                "funding": "1.005400000"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00540000",
+              "gross_stop_risk": "0.150",
+              "gross_target": "1.8250",
+              "hypothetical_input_digest": "6640b9abae28b8188529a4464de8628c7970d1e0e4609b2694376a4358c07256",
+              "necessary_static_condition": false,
+              "net_rr": "-0.48769691852104460880337384694740086213454444787486",
+              "net_stop_risk": "3.84473516500",
+              "net_target": "-1.875065492500",
+              "original_setup_digest": "69bbff22807431c19ac2e952fdaa81401cba7009cc4e71965daf6f893015a3de",
+              "per_leg_slippage_bps": 20,
+              "quantity": "5.000",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495979100000",
+                "entry_friction": "1.095820000",
+                "exit_fee": "0.2484272550000",
+                "exit_friction": "1.095490000",
+                "funding": "1.00540000"
+              },
+              "target_costs": {
+                "entry_fee": "0.24959791000000",
+                "entry_friction": "1.0958200000",
+                "exit_fee": "0.24941258250000",
+                "exit_friction": "1.0998350000",
+                "funding": "1.005400000"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "LONG"
+        },
+        "LOWER_SLIPPAGE_NECESSARY_ONLY": {
+          "at": 1787303025.0,
+          "boundary": {
+            "exact_threshold": null,
+            "failing_bps": 10,
+            "interpretation": "observed pass at lower / fail at upper; no interpolated equality",
+            "passing_bps": 5,
+            "status": "BRACKET_ONLY_WITH_TICK_DISCONTINUITIES"
+          },
+          "candidate_id": "3ec94eb9f17bb0e27d950d81a83189e6c070ec7a46680429337947a5950fc543",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.00220",
+            "gross_target": "0.073425",
+            "hypothetical_input_digest": "18d37e1f4b0d9b674c86d97d6e753ecf19065fde54e8d8cafca89ec9a0d7accf",
+            "necessary_static_condition": true,
+            "net_rr": "9.4805345840006100815984137878441241516052772058263",
+            "net_stop_risk": "0.0072121500",
+            "net_target": "0.06837503750",
+            "original_setup_digest": "8a14cefaa93d06acedb604f6638a59787ed8e83df60c743be5e94a561300f4bb",
+            "per_leg_slippage_bps": null,
+            "quantity": "0.055",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.0025066250",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.0025055250",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.00250662500",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.00254333750",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "8cb54adfc7ac644f5da3cc22af10ffe00cbdf8f02ed617fd30e1fe974db92528",
+          "original_rejection_reasons": [
+            "BTC_CRASH_LONG_BLOCK"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "LOWER_SLIPPAGE_NECESSARY_ONLY",
+          "quantity": "0.055",
+          "quantity_basis": "MINIMUM_DIAGNOSTIC_NOT_APPROVED",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01028170",
+              "gross_stop_risk": "0.00220",
+              "gross_target": "0.073425",
+              "hypothetical_input_digest": "96048478044545adde893e8c4f80980dd86d7b0cc88938f5d28ad7dbaa9055fe",
+              "necessary_static_condition": true,
+              "net_rr": "2.8757471242885110172174249584801512066370921224963",
+              "net_stop_risk": "0.0194987102200",
+              "net_target": "0.05607335984250",
+              "original_setup_digest": "8a14cefaa93d06acedb604f6638a59787ed8e83df60c743be5e94a561300f4bb",
+              "per_leg_slippage_bps": 0,
+              "quantity": "0.055",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.002507126325",
+                "entry_friction": "0.00100265",
+                "exit_fee": "0.0025050238950",
+                "exit_friction": "0.001002210",
+                "funding": "0.01028170"
+              },
+              "target_costs": {
+                "entry_fee": "0.0025071263250",
+                "entry_friction": "0.001002650",
+                "exit_fee": "0.00254282883250",
+                "exit_friction": "0.0010173350",
+                "funding": "0.010281700"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01028170",
+              "gross_stop_risk": "0.00220",
+              "gross_target": "0.073425",
+              "hypothetical_input_digest": "a89b3a1e3d967fa38225ffda2cab8ce5bd536009e2ae1a402a717472f7905ea1",
+              "necessary_static_condition": true,
+              "net_rr": "2.5136933578459261670407512102441346944986685662235",
+              "net_stop_risk": "0.0215035704400",
+              "net_target": "0.05405338218500",
+              "original_setup_digest": "8a14cefaa93d06acedb604f6638a59787ed8e83df60c743be5e94a561300f4bb",
+              "per_leg_slippage_bps": 2,
+              "quantity": "0.055",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.002507627650",
+                "entry_friction": "0.00200530",
+                "exit_fee": "0.0025045227900",
+                "exit_friction": "0.002004420",
+                "funding": "0.01028170"
+              },
+              "target_costs": {
+                "entry_fee": "0.0025076276500",
+                "entry_friction": "0.002005300",
+                "exit_fee": "0.00254232016500",
+                "exit_friction": "0.0020346700",
+                "funding": "0.010281700"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01028170",
+              "gross_stop_risk": "0.00220",
+              "gross_target": "0.073425",
+              "hypothetical_input_digest": "b192734cb88f84f3e39551e59fc89e72d04461c4231c5bb1e98f629cb444daef",
+              "necessary_static_condition": true,
+              "net_rr": "2.0816656003040076017697521277217878790961774942186",
+              "net_stop_risk": "0.0245108607700",
+              "net_target": "0.05102341569875",
+              "original_setup_digest": "8a14cefaa93d06acedb604f6638a59787ed8e83df60c743be5e94a561300f4bb",
+              "per_leg_slippage_bps": 5,
+              "quantity": "0.055",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025083796375",
+                "entry_friction": "0.003509275",
+                "exit_fee": "0.0025037711325",
+                "exit_friction": "0.003507735",
+                "funding": "0.01028170"
+              },
+              "target_costs": {
+                "entry_fee": "0.00250837963750",
+                "entry_friction": "0.0035092750",
+                "exit_fee": "0.00254155716375",
+                "exit_friction": "0.0035606725",
+                "funding": "0.010281700"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "13",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "13",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01028170",
+              "gross_stop_risk": "0.00220",
+              "gross_target": "0.073425",
+              "hypothetical_input_digest": "d2fc068342dbab98278fa39559e05ff15474c38d51b087df4fc9615c856858d2",
+              "necessary_static_condition": false,
+              "net_rr": "1.4729838659125985324039259929549198987619685341271",
+              "net_stop_risk": "0.0305254414300",
+              "net_target": "0.04496348272625",
+              "original_setup_digest": "8a14cefaa93d06acedb604f6638a59787ed8e83df60c743be5e94a561300f4bb",
+              "per_leg_slippage_bps": 10,
+              "quantity": "0.055",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.0025098836125",
+                "entry_friction": "0.006517225",
+                "exit_fee": "0.0025022678175",
+                "exit_friction": "0.006514365",
+                "funding": "0.01028170"
+              },
+              "target_costs": {
+                "entry_fee": "0.00250988361250",
+                "entry_friction": "0.0065172250",
+                "exit_fee": "0.00254003116125",
+                "exit_friction": "0.0066126775",
+                "funding": "0.010281700"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.01028170",
+              "gross_stop_risk": "0.00220",
+              "gross_target": "0.073425",
+              "hypothetical_input_digest": "ac7c657c430a6d18c9332034d71c895baa80f1ff62cef6bae329144c7ebc2542",
+              "necessary_static_condition": false,
+              "net_rr": "0.90710546614434134535810259239861640135190759443268",
+              "net_stop_risk": "0.0395473124200",
+              "net_target": "0.03587358326750",
+              "original_setup_digest": "8a14cefaa93d06acedb604f6638a59787ed8e83df60c743be5e94a561300f4bb",
+              "per_leg_slippage_bps": 20,
+              "quantity": "0.055",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.002512139575",
+                "entry_friction": "0.01102915",
+                "exit_fee": "0.0025000128450",
+                "exit_friction": "0.011024310",
+                "funding": "0.01028170"
+              },
+              "target_costs": {
+                "entry_fee": "0.0025121395750",
+                "entry_friction": "0.011029150",
+                "exit_fee": "0.00253774215750",
+                "exit_friction": "0.0111906850",
+                "funding": "0.010281700"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "LONG"
+        },
+        "POSITIVE_FEES_ONLY_BELOW_RR": {
+          "at": 1788178200.0,
+          "boundary": {
+            "status": "NO_TESTED_SLIPPAGE_PASSES",
+            "tested_max": 20,
+            "tested_min": 0
+          },
+          "candidate_id": "001f6ef7f96c1aabe5f529d6ca8ad213f10b52839b315a6d1ae49039309f6dae",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.33698",
+            "gross_target": "0.649890",
+            "hypothetical_input_digest": "8075ebb217759cec24cf527327f55363ae9bef23d5739600a47cff35dfdc86c8",
+            "necessary_static_condition": false,
+            "net_rr": "0.18140802029578804739527776976965433735981779917548",
+            "net_stop_risk": "0.8349160900",
+            "net_target": "0.15146047500",
+            "original_setup_digest": "89bfb8ba30cf64c5857074bd2b10cc6ebe82bafa8962c8e117fc2499f0c31e69",
+            "per_leg_slippage_bps": null,
+            "quantity": "4.814",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.2490522900",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.248883800",
+              "exit_friction": "0.00000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.24905229000",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.24937723500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "003da5e868da9852f0b71b2d5e770d2648f1fc4e9568313f66f417adc652b2da",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "POSITIVE_FEES_ONLY_BELOW_RR",
+          "quantity": "4.814",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99938640",
+              "gross_stop_risk": "0.33698",
+              "gross_target": "0.649890",
+              "hypothetical_input_digest": "ea2c10515987a852889c69ba01d8689fa818e1f45847bd1655461044b0b3fd3a",
+              "necessary_static_condition": false,
+              "net_rr": "-0.51502804839575781110178836693224204852241704211577",
+              "net_stop_risk": "2.0334769596980",
+              "net_target": "-1.04729767001100",
+              "original_setup_digest": "89bfb8ba30cf64c5857074bd2b10cc6ebe82bafa8962c8e117fc2499f0c31e69",
+              "per_leg_slippage_bps": 0,
+              "quantity": "4.814",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2491021004580",
+                "entry_friction": "0.099620916",
+                "exit_fee": "0.248834023240",
+                "exit_friction": "0.09955352",
+                "funding": "0.9993864"
+              },
+              "target_costs": {
+                "entry_fee": "0.24910210045800",
+                "entry_friction": "0.0996209160",
+                "exit_fee": "0.24932735955300",
+                "exit_friction": "0.0997508940",
+                "funding": "0.99938640"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99938640",
+              "gross_stop_risk": "0.33698",
+              "gross_target": "0.649890",
+              "hypothetical_input_digest": "86cfad5f60d386fb1edd4129a2b845b087ff5e6d95d5c8688a20254a4c88569e",
+              "necessary_static_condition": false,
+              "net_rr": "-0.55838067627030428501204229096669762899078490183774",
+              "net_stop_risk": "2.2326514293960",
+              "net_target": "-1.24666941502200",
+              "original_setup_digest": "89bfb8ba30cf64c5857074bd2b10cc6ebe82bafa8962c8e117fc2499f0c31e69",
+              "per_leg_slippage_bps": 2,
+              "quantity": "4.814",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2491519109160",
+                "entry_friction": "0.199241832",
+                "exit_fee": "0.248784246480",
+                "exit_friction": "0.19910704",
+                "funding": "0.9993864"
+              },
+              "target_costs": {
+                "entry_fee": "0.24915191091600",
+                "entry_friction": "0.1992418320",
+                "exit_fee": "0.24927748410600",
+                "exit_friction": "0.1995017880",
+                "funding": "0.99938640"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99938640",
+              "gross_stop_risk": "0.33698",
+              "gross_target": "0.649890",
+              "hypothetical_input_digest": "e8ba9651a365237638e9138e076ac63a3c6dd4c0a8676c95ab27f54e78536149",
+              "necessary_static_condition": false,
+              "net_rr": "-0.61061823999104890465480605646779580358243663944117",
+              "net_stop_risk": "2.5314131339430",
+              "net_target": "-1.54572703253850",
+              "original_setup_digest": "89bfb8ba30cf64c5857074bd2b10cc6ebe82bafa8962c8e117fc2499f0c31e69",
+              "per_leg_slippage_bps": 5,
+              "quantity": "4.814",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2492266266030",
+                "entry_friction": "0.348673206",
+                "exit_fee": "0.248709581340",
+                "exit_friction": "0.34843732",
+                "funding": "0.9993864"
+              },
+              "target_costs": {
+                "entry_fee": "0.24922662660300",
+                "entry_friction": "0.3486732060",
+                "exit_fee": "0.24920267093550",
+                "exit_friction": "0.3491281290",
+                "funding": "0.99938640"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99938640",
+              "gross_stop_risk": "0.33698",
+              "gross_target": "0.649890",
+              "hypothetical_input_digest": "1747a7de0e8c7c9339615270ac420b63a716c98ca213d26869a07a4d48352827",
+              "necessary_static_condition": false,
+              "net_rr": "-0.67478398398655075501465691590599643711000945745783",
+              "net_stop_risk": "3.0293493081880",
+              "net_target": "-2.04415639506600",
+              "original_setup_digest": "89bfb8ba30cf64c5857074bd2b10cc6ebe82bafa8962c8e117fc2499f0c31e69",
+              "per_leg_slippage_bps": 10,
+              "quantity": "4.814",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2493511527480",
+                "entry_friction": "0.597725496",
+                "exit_fee": "0.248585139440",
+                "exit_friction": "0.59732112",
+                "funding": "0.9993864"
+              },
+              "target_costs": {
+                "entry_fee": "0.24935115274800",
+                "entry_friction": "0.5977254960",
+                "exit_fee": "0.24907798231800",
+                "exit_friction": "0.5985053640",
+                "funding": "0.99938640"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99938640",
+              "gross_stop_risk": "0.33698",
+              "gross_target": "0.649890",
+              "hypothetical_input_digest": "9ef79471f500f42dc9b5f814a816b916082aae0d88dcd2b6fa24bd032b824edd",
+              "necessary_static_condition": false,
+              "net_rr": "-0.75549010203595548548336195795382071563298514530322",
+              "net_stop_risk": "4.0252216566780",
+              "net_target": "-3.04101512012100",
+              "original_setup_digest": "89bfb8ba30cf64c5857074bd2b10cc6ebe82bafa8962c8e117fc2499f0c31e69",
+              "per_leg_slippage_bps": 20,
+              "quantity": "4.814",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2496002050380",
+                "entry_friction": "1.095830076",
+                "exit_fee": "0.248336255640",
+                "exit_friction": "1.09508872",
+                "funding": "0.9993864"
+              },
+              "target_costs": {
+                "entry_fee": "0.24960020503800",
+                "entry_friction": "1.0958300760",
+                "exit_fee": "0.24882860508300",
+                "exit_friction": "1.0972598340",
+                "funding": "0.99938640"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "LONG"
+        }
+      },
+      "slippage": {
+        "0": {
+          "nonpositive_net": 18334,
+          "positive_below_floor": 317,
+          "static_necessary_pass": 4,
+          "total": 18655
+        },
+        "10": {
+          "nonpositive_net": 18575,
+          "positive_below_floor": 79,
+          "static_necessary_pass": 1,
+          "total": 18655
+        },
+        "2": {
+          "nonpositive_net": 18433,
+          "positive_below_floor": 219,
+          "static_necessary_pass": 3,
+          "total": 18655
+        },
+        "20": {
+          "nonpositive_net": 18625,
+          "positive_below_floor": 30,
+          "static_necessary_pass": 0,
+          "total": 18655
+        },
+        "5": {
+          "nonpositive_net": 18507,
+          "positive_below_floor": 145,
+          "static_necessary_pass": 3,
+          "total": 18655
+        }
+      }
+    },
+    "SHORT": {
+      "boundaries": {
+        "ALL_TESTED_SLIPPAGES_PASS_NOT_A_MAXIMUM": 1,
+        "BRACKET_ONLY_WITH_TICK_DISCONTINUITIES": 1,
+        "NO_TESTED_SLIPPAGE_PASSES": 18484
+      },
+      "candidates": 18486,
+      "fees_only": {
+        "nonpositive_net": 13534,
+        "positive_below_floor": 4813,
+        "static_necessary_pass": 139,
+        "total": 18486
+      },
+      "primary": {
+        "CURRENT_STATIC_NECESSARY_CONDITION_ONLY": 1,
+        "FEES_EXHAUST_REWARD": 13534,
+        "FROZEN_SPREAD_FUNDING_BLOCK_EVEN_ZERO_SLIP": 137,
+        "LOWER_SLIPPAGE_NECESSARY_ONLY": 1,
+        "POSITIVE_FEES_ONLY_BELOW_RR": 4813
+      },
+      "real_executability_unknown": 18486,
+      "representatives": {
+        "CURRENT_STATIC_NECESSARY_CONDITION_ONLY": {
+          "at": 1787375640.0,
+          "boundary": {
+            "status": "ALL_TESTED_SLIPPAGES_PASS_NOT_A_MAXIMUM",
+            "tested_max": 20
+          },
+          "candidate_id": "3ca7e4ecdd0c88b593f2d4c7e2003c4e3ad7420aa24db8a91ac53d2fb3a8c46d",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.10658",
+            "gross_target": "14.015270",
+            "hypothetical_input_digest": "f8e2c01c57cb668897bd15adf237645bace76f82036ee4540158a15d4305e723",
+            "necessary_static_condition": true,
+            "net_rr": "22.316550875032978629847858587635212382376220209304",
+            "net_stop_risk": "0.6059605900",
+            "net_target": "13.52295033500",
+            "original_setup_digest": "64a597d0c1b17ca2316de06bed10f431d9e3174b07c0f376a5ec30ead358d6b0",
+            "per_leg_slippage_bps": null,
+            "quantity": "5.329",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.249663650",
+              "entry_friction": "0.00000",
+              "exit_fee": "0.2497169400",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.2496636500",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.24265601500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "ad9743b4695a018ca1b769e3019aa324fc3e134b40f4a8eac9a7c407fe693790",
+          "original_rejection_reasons": [
+            "QUANTIFICATION_UNRESOLVED",
+            "SCENARIO_EXPECTED_ACTION_MISSING:TP2"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "CURRENT_STATIC_NECESSARY_CONDITION_ONLY",
+          "quantity": "5.329",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00004014",
+              "gross_stop_risk": "0.10658",
+              "gross_target": "14.015270",
+              "hypothetical_input_digest": "9ce5928602d9b206377cd00714cef3f1066c905844001fcc30e32f2fd0cd58da",
+              "necessary_static_condition": true,
+              "net_rr": "6.8259523256272475719498806450572774997062009024170",
+              "net_stop_risk": "1.8057529766580",
+              "net_target": "12.32598373052700",
+              "original_setup_digest": "64a597d0c1b17ca2316de06bed10f431d9e3174b07c0f376a5ec30ead358d6b0",
+              "per_leg_slippage_bps": 0,
+              "quantity": "5.329",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249613717270",
+                "entry_friction": "0.09986546",
+                "exit_fee": "0.2497668833880",
+                "exit_friction": "0.099886776",
+                "funding": "1.00004014"
+              },
+              "target_costs": {
+                "entry_fee": "0.2496137172700",
+                "entry_friction": "0.099865460",
+                "exit_fee": "0.24270454620300",
+                "exit_friction": "0.0970624060",
+                "funding": "1.000040140"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00004014",
+              "gross_stop_risk": "0.10658",
+              "gross_target": "14.015270",
+              "hypothetical_input_digest": "1e927ef13ac9a5e8c990e34ca0044276b1c41af75705b56df377c216b43fef56",
+              "necessary_static_condition": true,
+              "net_rr": "6.0478811648264999566719283551283329865351573687998",
+              "net_stop_risk": "2.0055052233160",
+              "net_target": "12.12905726605400",
+              "original_setup_digest": "64a597d0c1b17ca2316de06bed10f431d9e3174b07c0f376a5ec30ead358d6b0",
+              "per_leg_slippage_bps": 2,
+              "quantity": "5.329",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249563784540",
+                "entry_friction": "0.19973092",
+                "exit_fee": "0.2498168267760",
+                "exit_friction": "0.199773552",
+                "funding": "1.00004014"
+              },
+              "target_costs": {
+                "entry_fee": "0.2495637845400",
+                "entry_friction": "0.199730920",
+                "exit_fee": "0.24275307740600",
+                "exit_friction": "0.1941248120",
+                "funding": "1.000040140"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00004014",
+              "gross_stop_risk": "0.10658",
+              "gross_target": "14.015270",
+              "hypothetical_input_digest": "5734384b8ec3bff9c443bd44707aef18f1aa4e568d7e33fae20bb1e0b783c9dd",
+              "necessary_static_condition": true,
+              "net_rr": "5.1336146433006387422335857916167306079167146239239",
+              "net_stop_risk": "2.3051335933030",
+              "net_target": "11.83366756934450",
+              "original_setup_digest": "64a597d0c1b17ca2316de06bed10f431d9e3174b07c0f376a5ec30ead358d6b0",
+              "per_leg_slippage_bps": 5,
+              "quantity": "5.329",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249488885445",
+                "entry_friction": "0.34952911",
+                "exit_fee": "0.2498917418580",
+                "exit_friction": "0.349603716",
+                "funding": "1.00004014"
+              },
+              "target_costs": {
+                "entry_fee": "0.2494888854450",
+                "entry_friction": "0.349529110",
+                "exit_fee": "0.24282587421050",
+                "exit_friction": "0.3397184210",
+                "funding": "1.000040140"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00004014",
+              "gross_stop_risk": "0.10658",
+              "gross_target": "14.015270",
+              "hypothetical_input_digest": "c32bba7eba80732c6d6f8626a7d8abd5eeddc023f9712d37eecf0ce38b06bc63",
+              "necessary_static_condition": true,
+              "net_rr": "4.0439628966516400965662731603779059491161041788246",
+              "net_stop_risk": "2.8045142099480",
+              "net_target": "11.34135140816200",
+              "original_setup_digest": "64a597d0c1b17ca2316de06bed10f431d9e3174b07c0f376a5ec30ead358d6b0",
+              "per_leg_slippage_bps": 10,
+              "quantity": "5.329",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249364053620",
+                "entry_friction": "0.59919276",
+                "exit_fee": "0.2500166003280",
+                "exit_friction": "0.599320656",
+                "funding": "1.00004014"
+              },
+              "target_costs": {
+                "entry_fee": "0.2493640536200",
+                "entry_friction": "0.599192760",
+                "exit_fee": "0.24294720221800",
+                "exit_friction": "0.5823744360",
+                "funding": "1.000040140"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00004014",
+              "gross_stop_risk": "0.10658",
+              "gross_target": "14.015270",
+              "hypothetical_input_digest": "5ad6a469fabd04f7625d5c5f3a63d30d8dd123412a762ff021ef29b93399fcb3",
+              "necessary_static_condition": true,
+              "net_rr": "2.7231051866649935313595775081327499195446532687925",
+              "net_stop_risk": "3.8032754432380",
+              "net_target": "10.35671908579700",
+              "original_setup_digest": "64a597d0c1b17ca2316de06bed10f431d9e3174b07c0f376a5ec30ead358d6b0",
+              "per_leg_slippage_bps": 20,
+              "quantity": "5.329",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249114389970",
+                "entry_friction": "1.09852006",
+                "exit_fee": "0.2502663172680",
+                "exit_friction": "1.098754536",
+                "funding": "1.00004014"
+              },
+              "target_costs": {
+                "entry_fee": "0.2491143899700",
+                "entry_friction": "1.098520060",
+                "exit_fee": "0.24318985823300",
+                "exit_friction": "1.0676864660",
+                "funding": "1.000040140"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "SHORT"
+        },
+        "FEES_EXHAUST_REWARD": {
+          "at": 1787724060.0,
+          "boundary": {
+            "status": "NO_TESTED_SLIPPAGE_PASSES",
+            "tested_max": 20,
+            "tested_min": 0
+          },
+          "candidate_id": "00126345a407c355c7272c4f88a4519c566ae235a03f75ad483e1a7db663248a",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.10284",
+            "gross_target": "0.385650",
+            "hypothetical_input_digest": "40731ed04f5e42c19ea70efdc16aa74a1f3f2f8d08ab3f7250fc982f96aa82d6",
+            "necessary_static_condition": false,
+            "net_rr": "-0.18832194705380017079419299743808710503842869342442",
+            "net_stop_risk": "0.6021282000",
+            "net_target": "-0.11339395500",
+            "original_setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+            "per_leg_slippage_bps": null,
+            "quantity": "5.142",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.2496183900",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.2496698100",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.24961839000",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.24942556500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "bd500b24477707ab9ed6c5558d961a67b48381086e3f309e63f2443ece9a17e5",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+            "FINAL_RISK_OUT_OF_BOUNDS"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "FEES_EXHAUST_REWARD",
+          "quantity": "5.142",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99981048",
+              "gross_stop_risk": "0.10284",
+              "gross_target": "0.385650",
+              "hypothetical_input_digest": "0b2b82e52c0d77ae49b18009f31c724770a732b6c5de7ae59834edb6082384a7",
+              "necessary_static_condition": false,
+              "net_rr": "-0.72867598333993958936046812397700711240934349900483",
+              "net_stop_risk": "1.8016539702840",
+              "net_target": "-1.31282197843500",
+              "original_setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+              "per_leg_slippage_bps": 0,
+              "quantity": "5.142",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495684663220",
+                "entry_friction": "0.099847356",
+                "exit_fee": "0.2497197439620",
+                "exit_friction": "0.099867924",
+                "funding": "0.99981048"
+              },
+              "target_costs": {
+                "entry_fee": "0.24956846632200",
+                "entry_friction": "0.0998473560",
+                "exit_fee": "0.24947545011300",
+                "exit_friction": "0.0997702260",
+                "funding": "0.999810480"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99981048",
+              "gross_stop_risk": "0.10284",
+              "gross_target": "0.385650",
+              "hypothetical_input_digest": "e22d81d6a5575ddf98218f231f97063b4e10de7b7dfdd2534822ce0aee5bf9f1",
+              "necessary_static_condition": false,
+              "net_rr": "-0.75570238419708767075599742298959536519608072353856",
+              "net_stop_risk": "2.0013692605680",
+              "net_target": "-1.51243952187000",
+              "original_setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+              "per_leg_slippage_bps": 2,
+              "quantity": "5.142",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495185426440",
+                "entry_friction": "0.199694712",
+                "exit_fee": "0.2497696779240",
+                "exit_friction": "0.199735848",
+                "funding": "0.99981048"
+              },
+              "target_costs": {
+                "entry_fee": "0.24951854264400",
+                "entry_friction": "0.1996947120",
+                "exit_fee": "0.24952533522600",
+                "exit_friction": "0.1995404520",
+                "funding": "0.999810480"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99981048",
+              "gross_stop_risk": "0.10284",
+              "gross_target": "0.385650",
+              "hypothetical_input_digest": "4d63b2613f9556fc1b2a5ac0d4bf6282bde5005db52e3ed0e2318cdb818dc786",
+              "necessary_static_condition": false,
+              "net_rr": "-0.78744517796970535937262555732462031538316302922557",
+              "net_stop_risk": "2.3009421959940",
+              "net_target": "-1.81186583702250",
+              "original_setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+              "per_leg_slippage_bps": 5,
+              "quantity": "5.142",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2494436571270",
+                "entry_friction": "0.349465746",
+                "exit_fee": "0.2498445788670",
+                "exit_friction": "0.349537734",
+                "funding": "0.99981048"
+              },
+              "target_costs": {
+                "entry_fee": "0.24944365712700",
+                "entry_friction": "0.3494657460",
+                "exit_fee": "0.24960016289550",
+                "exit_friction": "0.3491957910",
+                "funding": "0.999810480"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99981048",
+              "gross_stop_risk": "0.10284",
+              "gross_target": "0.385650",
+              "hypothetical_input_digest": "46da8b7932a3d5ded8b191886eb436ed1c633d64637279b49bb81b4fe23b97c2",
+              "necessary_static_condition": false,
+              "net_rr": "-0.82525697803245852512119008877615581675076242056420",
+              "net_stop_risk": "2.8002304217040",
+              "net_target": "-2.31090969561000",
+              "original_setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+              "per_leg_slippage_bps": 10,
+              "quantity": "5.142",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2493188479320",
+                "entry_friction": "0.599084136",
+                "exit_fee": "0.2499694137720",
+                "exit_friction": "0.599207544",
+                "funding": "0.99981048"
+              },
+              "target_costs": {
+                "entry_fee": "0.24931884793200",
+                "entry_friction": "0.5990841360",
+                "exit_fee": "0.24972487567800",
+                "exit_friction": "0.5986213560",
+                "funding": "0.999810480"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99981048",
+              "gross_stop_risk": "0.10284",
+              "gross_target": "0.385650",
+              "hypothetical_input_digest": "add004a0267c392dfea69588f66211edfeb0e5199965dc5538f3424318303c85",
+              "necessary_static_condition": false,
+              "net_rr": "-0.87106228963511414497886896026541443211901038655861",
+              "net_stop_risk": "3.7988068731240",
+              "net_target": "-3.30899741278500",
+              "original_setup_digest": "77cd0e427926b6cec0ced190f2b387ebd69e91fe1ff538b94c7b7e433e50b53a",
+              "per_leg_slippage_bps": 20,
+              "quantity": "5.142",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2490692295420",
+                "entry_friction": "1.098320916",
+                "exit_fee": "0.2502190835820",
+                "exit_friction": "1.098547164",
+                "funding": "0.99981048"
+              },
+              "target_costs": {
+                "entry_fee": "0.24906922954200",
+                "entry_friction": "1.0983209160",
+                "exit_fee": "0.24997430124300",
+                "exit_friction": "1.0974724860",
+                "funding": "0.999810480"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "SHORT"
+        },
+        "FROZEN_SPREAD_FUNDING_BLOCK_EVEN_ZERO_SLIP": {
+          "at": 1787758875.0,
+          "boundary": {
+            "status": "NO_TESTED_SLIPPAGE_PASSES",
+            "tested_max": 20,
+            "tested_min": 0
+          },
+          "candidate_id": "0c543e15960a3b36c5cb65a1dc230653b53e3c60b61de16481ea99255878ea20",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.05191",
+            "gross_target": "2.180220",
+            "hypothetical_input_digest": "d04b0ef81b97d0f52ab52e06f52cde23d7c3c0d729c71522c0b4334bcb0a3370",
+            "necessary_static_condition": true,
+            "net_rr": "3.0511794340599839917133575027072837704223362681859",
+            "net_stop_risk": "0.5512582450",
+            "net_target": "1.68198782000",
+            "original_setup_digest": "92c6535e9acf8ae920975ac4ce68cf1c74720f4ad2f1746b8623fe99cde9e3ce",
+            "per_leg_slippage_bps": null,
+            "quantity": "5.191",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.2496611450",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.249687100",
+              "exit_friction": "0.00000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.24966114500",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.24857103500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "ba2205f818f2f7b1a62ccbdbc7cd2ac73084c900831d6c3c4b623f859c293bbf",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+            "FINAL_RISK_OUT_OF_BOUNDS"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "FROZEN_SPREAD_FUNDING_BLOCK_EVEN_ZERO_SLIP",
+          "quantity": "5.191",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99989042",
+              "gross_stop_risk": "0.05191",
+              "gross_target": "2.180220",
+              "hypothetical_input_digest": "fa6f8c0ff7357a1077677f9d51caa6b48eaf7182a21904115388c6d1f0378283",
+              "necessary_static_condition": false,
+              "net_rr": "0.27574850863863611566609412093908227879297145569884",
+              "net_stop_risk": "1.7508879681910",
+              "net_target": "0.48280474602200",
+              "original_setup_digest": "92c6535e9acf8ae920975ac4ce68cf1c74720f4ad2f1746b8623fe99cde9e3ce",
+              "per_leg_slippage_bps": 0,
+              "quantity": "5.191",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2496112127710",
+                "entry_friction": "0.099864458",
+                "exit_fee": "0.249737037420",
+                "exit_friction": "0.09987484",
+                "funding": "0.99989042"
+              },
+              "target_costs": {
+                "entry_fee": "0.24961121277100",
+                "entry_friction": "0.0998644580",
+                "exit_fee": "0.24862074920700",
+                "exit_friction": "0.0994284140",
+                "funding": "0.999890420"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99989042",
+              "gross_stop_risk": "0.05191",
+              "gross_target": "2.180220",
+              "hypothetical_input_digest": "a5ea8793270372227a19b80a2aaf66873292414cfafe003b454314d49804dc5d",
+              "necessary_static_condition": false,
+              "net_rr": "0.14534406249900038853982671073698230711267071108377",
+              "net_stop_risk": "1.9506272713820",
+              "net_target": "0.28351209204400",
+              "original_setup_digest": "92c6535e9acf8ae920975ac4ce68cf1c74720f4ad2f1746b8623fe99cde9e3ce",
+              "per_leg_slippage_bps": 2,
+              "quantity": "5.191",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495612805420",
+                "entry_friction": "0.199728916",
+                "exit_fee": "0.249786974840",
+                "exit_friction": "0.19974968",
+                "funding": "0.99989042"
+              },
+              "target_costs": {
+                "entry_fee": "0.24956128054200",
+                "entry_friction": "0.1997289160",
+                "exit_fee": "0.24867046341400",
+                "exit_friction": "0.1988568280",
+                "funding": "0.999890420"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99989042",
+              "gross_stop_risk": "0.05191",
+              "gross_target": "2.180220",
+              "hypothetical_input_digest": "49d45eb30678672a59e6d7562af3790e3652ab9a53c872367f2e08134e632932",
+              "necessary_static_condition": false,
+              "net_rr": "-0.0068556753035958006621052893797094433318037600549193",
+              "net_stop_risk": "2.2502362261685",
+              "net_target": "-0.01542688892300",
+              "original_setup_digest": "92c6535e9acf8ae920975ac4ce68cf1c74720f4ad2f1746b8623fe99cde9e3ce",
+              "per_leg_slippage_bps": 5,
+              "quantity": "5.191",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2494863821985",
+                "entry_friction": "0.349525603",
+                "exit_fee": "0.249861880970",
+                "exit_friction": "0.34956194",
+                "funding": "0.99989042"
+              },
+              "target_costs": {
+                "entry_fee": "0.24948638219850",
+                "entry_friction": "0.3495256030",
+                "exit_fee": "0.24874503472450",
+                "exit_friction": "0.3479994490",
+                "funding": "0.999890420"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99989042",
+              "gross_stop_risk": "0.05191",
+              "gross_target": "2.180220",
+              "hypothetical_input_digest": "29fd73e1728e36e1cef721a5cf2c745fe93d58ba188eca2d87a695b6afc65397",
+              "necessary_static_condition": false,
+              "net_rr": "-0.18681314461502659573714924884714915698088301515190",
+              "net_stop_risk": "2.7495844841460",
+              "net_target": "-0.51365852386800",
+              "original_setup_digest": "92c6535e9acf8ae920975ac4ce68cf1c74720f4ad2f1746b8623fe99cde9e3ce",
+              "per_leg_slippage_bps": 10,
+              "quantity": "5.191",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2493615516260",
+                "entry_friction": "0.599186748",
+                "exit_fee": "0.249986724520",
+                "exit_friction": "0.59924904",
+                "funding": "0.99989042"
+              },
+              "target_costs": {
+                "entry_fee": "0.24936155162600",
+                "entry_friction": "0.5991867480",
+                "exit_fee": "0.24886932024200",
+                "exit_friction": "0.5965704840",
+                "funding": "0.999890420"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "0.99989042",
+              "gross_stop_risk": "0.05191",
+              "gross_target": "2.180220",
+              "hypothetical_input_digest": "c8efc9233c214a079663c74efed9ac3d980fe864db314c5cfb51f03fc918046e",
+              "necessary_static_condition": false,
+              "net_rr": "-0.40288382693755050207796784693840329672701200017570",
+              "net_stop_risk": "3.7482810001010",
+              "net_target": "-1.51012179375800",
+              "original_setup_digest": "92c6535e9acf8ae920975ac4ce68cf1c74720f4ad2f1746b8623fe99cde9e3ce",
+              "per_leg_slippage_bps": 20,
+              "quantity": "5.191",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2491118904810",
+                "entry_friction": "1.098509038",
+                "exit_fee": "0.250236411620",
+                "exit_friction": "1.09862324",
+                "funding": "0.99989042"
+              },
+              "target_costs": {
+                "entry_fee": "0.24911189048100",
+                "entry_friction": "1.0985090380",
+                "exit_fee": "0.24911789127700",
+                "exit_friction": "1.0937125540",
+                "funding": "0.999890420"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "SHORT"
+        },
+        "LOWER_SLIPPAGE_NECESSARY_ONLY": {
+          "at": 1787930415.0,
+          "boundary": {
+            "exact_threshold": null,
+            "failing_bps": 2,
+            "interpretation": "observed pass at lower / fail at upper; no interpolated equality",
+            "passing_bps": 0,
+            "status": "BRACKET_ONLY_WITH_TICK_DISCONTINUITIES"
+          },
+          "candidate_id": "2b2a3b728b5ed274e095283df387e4dbd0d6ac5cd5ee9c112a21a12e7e86fe80",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.56088",
+            "gross_target": "6.613710",
+            "hypothetical_input_digest": "4a49ec0af9d58e848301b7b9178eb4ec2cae9bee74ea867c7c5fb2ae93130d5a",
+            "necessary_static_condition": true,
+            "net_rr": "5.7690739598025387870239774330042313117066290550071",
+            "net_stop_risk": "1.0604371200",
+            "net_target": "6.11774017500",
+            "original_setup_digest": "45a10a9ed68e339c14e469fb3a205dd91e2fa6a00e4266079809758e088612be",
+            "per_leg_slippage_bps": null,
+            "quantity": "4.674",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.2496383400",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.2499187800",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.24963834000",
+              "entry_friction": "0E-7",
+              "exit_fee": "0.24633148500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "38fd8bce091b1e3b1c627a58447ef3d27da5742068715b6f68e3bbaac46ffd44",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "LOWER_SLIPPAGE_NECESSARY_ONLY",
+          "quantity": "4.674",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00079688",
+              "gross_stop_risk": "0.56088",
+              "gross_target": "6.613710",
+              "hypothetical_input_digest": "3a83a4c5ea4aa52c5ec9b9d82462489dd9441bd75e78571838000c1e89fa733b",
+              "necessary_static_condition": true,
+              "net_rr": "2.1753349141625895707902502739358115579269156610764",
+              "net_stop_risk": "2.2610569040880",
+              "net_target": "4.91855602637100",
+              "original_setup_digest": "45a10a9ed68e339c14e469fb3a205dd91e2fa6a00e4266079809758e088612be",
+              "per_leg_slippage_bps": 0,
+              "quantity": "4.674",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495884123320",
+                "entry_friction": "0.099855336",
+                "exit_fee": "0.2499687637560",
+                "exit_friction": "0.099967512",
+                "funding": "1.00079688"
+              },
+              "target_costs": {
+                "entry_fee": "0.24958841233200",
+                "entry_friction": "0.0998553360",
+                "exit_fee": "0.24638075129700",
+                "exit_friction": "0.0985325940",
+                "funding": "1.000796880"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00079688",
+              "gross_stop_risk": "0.56088",
+              "gross_target": "6.613710",
+              "hypothetical_input_digest": "fb7b2160c9bdc6731c369e1c5e8e7b9baf65607e6f018286a5b0368b5a93929b",
+              "necessary_static_condition": false,
+              "net_rr": "1.9180817941858693182561506880334878504176446712210",
+              "net_stop_risk": "2.4608798081760",
+              "net_target": "4.72016875774200",
+              "original_setup_digest": "45a10a9ed68e339c14e469fb3a205dd91e2fa6a00e4266079809758e088612be",
+              "per_leg_slippage_bps": 2,
+              "quantity": "4.674",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2495384846640",
+                "entry_friction": "0.199710672",
+                "exit_fee": "0.2500187475120",
+                "exit_friction": "0.199935024",
+                "funding": "1.00079688"
+              },
+              "target_costs": {
+                "entry_fee": "0.24953848466400",
+                "entry_friction": "0.1997106720",
+                "exit_fee": "0.24643001759400",
+                "exit_friction": "0.1970651880",
+                "funding": "1.000796880"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00079688",
+              "gross_stop_risk": "0.56088",
+              "gross_target": "6.613710",
+              "hypothetical_input_digest": "ff533560ef64eeb4f2a760ab9fc2eefe716b5a9b8ca5a0d56d905578cf5fb64e",
+              "necessary_static_condition": false,
+              "net_rr": "1.6020304148178943532494635636445880462408099423769",
+              "net_stop_risk": "2.7606141643080",
+              "net_target": "4.42258785479850",
+              "original_setup_digest": "45a10a9ed68e339c14e469fb3a205dd91e2fa6a00e4266079809758e088612be",
+              "per_leg_slippage_bps": 5,
+              "quantity": "4.674",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2494635931620",
+                "entry_friction": "0.349493676",
+                "exit_fee": "0.2500937231460",
+                "exit_friction": "0.349886292",
+                "funding": "1.00079688"
+              },
+              "target_costs": {
+                "entry_fee": "0.24946359316200",
+                "entry_friction": "0.3494936760",
+                "exit_fee": "0.24650391703950",
+                "exit_friction": "0.3448640790",
+                "funding": "1.000796880"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00079688",
+              "gross_stop_risk": "0.56088",
+              "gross_target": "6.613710",
+              "hypothetical_input_digest": "87faffbce4f00dd1ad9e4e3f4ebb33e02110e520e0bb11571f63da97debe889c",
+              "necessary_static_condition": false,
+              "net_rr": "1.2044212318665073942978294431583687342976911229717",
+              "net_stop_risk": "3.2601714245280",
+              "net_target": "3.92661968322600",
+              "original_setup_digest": "45a10a9ed68e339c14e469fb3a205dd91e2fa6a00e4266079809758e088612be",
+              "per_leg_slippage_bps": 10,
+              "quantity": "4.674",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2493387739920",
+                "entry_friction": "0.599132016",
+                "exit_fee": "0.2502186825360",
+                "exit_friction": "0.599805072",
+                "funding": "1.00079688"
+              },
+              "target_costs": {
+                "entry_fee": "0.24933877399200",
+                "entry_friction": "0.5991320160",
+                "exit_fee": "0.24662708278200",
+                "exit_friction": "0.5911955640",
+                "funding": "1.000796880"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "22",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "22",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00079688",
+              "gross_stop_risk": "0.56088",
+              "gross_target": "6.613710",
+              "hypothetical_input_digest": "532059fabdd8a30b13cca96c99665607b5eb745944b6c5ffc7d93dc49c9fd014",
+              "necessary_static_condition": false,
+              "net_rr": "0.68900829340845024326937279806994031943028847062339",
+              "net_stop_risk": "4.2592859449680",
+              "net_target": "2.93468334008100",
+              "original_setup_digest": "45a10a9ed68e339c14e469fb3a205dd91e2fa6a00e4266079809758e088612be",
+              "per_leg_slippage_bps": 20,
+              "quantity": "4.674",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.2490891356520",
+                "entry_friction": "1.098408696",
+                "exit_fee": "0.2504686013160",
+                "exit_friction": "1.099642632",
+                "funding": "1.00079688"
+              },
+              "target_costs": {
+                "entry_fee": "0.24908913565200",
+                "entry_friction": "1.0984086960",
+                "exit_fee": "0.24687341426700",
+                "exit_friction": "1.0838585340",
+                "funding": "1.000796880"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "SHORT"
+        },
+        "POSITIVE_FEES_ONLY_BELOW_RR": {
+          "at": 1786323120.0,
+          "boundary": {
+            "status": "NO_TESTED_SLIPPAGE_PASSES",
+            "tested_max": 20,
+            "tested_min": 0
+          },
+          "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+          "execution_authority": "NONE",
+          "fee_only": {
+            "actual_execution_cost_identified": false,
+            "entry_combined_bps": "0",
+            "execution_authority": "NONE",
+            "exit_combined_bps": "0",
+            "fee_rates": [
+              0.0005,
+              0.0005
+            ],
+            "funding_budget": "0",
+            "gross_stop_risk": "0.26072",
+            "gross_target": "0.554030",
+            "hypothetical_input_digest": "9466e306bda3dd2d341d0925b8d30ff5a19544f364342f388b26627f02e780c4",
+            "necessary_static_condition": false,
+            "net_rr": "0.072393243011490310409878237009089350025724575544504",
+            "net_stop_risk": "0.7601291600",
+            "net_target": "0.05502821500",
+            "original_setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+            "per_leg_slippage_bps": null,
+            "quantity": "6.518",
+            "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+            "required_net_rr": "2",
+            "rr_version": "linear-usdt-rr/v1",
+            "scenario": "FEES_ONLY",
+            "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+            "spread_bps": "0",
+            "stop_costs": {
+              "entry_fee": "0.249639400",
+              "entry_friction": "0.00000",
+              "exit_fee": "0.2497697600",
+              "exit_friction": "0.000000",
+              "funding": "0.000"
+            },
+            "target_costs": {
+              "entry_fee": "0.2496394000",
+              "entry_friction": "0.000000",
+              "exit_fee": "0.24936238500",
+              "exit_friction": "0E-7",
+              "funding": "0.0000"
+            },
+            "version": "fixed-quantity-cost-counterfactual/v1"
+          },
+          "frozen_8e_record_digest": "f93fbf506b6e00b49c67cba7d595a202455b9ce80e3a7a98f38e4f148295edca",
+          "original_rejection_reasons": [
+            "NET_RR_BELOW_HARD_FLOOR",
+            "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+            "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+            "NET_RR_BELOW_CONTEXT_FLOOR",
+            "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+            "FINAL_RISK_OUT_OF_BOUNDS"
+          ],
+          "price_rule_basis": "FROZEN_8D_DECLARED_SNAPSHOT",
+          "price_tick": "0.01",
+          "primary": "POSITIVE_FEES_ONLY_BELOW_RR",
+          "quantity": "6.518",
+          "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+          "real_executability": "UNIDENTIFIED_COST_EVIDENCE",
+          "sensitivities": [
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "2",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "2",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00025228",
+              "gross_stop_risk": "0.26072",
+              "gross_target": "0.554030",
+              "hypothetical_input_digest": "06f63a4d88770cb61a644600de229a73d9189be535a74554bd7ba25ef839060d",
+              "necessary_static_condition": false,
+              "net_rr": "-0.58405100011903114949015523010620587233372519574200",
+              "net_stop_risk": "1.9601451300720",
+              "net_target": "-1.14482472359700",
+              "original_setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+              "per_leg_slippage_bps": 0,
+              "quantity": "6.518",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_0_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249589472120",
+                "entry_friction": "0.09985576",
+                "exit_fee": "0.2498197139520",
+                "exit_friction": "0.099907904",
+                "funding": "1.00025228"
+              },
+              "target_costs": {
+                "entry_fee": "0.2495894721200",
+                "entry_friction": "0.099855760",
+                "exit_fee": "0.24941225747700",
+                "exit_friction": "0.0997449540",
+                "funding": "1.000252280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "4",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "4",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00025228",
+              "gross_stop_risk": "0.26072",
+              "gross_target": "0.554030",
+              "hypothetical_input_digest": "d993afab38a9e81e345f06b4de5fbb53856868b79730965b53e40012a2a8f588",
+              "necessary_static_condition": false,
+              "net_rr": "-0.62244543364768882121363475414912958936966854884678",
+              "net_stop_risk": "2.1599088201440",
+              "net_target": "-1.34442538219400",
+              "original_setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+              "per_leg_slippage_bps": 2,
+              "quantity": "6.518",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_2_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249539544240",
+                "entry_friction": "0.19971152",
+                "exit_fee": "0.2498696679040",
+                "exit_friction": "0.199815808",
+                "funding": "1.00025228"
+              },
+              "target_costs": {
+                "entry_fee": "0.2495395442400",
+                "entry_friction": "0.199711520",
+                "exit_fee": "0.24946212995400",
+                "exit_friction": "0.1994899080",
+                "funding": "1.000252280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "7",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "7",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00025228",
+              "gross_stop_risk": "0.26072",
+              "gross_target": "0.554030",
+              "hypothetical_input_digest": "81f903031e53474c5edee9f196ebca825da83c9b2bee6ce73d989b71c1d08f91",
+              "necessary_static_condition": false,
+              "net_rr": "-0.66834317630726950109243187907701562727715853302464",
+              "net_stop_risk": "2.4595543552520",
+              "net_target": "-1.64382637008950",
+              "original_setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+              "per_leg_slippage_bps": 5,
+              "quantity": "6.518",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_5_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249464652420",
+                "entry_friction": "0.34949516",
+                "exit_fee": "0.2499445988320",
+                "exit_friction": "0.349677664",
+                "funding": "1.00025228"
+              },
+              "target_costs": {
+                "entry_fee": "0.2494646524200",
+                "entry_friction": "0.349495160",
+                "exit_fee": "0.24953693866950",
+                "exit_friction": "0.3491073390",
+                "funding": "1.000252280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "12",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "12",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00025228",
+              "gross_stop_risk": "0.26072",
+              "gross_target": "0.554030",
+              "hypothetical_input_digest": "cb5fa8f71c1ed03bbf4c7811e94d87cfb0d1550a541cf138f9bbcfd588091c7d",
+              "necessary_static_condition": false,
+              "net_rr": "-0.72418195031287049415621396277020603548059587562493",
+              "net_stop_risk": "2.9589635804320",
+              "net_target": "-2.14282801658200",
+              "original_setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+              "per_leg_slippage_bps": 10,
+              "quantity": "6.518",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_10_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249339832720",
+                "entry_friction": "0.59913456",
+                "exit_fee": "0.2500694837120",
+                "exit_friction": "0.599447424",
+                "funding": "1.00025228"
+              },
+              "target_costs": {
+                "entry_fee": "0.2493398327200",
+                "entry_friction": "0.599134560",
+                "exit_fee": "0.24966161986200",
+                "exit_friction": "0.5984697240",
+                "funding": "1.000252280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            },
+            {
+              "actual_execution_cost_identified": false,
+              "entry_combined_bps": "23",
+              "execution_authority": "NONE",
+              "exit_combined_bps": "23",
+              "fee_rates": [
+                0.0005,
+                0.0005
+              ],
+              "funding_budget": "1.00025228",
+              "gross_stop_risk": "0.26072",
+              "gross_target": "0.554030",
+              "hypothetical_input_digest": "557db2bdda145d00d9ca38e2d830c6112637d0e5cc13c6824d8882f2ad38dc5d",
+              "necessary_static_condition": false,
+              "net_rr": "-0.79864467290411584691336516353408736809028462448020",
+              "net_stop_risk": "4.0576638758280",
+              "net_target": "-3.24063163886550",
+              "original_setup_digest": "119d453db470275915e6807fba7ac5c310f373e9b2d178458a59b659ce9eaede",
+              "per_leg_slippage_bps": 20,
+              "quantity": "6.518",
+              "quantity_basis": "UNCHANGED_8E_DIAGNOSTIC_NOT_APPROVED",
+              "required_net_rr": "2",
+              "rr_version": "linear-usdt-rr/v1",
+              "scenario": "SLIPPAGE_20_BPS",
+              "scope": "COUNTERFACTUAL_DIAGNOSTIC / NOT_ADMISSION",
+              "spread_bps": "2",
+              "stop_costs": {
+                "entry_fee": "0.249065229380",
+                "entry_friction": "1.14834124",
+                "exit_fee": "0.2503442304480",
+                "exit_friction": "1.148940896",
+                "funding": "1.00025228"
+              },
+              "target_costs": {
+                "entry_fee": "0.2490652293800",
+                "entry_friction": "1.148341240",
+                "exit_fee": "0.24993591848550",
+                "exit_friction": "1.1470669710",
+                "funding": "1.000252280"
+              },
+              "version": "fixed-quantity-cost-counterfactual/v1"
+            }
+          ],
+          "side": "SHORT"
+        }
+      },
+      "slippage": {
+        "0": {
+          "nonpositive_net": 18209,
+          "positive_below_floor": 275,
+          "static_necessary_pass": 2,
+          "total": 18486
+        },
+        "10": {
+          "nonpositive_net": 18426,
+          "positive_below_floor": 59,
+          "static_necessary_pass": 1,
+          "total": 18486
+        },
+        "2": {
+          "nonpositive_net": 18296,
+          "positive_below_floor": 189,
+          "static_necessary_pass": 1,
+          "total": 18486
+        },
+        "20": {
+          "nonpositive_net": 18471,
+          "positive_below_floor": 14,
+          "static_necessary_pass": 1,
+          "total": 18486
+        },
+        "5": {
+          "nonpositive_net": 18372,
+          "positive_below_floor": 113,
+          "static_necessary_pass": 1,
+          "total": 18486
+        }
+      }
+    }
+  },
+  "version": "cost-boundary-research/v1"
+}

@@ -366,3 +366,16 @@ def test_counterfactual_pass_never_proves_real_cost_identification(tmp_path):
     assert all(v['execution_authority']=='NONE' and not v['actual_execution_cost_identified'] for v in row['sensitivities'])
     summary=CostSummary();summary.add(row);summary.add(dict(row,candidate_id='z'*64))
     assert summary.result()['sides']['LONG']['real_executability_unknown']==2
+
+
+@pytest.mark.parametrize('name',['.env','unrelated.json'])
+def test_cli_refuses_non_artifact_input_before_hash_read(tmp_path,monkeypatch,name):
+    import app.signal_research.cli as cli
+    real_hash=cli.sha_file
+    def observed_hash(path):
+        if Path(path).name==name:raise AssertionError('UNRELATED_INPUT_WAS_READ')
+        return real_hash(path)
+    monkeypatch.setattr(cli,'sha_file',observed_hash)
+    with pytest.raises(ValueError,match='EXPLICIT_FROZEN_INPUT_PATHS_REQUIRED'):
+        run(tmp_path/'quantified-runs/x/ledger.sqlite3',tmp_path/'historical-data/august-2026-v1',
+            tmp_path/'diagnostic-runs/8e-full-v1'/name,tmp_path/'research-runs/probe',code_commit='a'*40)

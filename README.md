@@ -1,5 +1,10 @@
 # sol-ai-trading-system · 独立 PAPER 交易 agent
 
+当前分支交付 **8F-A 只读信号／成本研究**，不是新交易入口。
+先看 [研究报告](STAGE_08FA_REPORT.md) 与本页末尾的
+[独立离线命令](#stage-8f-a-frozen-read-only-signal--cost-research)。
+以下 8A—8E 和旧主流程说明仅保留各阶段历史范围；本轮不启动它们。
+
 ## 8D：独立历史离线价格／数量成本契约
 
 本分支 `phase-08d-execution-cost-contracts` 只运行独立8D入口。
@@ -456,7 +461,7 @@ sandbox-exec -f examples/historical-replay/offline.sb \
 已完成的现金流，但S3前提未发生时 `scenario_net_rr=null`，不能取得新审批。
 统计期望、真实资金费／流动性、策略有效性和实盘仍未验证。
 详见 [STAGE_08E_REPORT.md](STAGE_08E_REPORT.md)。
-# Stage 8F-A: frozen, read-only signal / cost research
+## Stage 8F-A: frozen, read-only signal / cost research
 
 The protocol is committed **before** this new analysis:
 [`docs/STAGE_08FA_RESEARCH_PROTOCOL.md`](docs/STAGE_08FA_RESEARCH_PROTOCOL.md).
@@ -485,3 +490,8 @@ windows, coverage and paired day-block intervals. `cost-sensitivities.jsonl` and
 `cost-boundary-summary.json` are six same-quantity counterfactuals, **NOT_ADMISSION**.
 `summary.json` / `artifact-manifest.json` bind actual inputs, versions and workload.
 The command never imports the new results into the existing trading paths.
+Sanitized aggregate results and fixed representatives are in
+[`validation/stage08fa/`](validation/stage08fa/); large feature/label/cost row
+artifacts and all databases remain local and ignored. This research generated
+no approvals or orders. See [STAGE_08FA_REPORT.md](STAGE_08FA_REPORT.md) for the
+actual calculation commit, denominators, limitations and reproducible checks.

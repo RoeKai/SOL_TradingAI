@@ -183,6 +183,18 @@ def test_cli_readonly_integration_and_no_old_entry_wiring(tmp_path):
     assert result['statistics']['valid']>=1 and not result['differences']
     with p.store.transaction() as db:assert before==rows(db,'account')
     for path in (ROOT/'app').rglob('*.py'):
+        if path==ROOT/'app/signal_research/cli.py':
+            # Stage 8F-A may reuse only the narrow read-only source boundary;
+            # this does not permit wiring diagnostics into any old entry path.
+            tree=ast.parse(path.read_text())
+            imports=[node for node in ast.walk(tree) if isinstance(node,ast.ImportFrom)
+                     and (node.module or '').startswith('app.scenario_diagnostics')]
+            assert [(node.module,[(alias.name,alias.asname) for alias in node.names]) for node in imports]==[
+                ('app.scenario_diagnostics.source',[('frozen_source',None),('bodies',None)])]
+            assert not any(isinstance(node,ast.Import) and any(
+                alias.name.startswith('app.scenario_diagnostics') for alias in node.names)
+                for node in ast.walk(tree))
+            continue
         if 'scenario_diagnostics' not in path.parts:
             assert 'app.scenario_diagnostics' not in path.read_text()
     for file in (ROOT/'app/scenario_diagnostics').glob('*.py'):

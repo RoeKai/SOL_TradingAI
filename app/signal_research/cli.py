@@ -137,6 +137,13 @@ def run(source,dataset,cost_rows,output,*,code_commit):
     protocol=root/'docs/STAGE_08FA_RESEARCH_PROTOCOL.md'
     if sha_file(protocol)!=PROTOCOL_SHA256:raise ValueError('FROZEN_PROTOCOL_CHANGED')
     source=check_owned(Path(source).absolute());dataset=check_owned(Path(dataset).absolute());cost_rows=check_owned(Path(cost_rows).absolute())
+    # Check the narrow artifact boundary BEFORE hashing any supplied input.
+    # A matching digest is a content binding, never permission to read .env or
+    # an unrelated host file. The source reader also checks database identity.
+    if (source.name!='ledger.sqlite3' or source.parent.parent.name!='quantified-runs' or
+        dataset.parent.name!='historical-data' or cost_rows.name!='cost-rows.jsonl' or
+        cost_rows.parent.parent.name!='diagnostic-runs'):
+        raise ValueError('EXPLICIT_FROZEN_INPUT_PATHS_REQUIRED')
     if sha_file(cost_rows)!=COST_SHA256:raise ValueError('FROZEN_8E_COST_ARTIFACT_CHANGED')
     output.mkdir(parents=True,exist_ok=False)
     versions=dict(version='stage08fa-readonly-research/v1',protocol_commit=PROTOCOL_COMMIT,protocol_sha256=PROTOCOL_SHA256,

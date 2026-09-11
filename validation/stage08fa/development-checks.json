@@ -1,0 +1,139 @@
+{
+  "schema": "stage08fa-development-checks/v1",
+  "scope": "DEVELOPER_ACTUAL_EXECUTION_NOT_INDEPENDENT_REVIEW",
+  "baseline": "a6c68008327f8aac2fd888572e33504ff20cd019",
+  "protocol_commit": "d00bf544eec2c5cd918af2cf478c7c0081a4803d",
+  "retained_prototype_commit": "fbf2e6de3ae96050d3beac9a5aeece7816cab1d5",
+  "august_calculation_commit": "783a3212b26e142a11cd308713738e313f43737c",
+  "no_relabeling_old_experiments": true,
+  "old_business_assertions_removed": 0,
+  "failure_history": [
+    {
+      "stage": "initial_synthetic_prototype",
+      "passed": 38,
+      "failed": 6,
+      "version": "fbf2e6de3ae96050d3beac9a5aeece7816cab1d5",
+      "issues": [
+        "UTC_background_grid_anchor",
+        "Decimal_digest_serialization",
+        "synthetic_source_prepare_arrangement",
+        "transitive_Broker_import_from_old_CLI"
+      ],
+      "assertions_relaxed": false
+    },
+    {
+      "stage": "same_synthetic_suite_after_fixes",
+      "passed": 44,
+      "failed": 0,
+      "seconds": 3.48
+    },
+    {
+      "stage": "extended_related_suites_first_attempt",
+      "passed": 387,
+      "failed": 6,
+      "seconds": 7.57,
+      "issue": "New oracle test fixture constructed Decimal from binary float; unsupported finer-than-grid prices correctly rejected.",
+      "resolution": "Use exact decimal strings in synthetic input; retain oracle assertions."
+    },
+    {
+      "stage": "extended_related_suites_corrected_inputs",
+      "passed": 393,
+      "failed": 0,
+      "seconds": 7.2
+    },
+    {
+      "stage": "first_full_python",
+      "passed": 2308,
+      "failed": 1,
+      "warnings": 2,
+      "seconds": 286.88,
+      "issue": "Old 8E no-external-import assertion lacked exact new read-only source consumer.",
+      "resolution": "Only app/signal_research/cli.py may import frozen_source,bodies from app.scenario_diagnostics.source; verify AST."
+    },
+    {
+      "stage": "new_input_boundary_reproduction",
+      "passed": 0,
+      "failed": 2,
+      "deselected": 67,
+      "seconds": 0.27,
+      "code_baseline": "783a3212b26e142a11cd308713738e313f43737c",
+      "issue": "Arbitrary supplied cost filename reached hash reader before narrow path validation.",
+      "actual_secret_read": false,
+      "resolution": "Reject wrong artifact paths before supplied input hash reads; retain original failing assertions."
+    },
+    {
+      "stage": "final_new_and_old_readonly_integration",
+      "command": "python -m pytest -q tests/test_stage08fa_research.py tests/test_stage08e_diagnostics.py::test_cli_readonly_integration_and_no_old_entry_wiring",
+      "passed": 70,
+      "failed": 0,
+      "seconds": 3.96
+    }
+  ],
+  "final_checks": {
+    "python": {
+      "command": "python -m pytest -q",
+      "passed": 2311,
+      "failed": 0,
+      "warnings": 2,
+      "seconds": 236.45,
+      "new_parameterized_cases_included": 69,
+      "warning_sources": [
+        "Starlette httpx deprecation",
+        "anyio BlockingPortal alias deprecation"
+      ]
+    },
+    "isolation": {
+      "command": "python scripts/verify_isolation.py",
+      "status": "PASS",
+      "python_files": 130
+    },
+    "bridge_mock": {
+      "cwd": "bridge",
+      "command": "node --import tsx --test tests/*.test.ts",
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 572.100958,
+      "transport": "LOOPBACK_MOCK_ONLY"
+    },
+    "bridge_types": {
+      "cwd": "bridge",
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit_code": 0
+    },
+    "bridge_build": {
+      "cwd": "bridge",
+      "command": "node scripts/build.mjs",
+      "exit_code": 0,
+      "vendor_snapshots": 6,
+      "inputs": 82,
+      "standalone_import": "PASS"
+    }
+  },
+  "counting": "Repeated runs are listed for provenance, NOT added as independent tests or samples.",
+  "execution_isolation": {
+    "research_and_python": "OS sandbox denies network and original copy-trading roots",
+    "bridge_mock": "OS sandbox permits loopback only",
+    "account_or_exchange_access": false,
+    "deploy": false,
+    "live_enabled": false
+  },
+  "research_run": {
+    "name": "august-8fa-v1",
+    "complete_runs": 1,
+    "failed_full_month_runs": 0,
+    "seconds": 254.5164203750901,
+    "new_account_replays": 0,
+    "approvals": 0,
+    "orders": 0,
+    "holdout": "PENDING"
+  },
+  "remaining": [
+    "Real cost identification",
+    "Unseen holdout",
+    "Strategy effectiveness",
+    "Runner expected return",
+    "Live or real-time integration"
+  ],
+  "final_delta_after_august": "Early supplied path rejection, exact read-only AST allowlist, two regression cases and documentation only. No label/statistics/cost/feature arithmetic change; August outputs still bound to original calculation commit."
+}
