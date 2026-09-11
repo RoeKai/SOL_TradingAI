@@ -1,0 +1,690 @@
+{
+  "LONG": {
+    "candidates": 18655,
+    "metrics_count": 18655,
+    "primary": {
+      "A": 18318,
+      "B": 241,
+      "C": 79,
+      "D": 1,
+      "E": 16
+    },
+    "quantile_rule": "sorted observed values, floor((N-1)*p), no interpolation",
+    "quantiles": {
+      "fee_per_unit": {
+        "max": "0.10982996400",
+        "min": "0.07073493400",
+        "p10": "0.07379496750",
+        "p25": "0.07601741900",
+        "p50": "0.09386244900",
+        "p75": "0.10142235300",
+        "p90": "0.10504749100"
+      },
+      "funding_budget": {
+        "max": "1.02340920",
+        "min": "0.01002804",
+        "p10": "0.99777232",
+        "p25": "0.99801660",
+        "p50": "0.99848952",
+        "p75": "0.99929400",
+        "p90": "1.00051334"
+      },
+      "funding_per_unit": {
+        "max": "0.22100",
+        "min": "0.14198",
+        "p10": "0.14788",
+        "p25": "0.15232",
+        "p50": "0.18820",
+        "p75": "0.20336",
+        "p90": "0.21060"
+      },
+      "net_rr": {
+        "max": "2.1916458517674280994269244290486795176094534996985",
+        "min": "-0.95861019432979290435986608971802619574193610400951",
+        "p10": "-0.92854258459748588679315007322799972473557897099504",
+        "p25": "-0.89779346882810001728763276837637021774933272389169",
+        "p50": "-0.84527940702784867330185703903913606924515279256135",
+        "p75": "-0.75319353968025452393522322969587786040925732675304",
+        "p90": "-0.61415286157959637145160154329627058987865936462297"
+      },
+      "net_target_usdt": {
+        "max": "5.57646754645200",
+        "min": "-2.70964751092100",
+        "p10": "-2.59508766778800",
+        "p25": "-2.53048713124900",
+        "p50": "-2.41225956148400",
+        "p75": "-2.19720118281300",
+        "p90": "-1.84290715602200"
+      },
+      "net_target_without_funding_counterfactual": {
+        "max": "6.59987674645200",
+        "min": "-1.71154455092100",
+        "p10": "-1.59717416262100",
+        "p25": "-1.53251319370500",
+        "p50": "-1.41338268359200",
+        "p75": "-1.19800598967500",
+        "p90": "-0.84292039967400"
+      },
+      "quantity": {
+        "max": "7.048",
+        "min": "0.049",
+        "p10": "4.742",
+        "p25": "4.912",
+        "p50": "5.309",
+        "p75": "6.554",
+        "p90": "6.752"
+      },
+      "required_net_rr": {
+        "max": "2",
+        "min": "2",
+        "p10": "2",
+        "p25": "2",
+        "p50": "2",
+        "p75": "2",
+        "p90": "2"
+      },
+      "rounding_budget_residual_per_unit": {
+        "max": "0.0367770",
+        "min": "0.0141470",
+        "p10": "0.0151935",
+        "p25": "0.0175350",
+        "p50": "0.0194200",
+        "p75": "0.0211270",
+        "p90": "0.0294700"
+      },
+      "slippage_per_unit": {
+        "max": "0.21966",
+        "min": "0.14147",
+        "p10": "0.14759",
+        "p25": "0.152035",
+        "p50": "0.187725",
+        "p75": "0.202845",
+        "p90": "0.210095"
+      },
+      "spread_per_unit": {
+        "max": "0.021966",
+        "min": "0.014147",
+        "p10": "0.014759",
+        "p25": "0.0152035",
+        "p50": "0.0187725",
+        "p75": "0.0202845",
+        "p90": "0.0210095"
+      },
+      "stop_risk_usdt": {
+        "max": "4.9998982455800",
+        "min": "0.0276964383960",
+        "p10": "2.7436124523860",
+        "p25": "2.7575420685580",
+        "p50": "2.8447375049100",
+        "p75": "2.9271412407120",
+        "p90": "3.0890872777440"
+      },
+      "structural_stop_distance": {
+        "max": "1.35",
+        "min": "0.01",
+        "p10": "0.01",
+        "p25": "0.01",
+        "p50": "0.02",
+        "p75": "0.04",
+        "p90": "0.07"
+      },
+      "total_fee_budget": {
+        "max": "0.50221508554800",
+        "min": "0.00500329440600",
+        "p10": "0.49814994096000",
+        "p25": "0.49818897859500",
+        "p50": "0.49825263090900",
+        "p75": "0.49836026169600",
+        "p90": "0.49853243174000"
+      },
+      "total_rounding_budget": {
+        "max": "0.2003978730",
+        "min": "0.0010006590",
+        "p10": "0.0996338340",
+        "p25": "0.0996425570",
+        "p50": "0.0996602400",
+        "p75": "0.0997142770",
+        "p90": "0.1992685700"
+      },
+      "total_slippage_budget": {
+        "max": "1.004440140",
+        "min": "0.010006590",
+        "p10": "0.996300000",
+        "p25": "0.996378270",
+        "p50": "0.996505895",
+        "p75": "0.99672156",
+        "p90": "0.99706699"
+      },
+      "total_spread_budget": {
+        "max": "0.1004440140",
+        "min": "0.0010006590",
+        "p10": "0.0996300000",
+        "p25": "0.0996378270",
+        "p50": "0.0996505895",
+        "p75": "0.099672156",
+        "p90": "0.099706699"
+      },
+      "weighted_target_reward_distance": {
+        "max": "1.695",
+        "min": "0.015",
+        "p10": "0.020",
+        "p25": "0.030",
+        "p50": "0.050",
+        "p75": "0.095",
+        "p90": "0.165"
+      }
+    },
+    "representative_rule": "lexicographically smallest candidate ID per side and primary class",
+    "representatives": {
+      "A": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1785841245.0,
+        "candidate_id": "0000a9e546e53b7cee7acc40a8dc25ace35038c297c67fbdcb51d70a2aac4048",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.07360498050",
+          "funding_budget": "0.99800928",
+          "funding_per_unit": "0.14746",
+          "net_rr": "-0.88456051375446011359372200931105007761421121646279",
+          "net_target_usdt": "-2.58834025202400",
+          "net_target_without_funding_counterfactual": "-1.59033097202400",
+          "quantity": "6.768",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0294420",
+          "slippage_per_unit": "0.14721",
+          "spread_per_unit": "0.014721",
+          "stop_risk_usdt": "2.9261313519840",
+          "structural_stop_distance": "0.02",
+          "total_fee_budget": "0.49815850802400",
+          "total_rounding_budget": "0.1992634560",
+          "total_slippage_budget": "0.99631728",
+          "total_spread_budget": "0.099631728",
+          "weighted_target_reward_distance": "0.030"
+        },
+        "original_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+        "primary": "A",
+        "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+        "reason_codes": [
+          "NET_RR_BELOW_HARD_FLOOR",
+          "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+          "NET_RR_BELOW_CONTEXT_FLOOR",
+          "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+        ],
+        "side": "LONG"
+      },
+      "B": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1787619105.0,
+        "candidate_id": "0034c9a5a2a5705c1aaee2fe53634b9ffcfef07fac8c646803ae16f46f7efd8e",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.10185727500",
+          "funding_budget": "1.00664652",
+          "funding_per_unit": "0.20548",
+          "net_rr": "-0.24190294187398033748299731250142333857782346301996",
+          "net_target_usdt": "-0.86612005222500",
+          "net_target_without_funding_counterfactual": "0.14052646777500",
+          "quantity": "4.899",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0203715",
+          "slippage_per_unit": "0.203715",
+          "spread_per_unit": "0.0203715",
+          "stop_risk_usdt": "3.5804444770920",
+          "structural_stop_distance": "0.18",
+          "total_fee_budget": "0.49899879022500",
+          "total_rounding_budget": "0.0997999785",
+          "total_slippage_budget": "0.997999785",
+          "total_spread_budget": "0.0997999785",
+          "weighted_target_reward_distance": "0.375"
+        },
+        "original_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+        "primary": "B",
+        "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+        "reason_codes": [
+          "NET_RR_BELOW_HARD_FLOOR",
+          "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+          "NET_RR_BELOW_CONTEXT_FLOOR",
+          "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP"
+        ],
+        "side": "LONG"
+      },
+      "C": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1787375835.0,
+        "candidate_id": "002cc74c6032b8954768d44bd71f448882a9df1b04713513d1f1498bd59eb1be",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.09314199300",
+          "funding_budget": "0.65523150",
+          "funding_per_unit": "0.18910",
+          "net_rr": "0.23511757019143331279266094953333873727045723754089",
+          "net_target_usdt": "1.17538346425500",
+          "net_target_without_funding_counterfactual": "1.83061496425500",
+          "quantity": "3.465",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0186285",
+          "slippage_per_unit": "0.186285",
+          "spread_per_unit": "0.0186285",
+          "stop_risk_usdt": "4.9991307042600",
+          "structural_stop_distance": "0.94",
+          "total_fee_budget": "0.32273700574500",
+          "total_rounding_budget": "0.0645477525",
+          "total_slippage_budget": "0.645477525",
+          "total_spread_budget": "0.0645477525",
+          "weighted_target_reward_distance": "0.845"
+        },
+        "original_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+        "primary": "C",
+        "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+        "reason_codes": [
+          "NET_RR_BELOW_HARD_FLOOR",
+          "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+          "NET_RR_BELOW_CONTEXT_FLOOR",
+          "FINAL_RISK_OUT_OF_BOUNDS"
+        ],
+        "side": "LONG"
+      },
+      "D": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1787496195.0,
+        "candidate_id": "fbcfdb9dad7e39691edad3abeb0f925b33900048ffd269ec562ea35cb1e2a6de",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.09453648300",
+          "funding_budget": "0.01031724",
+          "funding_per_unit": "0.19106",
+          "net_rr": "2.1916458517674280994269244290486795176094534996985",
+          "net_target_usdt": "0.06385572991800",
+          "net_target_without_funding_counterfactual": "0.07417296991800",
+          "quantity": "0.054",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0189075",
+          "slippage_per_unit": "0.189075",
+          "spread_per_unit": "0.0189075",
+          "stop_risk_usdt": "0.0291359709720",
+          "structural_stop_distance": "0.03",
+          "total_fee_budget": "0.00510497008200",
+          "total_rounding_budget": "0.0010210050",
+          "total_slippage_budget": "0.010210050",
+          "total_spread_budget": "0.0010210050",
+          "weighted_target_reward_distance": "1.695"
+        },
+        "original_status": "QUANTITY_INDEPENDENT_REJECT",
+        "primary": "D",
+        "quantity_basis": "MINIMUM_DIAGNOSTIC_NOT_APPROVED",
+        "reason_codes": [
+          "BTC_CRASH_LONG_BLOCK"
+        ],
+        "side": "LONG"
+      },
+      "E": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1785879825.0,
+        "candidate_id": "17d82b0d06f905c6086c1acf828c9701a401e019036db19d70051e456056a6e5",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.07406248375",
+          "funding_budget": "0.01009120",
+          "funding_per_unit": "0.14840",
+          "net_rr": "-0.91778789111586143642702327084386072052302398002726",
+          "net_target_usdt": "-0.02652169889500",
+          "net_target_without_funding_counterfactual": "-0.01643049889500",
+          "quantity": "0.068",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0296250",
+          "slippage_per_unit": "0.148125",
+          "spread_per_unit": "0.0148125",
+          "stop_risk_usdt": "0.0288974164420",
+          "structural_stop_distance": "0.01",
+          "total_fee_budget": "0.00503624889500",
+          "total_rounding_budget": "0.0020145000",
+          "total_slippage_budget": "0.010072500",
+          "total_spread_budget": "0.0010072500",
+          "weighted_target_reward_distance": "0.025"
+        },
+        "original_status": "NOT_QUANTIFIED_STALE_INPUT",
+        "primary": "E",
+        "quantity_basis": "MINIMUM_DIAGNOSTIC_NOT_APPROVED",
+        "reason_codes": [
+          "EXECUTION_QUOTE_STALE_OR_FUTURE"
+        ],
+        "side": "LONG"
+      }
+    }
+  },
+  "SHORT": {
+    "candidates": 18486,
+    "metrics_count": 18486,
+    "primary": {
+      "A": 18200,
+      "B": 215,
+      "C": 59,
+      "D": 0,
+      "E": 12
+    },
+    "quantile_rule": "sorted observed values, floor((N-1)*p), no interpolation",
+    "quantiles": {
+      "fee_per_unit": {
+        "max": "0.10985994000",
+        "min": "0.07077241900",
+        "p10": "0.07381247725",
+        "p25": "0.07601494600",
+        "p50": "0.09373997600",
+        "p75": "0.10085246700",
+        "p90": "0.10487498200"
+      },
+      "funding_budget": {
+        "max": "1.00421640",
+        "min": "0.01001488",
+        "p10": "0.99979988",
+        "p25": "0.99988938",
+        "p50": "1.00000642",
+        "p75": "1.00019024",
+        "p90": "1.00049040"
+      },
+      "funding_per_unit": {
+        "max": "0.22100",
+        "min": "0.14186",
+        "p10": "0.14790",
+        "p25": "0.15230",
+        "p50": "0.18784",
+        "p75": "0.20214",
+        "p90": "0.21016"
+      },
+      "net_rr": {
+        "max": "4.0439628966516400965662731603779059491161041788246",
+        "min": "-0.95816912284412257176476264432028165201726868444142",
+        "p10": "-0.92845387616696405434515651268873591176574742194003",
+        "p25": "-0.89745137231251364117339481940133437493274691415899",
+        "p50": "-0.84208101547585646828517518010370772176104331084482",
+        "p75": "-0.74949495011862456005493586690648706666967498250640",
+        "p90": "-0.62352918026777007187751474288005019490271453156983"
+      },
+      "net_target_usdt": {
+        "max": "11.34135140816200",
+        "min": "-2.71558754680400",
+        "p10": "-2.60048327011200",
+        "p25": "-2.53848392067200",
+        "p50": "-2.40996413265000",
+        "p75": "-2.18740882736600",
+        "p90": "-1.86242098578000"
+      },
+      "net_target_without_funding_counterfactual": {
+        "max": "12.34139154816200",
+        "min": "-1.71561186680400",
+        "p10": "-1.60053564778800",
+        "p25": "-1.53849074769000",
+        "p50": "-1.40993039714100",
+        "p75": "-1.18685222607200",
+        "p90": "-0.86236238966000"
+      },
+      "quantity": {
+        "max": "7.050",
+        "min": "0.048",
+        "p10": "4.758",
+        "p25": "4.946",
+        "p50": "5.324",
+        "p75": "6.566",
+        "p90": "6.762"
+      },
+      "required_net_rr": {
+        "max": "2",
+        "min": "2",
+        "p10": "2",
+        "p25": "2",
+        "p50": "2",
+        "p75": "2",
+        "p90": "2"
+      },
+      "rounding_budget_residual_per_unit": {
+        "max": "0.0366540",
+        "min": "0.0099815",
+        "p10": "0.0151890",
+        "p25": "0.0174995",
+        "p50": "0.0193725",
+        "p75": "0.0210425",
+        "p90": "0.0294790"
+      },
+      "slippage_per_unit": {
+        "max": "0.21972",
+        "min": "0.141545",
+        "p10": "0.147625",
+        "p25": "0.15203",
+        "p50": "0.18748",
+        "p75": "0.201705",
+        "p90": "0.20975"
+      },
+      "spread_per_unit": {
+        "max": "0.021972",
+        "min": "0.0141545",
+        "p10": "0.0147625",
+        "p25": "0.015203",
+        "p50": "0.018748",
+        "p75": "0.0201705",
+        "p90": "0.020975"
+      },
+      "stop_risk_usdt": {
+        "max": "4.999974795000",
+        "min": "0.0277036983960",
+        "p10": "2.7490221639660",
+        "p25": "2.7635895204980",
+        "p50": "2.8501229054760",
+        "p75": "2.9339552884000",
+        "p90": "3.0833579068320"
+      },
+      "structural_stop_distance": {
+        "max": "1.84",
+        "min": "0.01",
+        "p10": "0.01",
+        "p25": "0.01",
+        "p50": "0.02",
+        "p75": "0.04",
+        "p90": "0.07"
+      },
+      "total_fee_budget": {
+        "max": "0.49932496758450",
+        "min": "0.00499935670500",
+        "p10": "0.49886055110500",
+        "p25": "0.49902316996350",
+        "p50": "0.49913967562800",
+        "p75": "0.49920785522400",
+        "p90": "0.49924869622550"
+      },
+      "total_rounding_budget": {
+        "max": "0.1997272030",
+        "min": "0.0009998715",
+        "p10": "0.0997759200",
+        "p25": "0.0998079280",
+        "p50": "0.0998320125",
+        "p75": "0.0998480600",
+        "p90": "0.1996684000"
+      },
+      "total_slippage_budget": {
+        "max": "0.998636015",
+        "min": "0.009998715",
+        "p10": "0.997720940",
+        "p25": "0.998046890",
+        "p50": "0.998279615",
+        "p75": "0.99841560",
+        "p90": "0.998497500"
+      },
+      "total_spread_budget": {
+        "max": "0.0998636015",
+        "min": "0.0009998715",
+        "p10": "0.0997720940",
+        "p25": "0.0998046890",
+        "p50": "0.0998279615",
+        "p75": "0.099841560",
+        "p90": "0.0998497500"
+      },
+      "weighted_target_reward_distance": {
+        "max": "2.630",
+        "min": "0.015",
+        "p10": "0.020",
+        "p25": "0.030",
+        "p50": "0.055",
+        "p75": "0.095",
+        "p90": "0.160"
+      }
+    },
+    "representative_rule": "lexicographically smallest candidate ID per side and primary class",
+    "representatives": {
+      "A": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1786323120.0,
+        "candidate_id": "0007ebb91a7cdcb4e2ff5f9daff95571b6d90a78ef992e0f2714ca780cde4419",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.07655744900",
+          "funding_budget": "1.00025228",
+          "funding_per_unit": "0.15346",
+          "net_rr": "-0.72418195031287049415621396277020603548059587562493",
+          "net_target_usdt": "-2.14282801658200",
+          "net_target_without_funding_counterfactual": "-1.14257573658200",
+          "quantity": "6.518",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0153115",
+          "slippage_per_unit": "0.153115",
+          "spread_per_unit": "0.0153115",
+          "stop_risk_usdt": "2.9589635804320",
+          "structural_stop_distance": "0.04",
+          "total_fee_budget": "0.49900145258200",
+          "total_rounding_budget": "0.0998003570",
+          "total_slippage_budget": "0.998003570",
+          "total_spread_budget": "0.0998003570",
+          "weighted_target_reward_distance": "0.085"
+        },
+        "original_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+        "primary": "A",
+        "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+        "reason_codes": [
+          "NET_RR_BELOW_HARD_FLOOR",
+          "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+          "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+          "NET_RR_BELOW_CONTEXT_FLOOR",
+          "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+          "FINAL_RISK_OUT_OF_BOUNDS"
+        ],
+        "side": "SHORT"
+      },
+      "B": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1787928825.0,
+        "candidate_id": "00bfeec94d7e0a71433e80a058a3f83952b9c99021a263566a4bb2ccbab7175f",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.10608474200",
+          "funding_budget": "1.00130646",
+          "funding_per_unit": "0.21318",
+          "net_rr": "-0.19314115566158464216596902232568842173770989067310",
+          "net_target_usdt": "-0.67575148117400",
+          "net_target_without_funding_counterfactual": "0.32555497882600",
+          "quantity": "4.697",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0212170",
+          "slippage_per_unit": "0.21217",
+          "spread_per_unit": "0.021217",
+          "stop_risk_usdt": "3.4987441120940",
+          "structural_stop_distance": "0.17",
+          "total_fee_budget": "0.49828003317400",
+          "total_rounding_budget": "0.0996562490",
+          "total_slippage_budget": "0.99656249",
+          "total_spread_budget": "0.099656249",
+          "weighted_target_reward_distance": "0.430"
+        },
+        "original_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+        "primary": "B",
+        "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+        "reason_codes": [
+          "NET_RR_BELOW_HARD_FLOOR",
+          "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+          "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+          "NET_RR_BELOW_CONTEXT_FLOOR",
+          "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+          "FINAL_RISK_OUT_OF_BOUNDS"
+        ],
+        "side": "SHORT"
+      },
+      "C": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1787616645.0,
+        "candidate_id": "0a31c1fc0d7427ab526c7b7a176d091f990fee44bb4b49290d72a65fc2fe7004",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.09938214300",
+          "funding_budget": "1.00310234",
+          "funding_per_unit": "0.20026",
+          "net_rr": "0.065353210767056404807948931483698521532117025156949",
+          "net_target_usdt": "0.28471084371300",
+          "net_target_without_funding_counterfactual": "1.28781318371300",
+          "quantity": "5.009",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0198765",
+          "slippage_per_unit": "0.198765",
+          "spread_per_unit": "0.0198765",
+          "stop_risk_usdt": "4.3564935887820",
+          "structural_stop_distance": "0.33",
+          "total_fee_budget": "0.49780515428700",
+          "total_rounding_budget": "0.0995613885",
+          "total_slippage_budget": "0.995613885",
+          "total_spread_budget": "0.0995613885",
+          "weighted_target_reward_distance": "0.595"
+        },
+        "original_status": "PROVEN_STATIC_RR_DOMAIN_REJECT",
+        "primary": "C",
+        "quantity_basis": "HARD_DOMAIN_UPPER_NOT_ORDER_SIZE",
+        "reason_codes": [
+          "NET_RR_BELOW_HARD_FLOOR",
+          "DIMENSION_SCORE_BELOW_MINIMUM:direction_confidence",
+          "DIMENSION_SCORE_BELOW_MINIMUM:rr_quality",
+          "NET_RR_BELOW_CONTEXT_FLOOR",
+          "FINAL_QUANTITY_EXCEEDS_GRADE_OR_ACCOUNT_CAP",
+          "FINAL_RISK_OUT_OF_BOUNDS"
+        ],
+        "side": "SHORT"
+      },
+      "E": {
+        "accounting": "BUDGETS_NOT_SETTLED_COSTS; additive spread/slip split is first-order with compound/tick/bps residual",
+        "at": 1785950670.0,
+        "candidate_id": "0e12e54501894646ea3d2d1c1905355cc287688eca2a514951a372af672197f4",
+        "counterfactual": "Removing funding for attribution ONLY; no admission or order",
+        "execution_authority": "NONE",
+        "metrics": {
+          "fee_per_unit": "0.07413249025",
+          "funding_budget": "0.01009664",
+          "funding_per_unit": "0.14848",
+          "net_rr": "-0.94112623855242676200212045779337432438744268123239",
+          "net_target_usdt": "-0.02722427533700",
+          "net_target_without_funding_counterfactual": "-0.01712763533700",
+          "quantity": "0.068",
+          "required_net_rr": "2",
+          "rounding_budget_residual_per_unit": "0.0296530",
+          "slippage_per_unit": "0.148265",
+          "spread_per_unit": "0.0148265",
+          "stop_risk_usdt": "0.0289273364420",
+          "structural_stop_distance": "0.01",
+          "total_fee_budget": "0.00504100933700",
+          "total_rounding_budget": "0.0020164040",
+          "total_slippage_budget": "0.010082020",
+          "total_spread_budget": "0.0010082020",
+          "weighted_target_reward_distance": "0.015"
+        },
+        "original_status": "NOT_QUANTIFIED_STALE_INPUT",
+        "primary": "E",
+        "quantity_basis": "MINIMUM_DIAGNOSTIC_NOT_APPROVED",
+        "reason_codes": [
+          "EXECUTION_QUOTE_STALE_OR_FUTURE"
+        ],
+        "side": "SHORT"
+      }
+    }
+  }
+}

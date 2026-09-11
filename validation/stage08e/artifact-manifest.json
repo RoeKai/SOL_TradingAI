@@ -1,0 +1,347 @@
+{
+  "version": "stage08e-artifact-manifest/v1",
+  "diagnostic_code_commit": "ea39c11acaaf35ef9b0c01e332ad65dfde544213",
+  "development_base": "84c525cd613a039aed22821b9290c5992056eef9",
+  "app_and_five_template_digest": "df410d39e98316b0016e4fa67fb724feb8a37730133e30165242c1b2fa24e705",
+  "artifacts": [
+    {
+      "file": "certificates.jsonl",
+      "bytes": 62416203,
+      "sha256": "4bf0896ec47a7e5dd0e4299b608ba6ab9d5fc3a9a8eca4a74f8a5dde5405461f"
+    },
+    {
+      "file": "cost-distributions.json",
+      "bytes": 25294,
+      "sha256": "1674d6715ce17ea71a94519c3e68385cf7a2b1a99f316508c548d0cc7b12005b"
+    },
+    {
+      "file": "cost-rows.jsonl",
+      "bytes": 51683585,
+      "sha256": "56177d9579b687b42f5c0cc31af0019d2e9e8d3ced936ff4bf475747dc461546"
+    },
+    {
+      "file": "quantity-first-3ca7e4ecdd0c88b593f2d4c7e2003c4e3ad7420aa24db8a91ac53d2fb3a8c46d.json",
+      "bytes": 38128,
+      "sha256": "b7470525a204f9eebf727d1db4aefe7498894bcc3c2ffe10cb21f64ce64ed1f3"
+    },
+    {
+      "file": "quantity-grid-3ca7e4ecdd0c88b593f2d4c7e2003c4e3ad7420aa24db8a91ac53d2fb3a8c46d.json",
+      "bytes": 14061843,
+      "sha256": "01f5c57ab47b3e45cfce12ebb03f5a3a2a9026609bc0b4a078210ccaf799ec7e"
+    },
+    {
+      "file": "summary.json",
+      "bytes": 6260,
+      "sha256": "697a82cbcdfe4e5daebf5b04db7a5822370fd12756ce77dd52daadc70aa0022f"
+    }
+  ],
+  "source_post_audit_counts": {
+    "broker_orders": 0,
+    "broker_fills": 0,
+    "positions": 0,
+    "reservations": 0,
+    "outbox": 0,
+    "history_consumptions": 0
+  },
+  "source_post_audit_cash": "500",
+  "source_check": "READ_ONLY_SQLITE_AND_FROZEN_REFERENCE_COMPARISON; not a claimed before/after binary DB hash",
+  "quantity_domain": {
+    "high": "5.329",
+    "linear_risk_per_unit": "0.52627401200",
+    "low": "0.054",
+    "size": 5276,
+    "step": "0.001"
+  },
+  "quantity_checked": 5276,
+  "quantity_classes": {
+    "EARLY_PROTECTIVE_TERMINATION": 5276
+  },
+  "quantity_samples": [
+    {
+      "paths": [
+        {
+          "cash_rr": "-1",
+          "event_digest": "ca768008ad5a49c8e19c88d1c26ad308a26dcaabf50e7d9e0e496c28bad58dbc",
+          "fees": "0.499353945",
+          "funding": "1.00004014",
+          "gross": "-1.22567",
+          "id": "S0",
+          "net": "-2.725064085",
+          "premise": "FULFILLED",
+          "quantity": "5.329",
+          "reached": [
+            "ENTRY"
+          ],
+          "reason_codes": [],
+          "remaining": "0.000",
+          "scenario_rr": "-1"
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "794cacbe020b0e55dd7939fa440ba227d0b4607aa02a9428ba52989b0df4df78",
+          "fees": "0.498661175",
+          "funding": "1.00004014",
+          "gross": "0.15987",
+          "id": "S1",
+          "net": "-1.338831315",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "5.329",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "794cacbe020b0e55dd7939fa440ba227d0b4607aa02a9428ba52989b0df4df78",
+          "fees": "0.498661175",
+          "funding": "1.00004014",
+          "gross": "0.15987",
+          "id": "S2",
+          "net": "-1.338831315",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "5.329",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "794cacbe020b0e55dd7939fa440ba227d0b4607aa02a9428ba52989b0df4df78",
+          "fees": "0.498661175",
+          "funding": "1.00004014",
+          "gross": "0.15987",
+          "id": "S3",
+          "net": "-1.338831315",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "5.329",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        }
+      ],
+      "quantity": "5.329",
+      "s3_classification": "EARLY_PROTECTIVE_TERMINATION",
+      "static_net_rr": "4.0439628966516400965662731603779059491161041788246"
+    },
+    {
+      "paths": [
+        {
+          "cash_rr": "-1",
+          "event_digest": "dbfaff917cedfa9b00e52db5ca989d221c397195a735694f5ca5202ec6cce659",
+          "fees": "0.252160155",
+          "funding": "0.50499306",
+          "gross": "-0.61893",
+          "id": "S0",
+          "net": "-1.376083215",
+          "premise": "FULFILLED",
+          "quantity": "2.691",
+          "reached": [
+            "ENTRY"
+          ],
+          "reason_codes": [],
+          "remaining": "0.000",
+          "scenario_rr": "-1"
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "c48beea81c6d878858dbb43e8684578d5171282157848f5851602acf34db292d",
+          "fees": "0.251810325",
+          "funding": "0.50499306",
+          "gross": "0.08073",
+          "id": "S1",
+          "net": "-0.676073385",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "2.691",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "c48beea81c6d878858dbb43e8684578d5171282157848f5851602acf34db292d",
+          "fees": "0.251810325",
+          "funding": "0.50499306",
+          "gross": "0.08073",
+          "id": "S2",
+          "net": "-0.676073385",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "2.691",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "c48beea81c6d878858dbb43e8684578d5171282157848f5851602acf34db292d",
+          "fees": "0.251810325",
+          "funding": "0.50499306",
+          "gross": "0.08073",
+          "id": "S3",
+          "net": "-0.676073385",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "2.691",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        }
+      ],
+      "quantity": "2.691",
+      "s3_classification": "EARLY_PROTECTIVE_TERMINATION",
+      "static_net_rr": "4.0439628966516400965662731603779059491161041788246"
+    },
+    {
+      "paths": [
+        {
+          "cash_rr": "-1",
+          "event_digest": "204ee4117b0f264e0b597c1103007dfb8feef3414519c6d521ee554cc6d064ca",
+          "fees": "0.005060070",
+          "funding": "0.01013364",
+          "gross": "-0.01242",
+          "id": "S0",
+          "net": "-0.027613710",
+          "premise": "FULFILLED",
+          "quantity": "0.054",
+          "reached": [
+            "ENTRY"
+          ],
+          "reason_codes": [],
+          "remaining": "0.000",
+          "scenario_rr": "-1"
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "2de958f310feff788883d0a43f72a2bd76e86a43c62fd367086cb8dc0a750042",
+          "fees": "0.005053050",
+          "funding": "0.01013364",
+          "gross": "0.00162",
+          "id": "S1",
+          "net": "-0.013566690",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "0.054",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "2de958f310feff788883d0a43f72a2bd76e86a43c62fd367086cb8dc0a750042",
+          "fees": "0.005053050",
+          "funding": "0.01013364",
+          "gross": "0.00162",
+          "id": "S2",
+          "net": "-0.013566690",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "0.054",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        },
+        {
+          "cash_rr": "-0.49130268985949370801677862192367487020034613241031",
+          "event_digest": "2de958f310feff788883d0a43f72a2bd76e86a43c62fd367086cb8dc0a750042",
+          "fees": "0.005053050",
+          "funding": "0.01013364",
+          "gross": "0.00162",
+          "id": "S3",
+          "net": "-0.013566690",
+          "premise": "EARLY_PROTECTIVE_TERMINATION",
+          "quantity": "0.054",
+          "reached": [
+            "ENTRY",
+            "TP1"
+          ],
+          "reason_codes": [
+            "PROPOSED_STOP_ALREADY_CROSSED"
+          ],
+          "remaining": "0.000",
+          "scenario_rr": null
+        }
+      ],
+      "quantity": "0.054",
+      "s3_classification": "EARLY_PROTECTIVE_TERMINATION",
+      "static_net_rr": "4.0439628966516400965662731603779059491161041788246"
+    }
+  ],
+  "assertions": {
+    "all_quantity_rows_closed": true,
+    "all_s3_rr_unknown": true
+  },
+  "tests": {
+    "python_full": 2242,
+    "new_python_included_not_added_again": 55,
+    "bridge_mock": 27,
+    "python_warnings": 2,
+    "python_full_seconds": "262.72",
+    "earlier_full_run_seconds_not_an_additional_test_count": "238.65"
+  },
+  "no_new_approvals": true,
+  "no_new_orders": true,
+  "no_monthly_account_replay": true,
+  "evidence_copy_policy": "artifacts describes original local diagnostic-runs/8e-full-v1 output bytes; committed JSON copies have a trailing LF and identical parsed content. tracked_copy_hashes covers the published copies, excludes this self-referencing manifest.",
+  "tracked_copy_hashes": {
+    "audit-summary.json": {
+      "bytes": 6261,
+      "sha256": "78a78238d57445fa4dc811bc81a0a4d5c668411f75d97592cba6bcf44debc22f"
+    },
+    "cost-distributions.json": {
+      "bytes": 25295,
+      "sha256": "2945a77277fc8d734968b1830d96645626d8c5aee1f439cfc75b0eaa5432e770"
+    },
+    "sample-certificates.json": {
+      "bytes": 23814,
+      "sha256": "5e1074983def651c1b2e0638e5be2a6372fa07f25fed72c5074080caa7db2e14"
+    },
+    "unique-first-quantity.json": {
+      "bytes": 38129,
+      "sha256": "7be0ee1683a04f10ef3cca50f70fec012fda13ff10ae0fa624d6056dd8a41cef"
+    }
+  }
+}

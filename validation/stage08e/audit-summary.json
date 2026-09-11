@@ -1,0 +1,187 @@
+{
+  "approvals_created": 0,
+  "certificate_chain_digest": "e4eed3b077fbc4668f9ab0be21af89a24a43119d6f6c81884c2033ff9d62644e",
+  "differences": [],
+  "inventory_complete": true,
+  "inventory_count": 37141,
+  "lattice_rule": "evenly spaced integer indices including both endpoints; explicitly NOT exhaustive unless count==domain",
+  "limitations": [
+    "Certificates concern static structural targets only, not rounded/path-dependent S3",
+    "Full-policy expectation and probability UNKNOWN; budgets are not realized costs",
+    "No continuous monthly account replay performed by this command"
+  ],
+  "live_allowed": false,
+  "orders_created": 0,
+  "quantity_reviews": [
+    {
+      "checked": 5276,
+      "claim": "Conditional descriptions only; NOT an admission or whole-domain feasibility proof",
+      "classifications": {
+        "EARLY_PROTECTIVE_TERMINATION": 5276
+      },
+      "complete": true,
+      "disclosed_reference": {
+        "continuous_candidate_id": "3ca7e4ecdd0c88b593f2d4c7e2003c4e3ad7420aa24db8a91ac53d2fb3a8c46d",
+        "geometry_matched": true,
+        "reference_digest": "3ac75869d11ef2e86b4788aab112ec3e63ca3ecd074b53ebf1793a7f2a7864a8",
+        "source_candidate_id": "85cee1dc0d7b0ed540e73908114744712989ddbd5f4396c4cbd1b718010b60ef"
+      },
+      "domain": {
+        "high": "5.329",
+        "linear_risk_per_unit": "0.52627401200",
+        "low": "0.054",
+        "size": 5276,
+        "step": "0.001"
+      },
+      "execution_authority": "NONE",
+      "formal_search_budget": 32,
+      "rows_digest": "b0f4a58c6081ad647c99c3e3ca547753e5c9987430ad5e3e34bcf13999f3695d",
+      "source_input_digest": "51731a6394f9ac622676a7871f9e661b2546d2fc7112ccd9bf62e24eedb50302",
+      "unchecked_count": 0,
+      "unchecked_interval": null,
+      "version": "finite-readonly-quantity-review/v1"
+    }
+  ],
+  "sample_rule": "per side: nearest RR floor, narrowest stop, highest/lowest cost, largest/smallest domain and maximum quantity; tie-break candidate ID",
+  "samples": [
+    {
+      "candidate_id": "5328d948fdfa84c97cc9fac0a699158973e9843e42fd2bf0b3cb4d4f80cf2577",
+      "differences": [],
+      "domain_points": 4506,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "LONG:highest_cost"
+      ]
+    },
+    {
+      "candidate_id": "6345419de6f875e79e10faccdd8346aaef81603c87b586415b6dea9590efb4de",
+      "differences": [],
+      "domain_points": 6978,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "LONG:lowest_cost",
+        "LONG:largest_domain",
+        "LONG:largest_q_max"
+      ]
+    },
+    {
+      "candidate_id": "00013a8e07e6357c5f1157a3e7e4750252a888b8e7dac80e4db6675b64c99afe",
+      "differences": [],
+      "domain_points": 5262,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "LONG:narrowest_stop"
+      ]
+    },
+    {
+      "candidate_id": "ca84c0b47feb28c8cb0ac93cbe4626dfe723fb85a6431152e6642910270f35aa",
+      "differences": [],
+      "domain_points": 5187,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "LONG:nearest_floor"
+      ]
+    },
+    {
+      "candidate_id": "0bce76b76e4d8db85b68ae207ea77509c062198be69f17e8cc9f8aeed6da6b48",
+      "differences": [],
+      "domain_points": 2644,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "LONG:smallest_domain",
+        "LONG:smallest_q_max"
+      ]
+    },
+    {
+      "candidate_id": "cab3db693cf7c1eaeaf278ef48aae29ba185e5f92be7a802a607936919b6c036",
+      "differences": [],
+      "domain_points": 4320,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "SHORT:highest_cost"
+      ]
+    },
+    {
+      "candidate_id": "62627d011a6d63261900391932228cca771d307dd513bcfd874f8047cff37b1e",
+      "differences": [],
+      "domain_points": 6980,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "SHORT:largest_domain",
+        "SHORT:largest_q_max"
+      ]
+    },
+    {
+      "candidate_id": "44eedc27eedcd2d8d6cea519e9564e6f8553c60043db97fc0df7903e6b382eac",
+      "differences": [],
+      "domain_points": 6978,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "SHORT:lowest_cost"
+      ]
+    },
+    {
+      "candidate_id": "00133e50fba293c55275130ac5396f5eb21172cf94381e7a1f6256a7d509f457",
+      "differences": [],
+      "domain_points": 6507,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "SHORT:narrowest_stop"
+      ]
+    },
+    {
+      "candidate_id": "2b2a3b728b5ed274e095283df387e4dbd0d6ac5cd5ee9c112a21a12e7e86fe80",
+      "differences": [],
+      "domain_points": 4628,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "SHORT:nearest_floor"
+      ]
+    },
+    {
+      "candidate_id": "30a26cfb20d51e07f05de954b539773a63aed4be4aae1a9d5b56857cf1a329ca",
+      "differences": [],
+      "domain_points": 2064,
+      "exhaustive": false,
+      "points_checked": 64,
+      "scope": "SELECTED_CERTIFICATE_ONLY",
+      "selection_rules": [
+        "SHORT:smallest_domain",
+        "SHORT:smallest_q_max"
+      ]
+    }
+  ],
+  "source_bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+  "source_code_commit": "b488b0e282ef49cfbcceeb4bf84ca5aeb2d7e806",
+  "source_dataset_digest": "2bd4ab5b4cdca36938dbb32aa01214d8cf5cfd236f153734b25f400d4e7fb098",
+  "source_read_only": true,
+  "source_run_digest": "4814773e5b96237582512da461358ae837100362d4ba16d7aa7906e725bdf8bc",
+  "statistics": {
+    "candidate_records": 37141,
+    "certificates": 37107,
+    "inconsistent": 0,
+    "unsupported": 0,
+    "valid": 37107
+  },
+  "version": "stage08e-independent-diagnostics/v1"
+}

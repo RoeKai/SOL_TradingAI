@@ -64,7 +64,11 @@ def test_tp2_early_protection_configurable_policy_not_fake_runner(tmp_path,side)
     *_,plan,s,snap,q=plan_case(tmp_path,side,values)
     policy=plan.policy.model_copy(update={'tp2_fraction':D('.6'),'runner_fraction':D('.1')})
     policy=type(policy).model_validate(policy.model_dump())
-    plan=plan.model_copy(update={'policy':policy,'policy_digest':digest(policy),'runner_fraction':D('.1')})
+    triggers=tuple(t.model_copy(update={'original_fraction':policy.tp1_fraction if t.name=='TP1' else policy.tp2_fraction})
+                   for t in plan.triggers)
+    plan=plan.model_copy(update={'plan_id':'0'*64,'policy':policy,'policy_digest':digest(policy),
+                                'runner_fraction':D('.1'),'triggers':triggers})
+    plan=plan.model_copy(update={'plan_id':digest(plan)})
     out=describe_scenarios(plan,snap,q)
     assert out[3].premise=='EARLY_PROTECTIVE_TERMINATION'
     assert out[3].reached==('ENTRY','TP1','TP2')

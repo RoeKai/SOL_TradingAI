@@ -1,0 +1,794 @@
+[
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "62627d011a6d63261900391932228cca771d307dd513bcfd874f8047cff37b1e",
+    "coefficients": {
+      "effective_entry": "70.735016",
+      "entry_fee_per_unit": "0.0353675080",
+      "f0": "0",
+      "funding_per_unit": "0.14188",
+      "g": "-0.35261698200",
+      "l": "0.4227360240",
+      "structural_risk": "0.04",
+      "target_cost_ex_funding": "0.24073698200",
+      "weighted_reward": "0.030"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "7.050",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "5.301",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "3.534",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.767",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "7.050",
+      "q_min": "0.071",
+      "size": 6980,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.08506432113000",
+    "inequality_rhs": "0",
+    "input_digest": "15ab9ced66f076614214285bd27472301e985bab29599da5690914e0678f6f3a",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.83413043124046603608118337225029111784426491175968",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "6345419de6f875e79e10faccdd8346aaef81603c87b586415b6dea9590efb4de",
+    "coefficients": {
+      "effective_entry": "70.764816",
+      "entry_fee_per_unit": "0.0353824080",
+      "f0": "0",
+      "funding_per_unit": "0.14198",
+      "g": "-0.27247893400",
+      "l": "0.4022580120",
+      "structural_risk": "0.02",
+      "target_cost_ex_funding": "0.24049893400",
+      "weighted_reward": "0.110"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "7.048",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "5.299",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "3.532",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.766",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "7.048",
+      "q_min": "0.071",
+      "size": 6978,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.07646664201800",
+    "inequality_rhs": "0",
+    "input_digest": "82e2246acf31f34cf3c6ab74f78089474290c9d34c05b6447bb1936202d31053",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.67737354103962508520526373008575401600701989249626",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "44eedc27eedcd2d8d6cea519e9564e6f8553c60043db97fc0df7903e6b382eac",
+    "coefficients": {
+      "effective_entry": "70.754992",
+      "entry_fee_per_unit": "0.0353774960",
+      "f0": "0",
+      "funding_per_unit": "0.14186",
+      "g": "-0.24748641900",
+      "l": "0.3927330060",
+      "structural_risk": "0.01",
+      "target_cost_ex_funding": "0.24062641900",
+      "weighted_reward": "0.135"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "7.048",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "5.299",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "3.533",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.766",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "7.048",
+      "q_min": "0.071",
+      "size": 6978,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.07333962260100",
+    "inequality_rhs": "0",
+    "input_digest": "71f66bac2806cf21689a867d437ded58643ccc4e3cbbbcb05a057eed80f100f4",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.63016455255609455956956161713589206199796713801029",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "00133e50fba293c55275130ac5396f5eb21172cf94381e7a1f6256a7d509f457",
+    "coefficients": {
+      "effective_entry": "75.878836",
+      "entry_fee_per_unit": "0.0379394180",
+      "f0": "0",
+      "funding_per_unit": "0.15214",
+      "g": "-0.36035297000",
+      "l": "0.4204550060",
+      "structural_risk": "0.01",
+      "target_cost_ex_funding": "0.25821297000",
+      "weighted_reward": "0.050"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "6.572",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "4.942",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "3.294",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.647",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "6.572",
+      "q_min": "0.066",
+      "size": 6507,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.07928335681200",
+    "inequality_rhs": "0",
+    "input_digest": "e98f8717a920371f42ef2ef91a5190a8b16545fca69ed910903397cee9b83339",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.85705477365632792584707625053226266022861908796015",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "0bce76b76e4d8db85b68ae207ea77509c062198be69f17e8cc9f8aeed6da6b48",
+    "coefficients": {
+      "effective_entry": "93.241756",
+      "entry_fee_per_unit": "0.0466208780",
+      "f0": "0",
+      "funding_per_unit": "0.18910",
+      "g": "-0.07148123900",
+      "l": "1.8534478100",
+      "structural_risk": "1.35",
+      "target_cost_ex_funding": "0.31738123900",
+      "weighted_reward": "0.435"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "2.697",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "2.023",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "1.348",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "0.674",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "2.697",
+      "q_min": "0.054",
+      "size": 2644,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.20403235038600",
+    "inequality_rhs": "0",
+    "input_digest": "752cda094356f068d0a12cef3af87ddde6f4fad16e47dc31b7ea4fd1309ea631",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.038566631665771047526825155114564569260787548153298",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "00013a8e07e6357c5f1157a3e7e4750252a888b8e7dac80e4db6675b64c99afe",
+    "coefficients": {
+      "effective_entry": "93.822452",
+      "entry_fee_per_unit": "0.0469112260",
+      "f0": "0",
+      "funding_per_unit": "0.18784",
+      "g": "-0.43657295800",
+      "l": "0.5164370060",
+      "structural_risk": "0.01",
+      "target_cost_ex_funding": "0.31873295800",
+      "weighted_reward": "0.070"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "5.315",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "3.996",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "2.664",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.332",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "5.315",
+      "q_min": "0.054",
+      "size": 5262,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.07935013638000",
+    "inequality_rhs": "0",
+    "input_digest": "dc4eedefd9ca64f00f28832a97eb98ad289969a24c787414ecb1b04aea23bfd5",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.84535568312856340895137169933945438449079692790257",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "30a26cfb20d51e07f05de954b539773a63aed4be4aae1a9d5b56857cf1a329ca",
+    "coefficients": {
+      "effective_entry": "95.245568",
+      "entry_fee_per_unit": "0.0476227840",
+      "f0": "0",
+      "funding_per_unit": "0.19462",
+      "g": "0.29253348600",
+      "l": "2.3619731040",
+      "structural_risk": "1.84",
+      "target_cost_ex_funding": "0.32284651400",
+      "weighted_reward": "0.810"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "2.116",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "1.587",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "1.058",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "0.529",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "2.116",
+      "q_min": "0.053",
+      "size": 2064,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.23486487426600",
+    "inequality_rhs": "0",
+    "input_digest": "a44b861a6caa26fa29480442c517d01be93d9d4819e170ee7c669bd243a6e11d",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "0.12385131968886297699349247119962124683025179782064",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "ca84c0b47feb28c8cb0ac93cbe4626dfe723fb85a6431152e6642910270f35aa",
+    "coefficients": {
+      "effective_entry": "95.184084",
+      "entry_fee_per_unit": "0.0475920420",
+      "f0": "0",
+      "funding_per_unit": "0.19462",
+      "g": "0.78991578600",
+      "l": "0.5378240120",
+      "structural_risk": "0.02",
+      "target_cost_ex_funding": "0.32546421400",
+      "weighted_reward": "1.310"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "5.239",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "3.939",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "2.626",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.313",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "5.239",
+      "q_min": "0.053",
+      "size": 5187,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.01514380861400",
+    "inequality_rhs": "0",
+    "input_digest": "235acd626cf4fba4c588e9e11a99ced2875aa301f19e5894472104b5dabd3266",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "1.4687253978537499735136407409046660415749529606350",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "cab3db693cf7c1eaeaf278ef48aae29ba185e5f92be7a802a607936919b6c036",
+    "coefficients": {
+      "effective_entry": "109.688216",
+      "entry_fee_per_unit": "0.0548441080",
+      "f0": "0",
+      "funding_per_unit": "0.22100",
+      "g": "-0.52927746100",
+      "l": "1.1453233300",
+      "structural_risk": "0.55",
+      "target_cost_ex_funding": "0.37327746100",
+      "weighted_reward": "0.065"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "4.365",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "3.274",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "2.182",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.091",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "4.365",
+      "q_min": "0.046",
+      "size": 4320,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.12971650956600",
+    "inequality_rhs": "0",
+    "input_digest": "03e58ff557cb253d69b8241ab706ba1901b72bc95cb51e58e5326969ee9510ca",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.46212056205997305581822034481738881543607428305857",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "5328d948fdfa84c97cc9fac0a699158973e9843e42fd2bf0b3cb4d4f80cf2577",
+    "coefficients": {
+      "effective_entry": "109.581340",
+      "entry_fee_per_unit": "0.0547906700",
+      "f0": "0",
+      "funding_per_unit": "0.22100",
+      "g": "-0.18382675400",
+      "l": "0.6230790180",
+      "structural_risk": "0.03",
+      "target_cost_ex_funding": "0.37282675400",
+      "weighted_reward": "0.410"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "4.551",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "3.422",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "2.281",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.140",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "4.551",
+      "q_min": "0.046",
+      "size": 4506,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.06577930034000",
+    "inequality_rhs": "0",
+    "input_digest": "6592c282ecd2c572d1649fcb8024cd1097d0a3a30a3235eb88a30d0728d66701",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "-0.29502960088442586586987270368972687826891323758233",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  },
+  {
+    "bundle_digest": "9810bbb0f0576924df7c1d8d9b8a06f2e7e787a206424d604aff6bc2925a3897",
+    "candidate_id": "2b2a3b728b5ed274e095283df387e4dbd0d6ac5cd5ee9c112a21a12e7e86fe80",
+    "coefficients": {
+      "effective_entry": "106.691816",
+      "entry_fee_per_unit": "0.0533459080",
+      "f0": "0",
+      "funding_per_unit": "0.21412",
+      "g": "0.84009834900",
+      "l": "0.6975120720",
+      "structural_risk": "0.12",
+      "target_cost_ex_funding": "0.36078165100",
+      "weighted_reward": "1.415"
+    },
+    "conditions": [
+      "Exact complete structural target weights, point reference entry, linear per-unit costs and nonnegative fixed cost",
+      "L(q)>0; derivative f0*(g+l)/L(q)^2, or g+l<=0 implies G(q)<0",
+      "Interval encloses every allowed tier; global/market floor is no higher than any tier floor",
+      "No TP lot rounding, early stop, Runner or path-dependent S3 claim"
+    ],
+    "differences": [],
+    "domain": {
+      "branches": [
+        {
+          "q_max": "4.674",
+          "risk_ceiling": "5",
+          "tier": "S"
+        },
+        {
+          "q_max": "3.514",
+          "risk_ceiling": "3.75",
+          "tier": "A"
+        },
+        {
+          "q_max": "2.343",
+          "risk_ceiling": "2.5",
+          "tier": "B"
+        },
+        {
+          "q_max": "1.171",
+          "risk_ceiling": "1.25",
+          "tier": "C"
+        }
+      ],
+      "global_floor": "1.5",
+      "k": "2",
+      "market_floor": "2",
+      "q_max": "4.674",
+      "q_min": "0.047",
+      "size": 4628,
+      "step": "0.001",
+      "tier_floors": [
+        "2",
+        "2",
+        "2",
+        "2"
+      ]
+    },
+    "execution_authority": "NONE",
+    "inequality_max_lhs": "-0.02608151236500",
+    "inequality_rhs": "0",
+    "input_digest": "784a63ef8288e2429fd73b4cb893e49671a7595bb22799b8d6bee078c78c4264",
+    "input_versions": [
+      "execution-price-layers/v1",
+      "execution-priced-static-input/v1",
+      "quantity-funding-budget/v1",
+      "linear-usdt-rr/v1"
+    ],
+    "rr_upper": "1.2044212318665073942978294431583687342976911229717",
+    "status": "VALID",
+    "version": "independent-static-certificate/v1"
+  }
+]
