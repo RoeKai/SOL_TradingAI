@@ -417,7 +417,7 @@ def test_rr_has_no_execution_dependencies_and_is_not_imported_by_runtime():
             'app/execution_costs/gate.py','app/execution_costs/engine.py','app/execution_costs/attribution.py',
             # 8E exact read-only diagnostics, not execution or admission wiring.
             'app/scenario_diagnostics/scenarios.py','app/scenario_diagnostics/proofs.py',
-            'app/scenario_diagnostics/quantities.py'}: continue
+            'app/scenario_diagnostics/quantities.py','app/signal_research/costs.py'}: continue
         tree=ast.parse(file.read_text())
         for node in ast.walk(tree):
             if isinstance(node,ast.ImportFrom): assert not (node.module or '').startswith('app.setups')

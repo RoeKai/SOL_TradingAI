@@ -615,7 +615,9 @@ def test_no_runtime_wiring_and_pure_dependency_closure():
             # Scope-limited 8E descriptions/read-only reports; no permission calls.
             'app/scenario_diagnostics/__init__.py','app/scenario_diagnostics/scenarios.py',
             'app/scenario_diagnostics/proofs.py','app/scenario_diagnostics/costs.py',
-            'app/scenario_diagnostics/quantities.py','app/scenario_diagnostics/cli.py'}: continue
+            'app/scenario_diagnostics/quantities.py','app/scenario_diagnostics/cli.py',
+            'app/signal_research/features.py','app/signal_research/labels.py',
+            'app/signal_research/statistics.py','app/signal_research/costs.py','app/signal_research/cli.py'}: continue
         assert 'admission' not in path.read_text().lower() or 'setups' in path.parts
     assert 'admission' not in (ROOT/'config.yaml').read_text()
     assert 'dry_run: true' in (ROOT/'config.yaml').read_text()

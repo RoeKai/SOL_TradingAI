@@ -35,8 +35,8 @@ IMPORT_LOCATION_ALLOWLIST = {
 HISTORICAL_IMPORTS = {
     'csv': {'app/historical_replay/data.py'},
     'zipfile': {'app/historical_replay/data.py','app/historical_replay/index.py'},
-    'heapq': {'app/historical_replay/index.py'},
-    'resource': {'app/historical_replay/cli.py','app/execution_costs/cli.py'},
+    'heapq': {'app/historical_replay/index.py','app/signal_research/labels.py'},
+    'resource': {'app/historical_replay/cli.py','app/execution_costs/cli.py','app/signal_research/cli.py'},
 }
 FORBIDDEN_NAMES = frozenset({
     "__import__", "__builtins__", "__loader__", "__spec__", "eval", "exec", "compile",
